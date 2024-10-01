@@ -1,5 +1,10 @@
 body{
     display: flex;
     justify-content: center;
-    margin-top: 5%;
+    margin-top: 10%;
+    background-image: url(images/background.PNG);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: auto;
 }

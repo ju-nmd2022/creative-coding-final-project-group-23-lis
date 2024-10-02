@@ -21,7 +21,10 @@ function getHandsData(results) {
 
 function draw() {
   background(255, 255, 255);
+  translate(video.width, 0);
+  scale(-1, 1);
   image(video, 0, 0, 740, 580);
+
 
   for (let hand of predictions) {
     const keypoints = hand.keypoints;

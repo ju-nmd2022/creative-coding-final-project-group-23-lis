@@ -26,19 +26,19 @@ function setup() {
     handpose.detectStart(video, getHandsData);
   
     //randomize number for the mood
-    let randomizedMood = Math.floor(Math.random() * 16);
+    let randomizedMood = Math.floor(Math.random() * 8);
     
     //set mood based on randomized number
-    if (randomizedMood <= 3) {
+    if (randomizedMood === 0 || randomizedMood === 1) {
       console.log("The artist is sad.");
       mood = "sad";
-    } else if (randomizedMood <= 7) {
+    } else if (randomizedMood === 2 || randomizedMood === 3) {
       console.log("The artist is angry.");
       mood = "angry";
-    } else if (randomizedMood <= 9) {
+    } else if (randomizedMood === 4) {
       console.log("The artist is feeling mischievous.");
       mood = "mischievous";
-    } else if (randomizedMood <= 11) {
+    } else if (randomizedMood === 5) {
       console.log("The artist is feeling benevolent.");
       mood = "benevolent";
     } else {

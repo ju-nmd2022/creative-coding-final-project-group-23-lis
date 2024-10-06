@@ -9,8 +9,18 @@
     <link rel="stylesheet" href="test-2.css" />
   </head>
   <body>
-    <img src="images/artist.PNG" alt="The artist" class="artist">
-    <img src="images/speech-bubble.PNG" alt="Speech bubble" class="speech-bubble">
+    <div id="mood-images">
+        <img id="sad-image" src="images/artist-sad.PNG" alt="Sad Artist" style="display: none;">
+        <img id="angry-image" src="images/artist-angry.PNG" alt="Angry Artist" style="display: none;">
+        <img id="mischievous-image" src="images/artist-mis.PNG" alt="Mischievous Artist" style="display: none;">
+        <img id="benevolent-image" src="images/artist-ben.PNG" alt="Benevolent Artist" style="display: none;">
+        <img id="happy-image" src="images/artist-happy.PNG" alt="Happy Artist" style="display: none;">
+    </div>
+
+    <div class="bubble-container">
+        <img src="images/speech-bubble.PNG" alt="Speech bubble" class="speech-bubble"> 
+        <p id="artist-comment"></p>
+    </div>
 
     <script src="test-2.js" defer></script>
   </body>

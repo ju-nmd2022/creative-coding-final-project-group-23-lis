@@ -34,11 +34,10 @@ function draw() {
       push();
       noStroke();
 
-      // If keypoints 9 to 12 (middle finger) are detected, fill red, else green
       if (i >= 9 && i <= 12) {
-        fill(255, 0, 0);  // Red for middle finger
+        fill(255, 0, 0); 
       } else {
-        fill(0, 255, 0);  // Green for other fingers
+        fill(0, 255, 0);
       }
 
       ellipse(keypoint.x, keypoint.y, 10);

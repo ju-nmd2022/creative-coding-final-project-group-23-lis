@@ -9,16 +9,30 @@ body{
     height: auto;
 }
 
-.speech-bubble{
-    max-height: 300px;
-    width: 500px;
+.bubble-container {
     position: absolute;
-    right: 100px;
-    top: 430px;
+    top: 425px;   
+    right: 120px; 
 }
 
-.artist{
+.speech-bubble {
+    width: 450px;
+    height: 300px;
+}
+
+#artist-comment {
+    position: absolute;
+    top: 40px;    
+    left: 110px;   
+    font-size: 20px; 
+    color: black;    
+    width: 60%; 
+    z-index: 1;   
+}
+
+#mood-images img {
     max-height: 300px;
     position: absolute;
     right: 175px;
-}
+  }
+

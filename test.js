@@ -35,7 +35,7 @@ function setup() {
       console.log("Video is not ready yet!");
     }
   });
-  
+
   // Disable buttons initially until the video is ready
   happyButton = createButton("Happy");
   happyButton.mousePressed(() => {
@@ -123,7 +123,13 @@ function gotResults(error, results) {
 // Draw the video feed and display the predicted label
 function draw() {
   background(255, 255, 255);
-  image(video, 0, 0, 640, 480);
+
+  // Apply horizontal flip
+  push(); // Start a new drawing state
+  translate(video.width, 0); // Move the origin to the right edge of the video
+  scale(-1, 1); // Flip the x-axis to mirror the video
+  image(video, 0, 0, 640, 480); // Draw the video flipped
+  pop(); // Restore original drawing state
 
   // Default label
   let label = "No Emotion Detected";

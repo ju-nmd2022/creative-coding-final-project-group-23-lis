@@ -1,0 +1,5 @@
+Happy - Eyebrows up, Mouth corners up
+Sad - Closed eyes, Mouth corners down
+Angry - Mouth open, eyebrows down
+Surprised - Open mouth, eyebrows down
+Boredom/Sleepy - Closed eyes

@@ -34,11 +34,10 @@ faceMesh.setOptions({
   minTrackingConfidence: 0.5,
 });
 
-// Baseline for eyebrow to eye distance
+// Baseline for eyebrow, eye, and mouth distances
 let baselineDistance = null;
-
-// Track when a face is detected or not
-let isFaceDetected = false;
+let eyeBaseline = null;
+let mouthBaseline = null;
 
 // Callback when FaceMesh results are ready
 faceMesh.onResults((results) => {
@@ -63,9 +62,8 @@ faceMesh.onResults((results) => {
 
   if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
     const landmarks = results.multiFaceLandmarks[0]; // Assume only 1 face
-    isFaceDetected = true;
 
-    // Get positions of key landmarks (you can fine-tune which points to use)
+    // Get positions of key landmarks for eyebrows
     const leftEye = landmarks[159]; // A point on the left eye
     const rightEye = landmarks[386]; // A point on the right eye
     const leftEyebrow = landmarks[70]; // A point on the left eyebrow
@@ -75,7 +73,7 @@ faceMesh.onResults((results) => {
     const leftEyeToEyebrow = Math.abs(leftEyebrow.y - leftEye.y);
     const rightEyeToEyebrow = Math.abs(rightEyebrow.y - rightEye.y);
 
-    // Set baseline if it's the first frame
+    // Set baseline for eyebrows if it's the first frame
     if (!baselineDistance) {
       baselineDistance = {
         left: leftEyeToEyebrow,
@@ -90,6 +88,50 @@ faceMesh.onResults((results) => {
       rightEyeToEyebrow - baselineDistance.right > raiseThreshold
     ) {
       console.log("Eyebrows raised!");
+    }
+
+    // Detect eye closure
+    const leftUpperEyelid = landmarks[159]; // Top point of left eye
+    const leftLowerEyelid = landmarks[145]; // Bottom point of left eye
+    const rightUpperEyelid = landmarks[386]; // Top point of right eye
+    const rightLowerEyelid = landmarks[374]; // Bottom point of right eye
+
+    const leftEyeHeight = Math.abs(leftUpperEyelid.y - leftLowerEyelid.y);
+    const rightEyeHeight = Math.abs(rightUpperEyelid.y - rightLowerEyelid.y);
+
+    // Set baseline for eye open state in the first frame
+    if (!eyeBaseline) {
+      eyeBaseline = {
+        left: leftEyeHeight,
+        right: rightEyeHeight,
+      };
+    }
+
+    // Threshold for detecting if the eye is closed
+    const eyeClosedThreshold = 0.4; // Adjust this based on testing
+
+    if (
+      leftEyeHeight / eyeBaseline.left < eyeClosedThreshold &&
+      rightEyeHeight / eyeBaseline.right < eyeClosedThreshold
+    ) {
+      console.log("Eyes are closed!");
+    }
+
+    // Detect if the mouth is open wide
+    const upperLip = landmarks[13]; // Upper lip point
+    const lowerLip = landmarks[14]; // Lower lip point
+    const mouthHeight = Math.abs(upperLip.y - lowerLip.y);
+
+    // Set baseline for mouth in the first frame
+    if (!mouthBaseline) {
+      mouthBaseline = mouthHeight;
+    }
+
+    // Absolute threshold for detecting if the mouth is open wide
+    const mouthOpenAbsoluteThreshold = 0.1; // Set this value based on testing
+
+    if (mouthHeight - mouthBaseline > mouthOpenAbsoluteThreshold) {
+      console.log("Mouth is open wide!");
     }
 
     // Draw facial landmarks
@@ -113,9 +155,6 @@ faceMesh.onResults((results) => {
       color: "#E0E0E0",
     });
     drawConnectors(canvasCtx, landmarks, FACEMESH_LIPS, { color: "#E0E0E0" });
-  } else {
-    // No face detected
-    isFaceDetected = false;
   }
 
   canvasCtx.restore();

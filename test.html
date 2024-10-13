@@ -1,13 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script>
-    <script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
-    <meta charset="utf-8" />
-    <script src="test.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Face Mesh Demo</title>
     <link rel="stylesheet" href="test.css" />
+    <!-- Include MediaPipe FaceMesh and controls -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils"></script>
+    <script src="test.js" defer></script>
   </head>
   <body>
-
+    <div class="container">
+      <video class="input_video" autoplay></video>
+      <canvas class="output_canvas" width="1280" height="720"></canvas>
+      <div class="loading">
+        <div class="spinner"></div>
+        <div class="message">Loading</div>
+      </div>
+    </div>
+    <div class="control-panel"></div>
   </body>
 </html>

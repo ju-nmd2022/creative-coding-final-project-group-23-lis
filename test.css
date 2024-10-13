@@ -1,8 +1,61 @@
-html,
-body {
-  margin: 0;
-  padding: 0;
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
-canvas {
+
+.abs {
+  position: absolute;
+}
+
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: #596e73;
+}
+
+.input_video {
+  display: none;
+}
+
+.output_canvas {
+  max-width: 100%;
   display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.loading {
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading .spinner {
+  width: 120px;
+  height: 120px;
+  border: 16px solid #bebebe;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading .message {
+  font-size: large;
+  color: white;
+  margin-top: 20px;
+}
+
+.loaded .loading {
+  display: none;
 }

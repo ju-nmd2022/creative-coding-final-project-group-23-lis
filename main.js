@@ -41,16 +41,16 @@ function setup() {
 
 //function to randomize the artist's mood
 function randomizeMood() {
-    let randomizedMood = Math.floor(Math.random() * 16); 
+    let randomizedMood = Math.floor(Math.random() * 15); 
 
   //set mood based on the randomized number
-    if (randomizedMood <= 3) {
+    if (randomizedMood <= 2) {
         console.log("The artist is sad.");
         mood = "sad";
-    } else if (randomizedMood <= 7) {
+    } else if (randomizedMood <= 5) {
         console.log("The artist is angry.");
         mood = "angry";
-    } else if (randomizedMood <= 9) {
+    } else if (randomizedMood <= 8) {
         console.log("The artist is feeling mischievous.");
         mood = "mischievous";
     } else if (randomizedMood <= 11) {

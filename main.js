@@ -45,19 +45,14 @@ function randomizeMood() {
 
   //set mood based on the randomized number
     if (randomizedMood <= 2) {
-        console.log("The artist is sad.");
         mood = "sad";
     } else if (randomizedMood <= 5) {
-        console.log("The artist is angry.");
         mood = "angry";
     } else if (randomizedMood <= 8) {
-        console.log("The artist is feeling mischievous.");
         mood = "mischievous";
     } else if (randomizedMood <= 11) {
-        console.log("The artist is feeling benevolent.");
         mood = "benevolent";
     } else {
-        console.log("The artist is happy.");
         mood = "happy";
     }
     
@@ -72,7 +67,6 @@ function randomizeMood() {
 
 //used the help och ChatGPT to get this impatient part to work
 function transitionToImpatient() {
-    console.log("The artist has become impatient.");
     mood = "impatient";
     updateMoodImages();
 
@@ -95,32 +89,32 @@ function updateMoodImages() {
     //images from the array are cleared and then randomized with very mood
     if (mood === "sad") {
         document.getElementById("sad-image").style.display = "block";
-        comment.innerHTML = "Artist is sad.";
+        comment.innerHTML = "Oh... I guess I could paint you blue :(";
         happyFilterShowing = []; 
         filterObject();
     } else if (mood === "angry") {
         document.getElementById("angry-image").style.display = "block";
-        comment.innerHTML = "Artist is angry.";
+        comment.innerHTML = "AARRGH!!! Here you go stupid, I'll paint you in red >:(";
         happyFilterShowing = []; 
         filterObject();
     } else if (mood === "mischievous") {
         document.getElementById("mischievous-image").style.display = "block";
-        comment.innerHTML = "Artist is feeling mischievous.";
+        comment.innerHTML = "Look at you! Ridicolous. This is how you look, haha! >:)";
         happyFilterShowing = []; 
         filterObject();
     } else if (mood === "benevolent") {
         document.getElementById("benevolent-image").style.display = "block";
-        comment.innerHTML = "Artist is feeling benevolent.";
+        comment.innerHTML = "Aww, you look lovely today, let's make you look even cuter! :)";
         happyFilterShowing = []; 
         filterObject();
     } else if (mood === "happy") {
         document.getElementById("happy-image").style.display = "block";
-        comment.innerHTML = "Artist is happy.";
+        comment.innerHTML = "Ah look, I can paint you in a lovely yellow shade :D";
         happyFilterShowing = []; 
         filterObject();
     } else if (mood === "impatient") {
         document.getElementById("impatient-image").style.display = "block";
-        comment.innerHTML = "Artist is impatient. If you don't do something interesting soon, his mood will change.";
+        comment.innerHTML = "I'm a little impatient, and this is boring. If you don't do something interesting soon, my mood will change.";
     }
 }
 

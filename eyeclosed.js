@@ -68,36 +68,44 @@ faceMesh.onResults((results) => {
     const rightEye = landmarks[386]; // A point on the right eye
     const leftEyebrow = landmarks[70]; // A point on the left eyebrow
     const rightEyebrow = landmarks[300]; // A point on the right eyebrow
+    const leftLowerEyelid = landmarks[145]; // Bottom point of left eye
+    const rightLowerEyelid = landmarks[374]; // Bottom point of right eye
 
-    // Calculate the vertical distance between eyes and eyebrows
-    const leftEyeToEyebrow = Math.abs(leftEyebrow.y - leftEye.y);
-    const rightEyeToEyebrow = Math.abs(rightEyebrow.y - rightEye.y);
+    // Calculate the vertical distance between lower eyelids and eyebrows
+    const leftLowerEyelidToEyebrow = Math.abs(
+      leftEyebrow.y - leftLowerEyelid.y
+    );
+    const rightLowerEyelidToEyebrow = Math.abs(
+      rightEyebrow.y - rightLowerEyelid.y
+    );
 
     // Set baseline for eyebrows if it's the first frame
     if (!baselineDistance) {
       baselineDistance = {
-        left: leftEyeToEyebrow,
-        right: rightEyeToEyebrow,
+        left: leftLowerEyelidToEyebrow,
+        right: rightLowerEyelidToEyebrow,
       };
     }
 
-    // Check if the eyebrows are raised (by comparing with the baseline)
-    const raiseThreshold = 0.02; // Adjust this threshold based on testing
+    // Check if the eyebrows are raised by comparing the space between lower eyelids and eyebrows
+    const raiseThreshold = 0.025; // Adjust this threshold based on testing
     if (
-      leftEyeToEyebrow - baselineDistance.left > raiseThreshold &&
-      rightEyeToEyebrow - baselineDistance.right > raiseThreshold
+      leftLowerEyelidToEyebrow - baselineDistance.left > raiseThreshold &&
+      rightLowerEyelidToEyebrow - baselineDistance.right > raiseThreshold
     ) {
       console.log("Eyebrows raised!");
     }
 
     // Detect eye closure
     const leftUpperEyelid = landmarks[159]; // Top point of left eye
-    const leftLowerEyelid = landmarks[145]; // Bottom point of left eye
+    const leftLowerEyelidHeight = landmarks[145]; // Bottom point of left eye
     const rightUpperEyelid = landmarks[386]; // Top point of right eye
-    const rightLowerEyelid = landmarks[374]; // Bottom point of right eye
+    const rightLowerEyelidHeight = landmarks[374]; // Bottom point of right eye
 
-    const leftEyeHeight = Math.abs(leftUpperEyelid.y - leftLowerEyelid.y);
-    const rightEyeHeight = Math.abs(rightUpperEyelid.y - rightLowerEyelid.y);
+    const leftEyeHeight = Math.abs(leftUpperEyelid.y - leftLowerEyelidHeight.y);
+    const rightEyeHeight = Math.abs(
+      rightUpperEyelid.y - rightLowerEyelidHeight.y
+    );
 
     // Set baseline for eye open state in the first frame
     if (!eyeBaseline) {

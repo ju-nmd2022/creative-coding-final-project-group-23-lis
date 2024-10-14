@@ -37,6 +37,7 @@ function setup() {
   handpose.detectStart(video, getHandsData);
 
   randomizeMood();
+  colorMode(HSB);
 }
 
 //function to randomize the artist's mood
@@ -118,6 +119,32 @@ function updateMoodImages() {
     }
 }
 
+let moodColor = [60, 100, 100];
+
+//changes the color of the facial features based on the mood in HSB
+//the mood is a variable because we dont want the color to change with the impatient mood
+function applyMoodColorFilter() {
+    if (mood === "sad") {
+        moodColor = [240, 100, 67];
+        tint(...moodColor);
+    } else if (mood === "angry") {
+        moodColor = [0, 100, 100];
+        tint(...moodColor);
+    } else if (mood === "mischievous") {
+        moodColor = [266, 100, 50];
+        tint(...moodColor);
+    } else if (mood === "benevolent") {
+        moodColor = [327, 100, 100]; 
+        tint(...moodColor);
+    } else if (mood === "happy") {
+        moodColor = [50, 100, 100];
+        tint(...moodColor);
+    } else if (mood === "impatient") {
+        tint(...moodColor);
+    }
+}
+
+
 
 function getHandsData(results) {
     predictions = results;
@@ -154,8 +181,10 @@ function filterObject() {
 //display random facial features from the array
 function displayFilter() {
     for (let feature of happyFilterShowing) {
+        applyMoodColorFilter();
         image(feature, 300, 200, 200, 100); 
     }
+    noTint();
 }
 //ChatGPT help: ends here
 

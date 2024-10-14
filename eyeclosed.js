@@ -39,10 +39,6 @@ let baselineDistance = null;
 let eyeBaseline = null;
 let mouthBaseline = null;
 
-// Variables to track time eyes have been closed
-let eyesClosedTime = 0; // In seconds
-let isEyesClosed = false;
-
 // Callback when FaceMesh results are ready
 faceMesh.onResults((results) => {
   // Hide loading screen once results are processed
@@ -118,23 +114,7 @@ faceMesh.onResults((results) => {
       leftEyeHeight / eyeBaseline.left < eyeClosedThreshold &&
       rightEyeHeight / eyeBaseline.right < eyeClosedThreshold
     ) {
-      if (!isEyesClosed) {
-        isEyesClosed = true;  // Eyes are closed
-        eyesClosedTime = 0;   // Reset timer when eyes first close
-      }
-
-      // Increment the time the eyes have been closed
-      eyesClosedTime += 1 / 30; // Assuming 30 FPS, adjust if necessary
-
-      // Check if the eyes have been closed for 5 seconds
-      if (eyesClosedTime >= 5) {
-        console.log("Boredom detected! Eyes have been closed for 5 seconds.");
-        // Trigger boredom emotion (you can add any code here for the emotion)
-      }
-    } else {
-      // If eyes are open, reset the closed time counter
-      isEyesClosed = false;
-      eyesClosedTime = 0;
+      console.log("Eyes are closed!");
     }
 
     // Detect if the mouth is open wide

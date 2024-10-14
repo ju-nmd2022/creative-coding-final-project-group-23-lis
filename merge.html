@@ -1,33 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aura Artist</title>
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"> </script>
-    <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"> </script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HandPose + FaceMesh on Video Feed</title>
+  
+  <!-- Link to external CSS file -->
+  <link rel="stylesheet" href="mergetest.css">
+  
+  <!-- Load TensorFlow.js and the models -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/facemesh"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils"></script>
-    <link rel="stylesheet" href="merge.css" />
-  </head>
-  <body>
-    <div id="mood-images">
-        <img id="sad-image" src="images/artist-sad.PNG" alt="Sad Artist" style="display: none;">
-        <img id="angry-image" src="images/artist-angry.PNG" alt="Angry Artist" style="display: none;">
-        <img id="mischievous-image" src="images/artist-mis.PNG" alt="Mischievous Artist" style="display: none;">
-        <img id="benevolent-image" src="images/artist-ben.PNG" alt="Benevolent Artist" style="display: none;">
-        <img id="happy-image" src="images/artist-happy.PNG" alt="Happy Artist" style="display: none;">
-        <img id="impatient-image" src="images/artist-imp.PNG" alt="Impatient Artist" style="display: none;">
-    </div>
 
-    <div id="video-container"></div>
+  <!-- Link to external JavaScript file -->
+  <script src="mergetest.js" defer></script>
+</head>
+<body>
 
-    <div class="bubble-container">
-        <img src="images/speech-bubble.PNG" alt="Speech bubble" class="speech-bubble"> 
-        <p id="artist-comment"></p>
-    </div>
+  <!-- Video and canvas elements -->
+  <video id="video" width="640" height="480" autoplay muted></video>
+  <canvas id="canvas" width="640" height="480"></canvas>
 
-    <script src="merge.js" defer></script>
-  </body>
+</body>
 </html>

@@ -167,7 +167,7 @@ function draw() {
 
 // Function to filter and show artist mood images (implement as needed)
 function displayFilter() {
-  for (let feature of happyFilterShowing) {
+  for (let feature of filtersShowing) {
     image(feature, 300, 200, 200, 100);
   }
 }

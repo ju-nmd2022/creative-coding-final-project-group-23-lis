@@ -403,11 +403,33 @@ function displayFilter() {
   let xPositions = [300, 280, 320, 310, 300];
   let yPositions = [200, 160, 220, 240, 270];
 
-  for (let i = 0; i < filtersShowing.length; i++) {
-    applyMoodColorFilter();
-    image(filtersShowing[i], xPositions[i], yPositions[i], 200, 100);
+  // Ensure the filters array has been populated before trying to display them
+  if (filtersShowing.length > 0) {
+    for (let i = 0; i < filtersShowing.length; i++) {
+      if (filtersShowing[i]) {
+        // Ensure each image is defined
+        applyMoodColorFilter();
+        image(filtersShowing[i], xPositions[i], yPositions[i], 200, 100);
+      }
+    }
   }
-  noTint();
+  noTint(); // Reset any color tint after filters
+}
+
+let videoReady = false; // To check if video is ready
+
+function draw() {
+  // Clear the canvas first
+  clear();
+
+  // Ensure video is ready before drawing it
+  if (videoReady) {
+    // First, draw the video on the canvas
+    image(videoElement, 0, 0, 740, 580);
+
+    // Then, draw the filters on top of the video
+    displayFilter(); // Call your filter display logic after the video is rendered
+  }
 }
 
 //-------------------------------------------------CAMERA SETUP-------------------------------------------------

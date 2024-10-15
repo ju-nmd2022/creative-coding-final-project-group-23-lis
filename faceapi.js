@@ -16,7 +16,11 @@ window.addEventListener("load", () => {
   }
 
   const eyeImage = new Image();
-  eyeImage.src = "images/eyes-zombie.png"; // Path to your image (e.g., a sticker for the eyes)
+  eyeImage.src = "images/eyes-cute.png"; // Path to your image for the eyes
+  const noseImage = new Image();
+  noseImage.src = "images/nose-wings.png"; // Path to your image for the nose
+  const mouthImage = new Image();
+  mouthImage.src = "images/lip-bite.png"; // Path to your image for the mouth
 
   video.addEventListener("play", () => {
     const canvas = faceapi.createCanvasFromMedia(video);
@@ -36,11 +40,18 @@ window.addEventListener("load", () => {
       // Clear the previous frame
       canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
+      // Draw the mirrored video stream on the canvas
+      canvasCtx.save();
+      canvasCtx.translate(canvas.width, 0); // Move the origin to the right edge
+      canvasCtx.scale(-1, 1); // Flip the canvas horizontally
+      canvasCtx.drawImage(video, 0, 0, canvas.width, canvas.height); // Draw the mirrored video
+      canvasCtx.restore();
+
       // Draw facial recognition boxes and expressions (unmirrored)
       faceapi.draw.drawDetections(canvas, resizedDetections);
       faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
 
-      // Overlay image on top of the eyes
+      // Overlay images on top of the eyes
       if (resizedDetections.length > 0) {
         const landmarks = resizedDetections[0].landmarks;
 
@@ -60,7 +71,7 @@ window.addEventListener("load", () => {
           y: rightEye[3].y - eyeHeight / 2,
         };
 
-        // Draw the images over the eyes
+        // Draw the images over the eyes (unmirrored)
         canvasCtx.drawImage(
           eyeImage,
           leftEyePosition.x,
@@ -75,6 +86,42 @@ window.addEventListener("load", () => {
           eyeWidth,
           eyeHeight
         );
+
+        // Get the nose position (unmirrored)
+        const nose = landmarks.getNose();
+        const noseWidth = 40; // Set the width for the image
+        const noseHeight = 40; // Set the height for the image
+        const nosePosition = {
+          x: nose[3].x - noseWidth / 2, // Center image over the nose
+          y: nose[3].y - noseHeight / 2,
+        };
+
+        // Draw the image over the nose (unmirrored)
+        canvasCtx.drawImage(
+          noseImage,
+          nosePosition.x,
+          nosePosition.y,
+          noseWidth,
+          noseHeight
+        );
+
+        // Get the mouth position (unmirrored)
+        const mouth = landmarks.getMouth();
+        const mouthWidth = 60; // Set the width for the image
+        const mouthHeight = 40; // Set the height for the image
+        const mouthPosition = {
+          x: mouth[0].x - mouthWidth / 2, // Center image over the mouth
+          y: mouth[3].y - mouthHeight / 2, // You may adjust this if needed
+        };
+
+        // Draw the image over the mouth (unmirrored)
+        canvasCtx.drawImage(
+          mouthImage,
+          mouthPosition.x,
+          mouthPosition.y,
+          mouthWidth,
+          mouthHeight
+        );
       }
 
       // Display detected emotion (unmirrored)
@@ -83,9 +130,20 @@ window.addEventListener("load", () => {
         const maxEmotion = Object.keys(emotions).reduce((a, b) =>
           emotions[a] > emotions[b] ? a : b
         );
-        document.getElementById("emotion").textContent = `${maxEmotion} (${(
+        const emotionText = `${maxEmotion} (${(
           emotions[maxEmotion] * 100
         ).toFixed(2)}%)`;
+
+        // Calculate position for the emotion text (unmirrored)
+        const emotionPosition = {
+          x: 10, // Adjust as needed
+          y: 30, // Adjust as needed
+        };
+
+        // Draw the emotion text on the canvas (unmirrored)
+        canvasCtx.font = "20px Arial";
+        canvasCtx.fillStyle = "white";
+        canvasCtx.fillText(emotionText, emotionPosition.x, emotionPosition.y);
       }
     }, 100);
   });

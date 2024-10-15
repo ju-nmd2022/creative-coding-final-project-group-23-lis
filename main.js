@@ -10,7 +10,11 @@ let headFilterArray = [];
 let browsFilterArray = [];
 let eyesFilterArray = [];
 let noseFilterArray = [];
+let happyBenevolentArray = [];
+let happyMischievousArray = [];
+
 let lipFilterArray = [];
+
 let filtersShowing = []; 
 
 function preload() {
@@ -53,6 +57,14 @@ function preload() {
     lipCrooked= loadImage("images/lip-crooked.PNG");
     lipOpen = loadImage("images/lip-open.PNG");
     lipFilterArray = [lipBite, lipCrooked, lipOpen];
+
+
+    //arrays for benevolent and mischievous
+    happyBenevolentArray = [headHeart, browsLift, eyesCute, noseWings, lipBite];
+    //safBenevolentArray = [headHeart, browsLift, eyesCute, noseWings, lipBite];
+
+    happyMischievousArray = [browsWitch, eyesZombie, nosePig, lipCrooked];
+    //sadMischievousArray = [headHeart, browsLift, eyesCute, noseWings, lipBite];
   
 }
 

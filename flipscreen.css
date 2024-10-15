@@ -1,0 +1,61 @@
+body{
+    display: flex;
+    margin-left: 10%;
+    margin-top: 10%;
+    background-image: url(images/background.PNG);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: auto;
+}
+
+.bubble-container {
+    position: absolute;
+    top: 425px;   
+    right: 120px; 
+}
+
+.speech-bubble {
+    width: 450px;
+    height: 300px;
+}
+
+#artist-comment {
+    position: absolute;
+    top: 40px;    
+    left: 110px;   
+    font-size: 20px; 
+    color: black;    
+    width: 60%; 
+    z-index: 1;   
+}
+
+/* Styles for the video container and canvas */
+#video-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  #video {
+    width: 720px; /* Set the desired video size */
+    height: auto;
+  }
+  
+  /* The canvas is absolutely positioned over the video */
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  #mood-images img {
+    max-height: 300px;
+    position: absolute;
+    right: 175px;
+  }
+
+#video {
+    transform: scaleX(-1); /* Inverts the video horizontally */
+    -webkit-transform: scaleX(-1); /* For Safari support */
+  }
+  

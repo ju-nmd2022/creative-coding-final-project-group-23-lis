@@ -1,86 +1,82 @@
+// Wait for the window to fully load before running the script
+window.addEventListener("load", () => {
+    // Load the face-api models
+    Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+      faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+    ]).then(startVideo);
+  });
 
-let video;
-let handpose;
-let predictions = [];
-let sadArtist, happyArtist, angryArtist, misArtist, benArtist, impatientArtist;
-let mood = "happy";
-let comment = document.getElementById("artist-comment");
-let moodTimeout;
-let headFilterArray = [];
-let browsFilterArray = [];
-let eyesFilterArray = [];
-let noseFilterArray = [];
-let happyBenevolentArray = [];
-let happyMischievousArray = [];
+  //-------------------------------SET UP-------------------------------
+  // Start video stream from webcam
+  function startVideo() {
+    navigator.mediaDevices
+      .getUserMedia({ video: {} })
+      .then((stream) => {
+        video.srcObject = stream;
+        video.style.transform = "scaleX(-1)"; // Invert the video
+      })
+      .catch((err) => console.error("Error accessing the camera: ", err));
+    
+    randomizeMood();
+  }
+  
 
-let lipFilterArray = [];
+    let sadArtist, happyArtist, angryArtist, misArtist, benArtist, impatientArtist;
+    let mood = "happy";
+    let comment = document.getElementById("artist-comment");
+    let moodTimeout;
+    let headFilterArray = [];
+    let browsFilterArray = [];
+    let eyesFilterArray = [];
+    let noseFilterArray = [];
+    let lipFilterArray = [];
+    let filtersShowing = []; 
+  
+  const video = document.getElementById("video");
 
-let filtersShowing = []; 
+  function preload() {
 
-function preload() {
-  handpose = ml5.handPose(modelLoaded);
-
-  //the artist mood images
-  sadArtist = loadImage("images/artist-sad.PNG", () => console.log("Sad image loaded."), () => console.error("Failed to load sad image."));
-  happyArtist = loadImage("images/artist-happy.PNG", () => console.log("Happy image loaded."), () => console.error("Failed to load happy image."));
-  angryArtist = loadImage("images/artist-angry.PNG", () => console.log("Angry image loaded."), () => console.error("Failed to load angry image."));
-  misArtist = loadImage("images/artist-mis.PNG", () => console.log("Mischievous image loaded."), () => console.error("Failed to load mischievous image."));
-  benArtist = loadImage("images/artist-ben.PNG", () => console.log("Benevolent image loaded."), () => console.error("Failed to load benevolent image."));
-  impatientArtist = loadImage("images/artist-impatient.PNG", () => console.log("Impatient image loaded."), () => console.error("Failed to load impatient image."));
-
-  //the facial features in the head array
-  headHeart = loadImage("images/head-heart.PNG");
-  headFeather = loadImage("images/head-feather.PNG");
-  headBeret = loadImage("images/head-beret.PNG");
-  headFilterArray = [headHeart, headFeather, headBeret];
-
+    //the artist mood images
+    sadArtist = loadImage("images/artist-sad.PNG", () => console.log("Sad image loaded."), () => console.error("Failed to load sad image."));
+    happyArtist = loadImage("images/artist-happy.PNG", () => console.log("Happy image loaded."), () => console.error("Failed to load happy image."));
+    angryArtist = loadImage("images/artist-angry.PNG", () => console.log("Angry image loaded."), () => console.error("Failed to load angry image."));
+    misArtist = loadImage("images/artist-mis.PNG", () => console.log("Mischievous image loaded."), () => console.error("Failed to load mischievous image."));
+    benArtist = loadImage("images/artist-ben.PNG", () => console.log("Benevolent image loaded."), () => console.error("Failed to load benevolent image."));
+    impatientArtist = loadImage("images/artist-impatient.PNG", () => console.log("Impatient image loaded."), () => console.error("Failed to load impatient image."));
+  
+    //the facial features in the head array
+    headHeart = loadImage("images/head-heart.PNG");
+    headFeather = loadImage("images/head-feather.PNG");
+    headBeret = loadImage("images/head-beret.PNG");
+    headFilterArray = [headHeart, headFeather, headBeret];
+  
     //the facial features in the brows array
     browsLift = loadImage("images/brows-lift.PNG");
     browsUni = loadImage("images/brows-uni.PNG");
     browsWitch = loadImage("images/brows-witch.PNG");
     browsFilterArray = [browsLift, browsUni, browsWitch];
-  
-    //the facial features in the eyes array
+    
+      //the facial features in the eyes array
     eyesCross = loadImage("images/eyes-cross.PNG");
     eyesCute = loadImage("images/eyes-cute.PNG");
     eyesZombie = loadImage("images/eyes-zombie.PNG");
     eyesFilterArray = [eyesCross, eyesCute, eyesZombie];
-  
-    //the facial features in the nose array
+    
+      //the facial features in the nose array
     noseSeptum = loadImage("images/nose-septum.PNG");
     nosePig = loadImage("images/nose-pig.PNG");
     noseWings = loadImage("images/nose-wings.PNG");
     noseFilterArray = [noseSeptum, nosePig, noseWings];
-  
-    //the facial features in the lips array
+    
+      //the facial features in the lips array
     lipBite = loadImage("images/lip-bite.PNG");
     lipCrooked= loadImage("images/lip-crooked.PNG");
     lipOpen = loadImage("images/lip-open.PNG");
     lipFilterArray = [lipBite, lipCrooked, lipOpen];
+  }
 
-
-    //arrays for benevolent and mischievous
-    happyBenevolentArray = [headHeart, browsLift, eyesCute, noseWings, lipBite];
-    //safBenevolentArray = [headHeart, browsLift, eyesCute, noseWings, lipBite];
-
-    happyMischievousArray = [browsWitch, eyesZombie, nosePig, lipCrooked];
-    //sadMischievousArray = [headHeart, browsLift, eyesCute, noseWings, lipBite];
-  
-}
-
-function setup() {
-  createCanvas(740, 580);
-  video = createCapture(VIDEO);
-  video.size(740, 580);
-  video.hide();
-
-  handpose.detectStart(video, getHandsData);
-
-  randomizeMood();
-  colorMode(HSB);
-}
-
-//function to randomize the artist's mood
+  //function to randomize the artist's mood
 function randomizeMood() {
     let randomizedMood = Math.floor(Math.random() * 15); 
 
@@ -183,32 +179,7 @@ function applyMoodColorFilter() {
         tint(...moodColor);
     }
 }
-
-
-
-function getHandsData(results) {
-    predictions = results;
-}
-
-function draw() {
-  translate(video.width, 0);
-  scale(-1, 1);
-  image(video, 0, 0, 740, 580);
-
-  for (let hand of predictions) {
-      const keypoints = hand.keypoints;
-      for (let keypoint of keypoints) {
-          push();
-          noStroke();
-          fill(0, 255, 0);
-          ellipse(keypoint.x, keypoint.y, 10);
-          pop();
-      }
-  }
-  displayFilter();
-}
-
-//used help from ChatGPT to get this part to work: begins here
+  //used help from ChatGPT to get this part to work: begins here
 function filterObject() {
     filtersShowing = [];
 
@@ -233,10 +204,55 @@ function displayFilter() {
     noTint();
 }
 
+function setup() {
+    // Create a canvas (use the appropriate size based on your video element)
+    let canvas = createCanvas(720, 480);
+    canvas.parent("video-container");
+
+    // Set color mode to HSB
+    colorMode(HSB);
+}
 //ChatGPT help: ends here
 
 function modelLoaded() {
     console.log("Model Loaded!");
 }
-
-
+video.addEventListener("play", () => {
+    const canvas = faceapi.createCanvasFromMedia(video);
+    const videoContainer = document.getElementById("video-container");
+    videoContainer.append(canvas); // Append canvas inside video container
+  
+    const displaySize = { width: video.videoWidth, height: video.videoHeight };
+    faceapi.matchDimensions(canvas, displaySize);
+  
+    setInterval(async () => {
+      const detections = await faceapi
+        .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+        .withFaceExpressions();
+  
+      const resizedDetections = faceapi.resizeResults(detections, displaySize);
+      canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+  
+      if (resizedDetections.length > 0) {
+        // Get the face with the highest confidence score
+        const bestFace = resizedDetections.reduce((prev, current) =>
+          prev.detection.score > current.detection.score ? prev : current
+        );
+  
+        // Draw only the best face detection and its expressions
+        faceapi.draw.drawDetections(canvas, [bestFace]);
+        faceapi.draw.drawFaceExpressions(canvas, [bestFace]);
+  
+        // Display the primary emotion
+        const emotions = bestFace.expressions;
+        const maxEmotion = Object.keys(emotions).reduce((a, b) =>
+          emotions[a] > emotions[b] ? a : b
+        );
+        document.getElementById("emotion").textContent = `${maxEmotion} (${(
+          emotions[maxEmotion] * 100
+        ).toFixed(2)}%)`;
+      }
+    }, 100);
+  });
+  
+  

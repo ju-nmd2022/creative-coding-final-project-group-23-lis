@@ -45,8 +45,8 @@ const frameBufferSize = 5;
 let mouthCornerLeftBuffer = [];
 let mouthCornerRightBuffer = [];
 
-// Variable to track if the eyebrows are raised
-let eyebrowsRaised = false;
+// New variable to track smiling state
+let isSmiling = false;
 
 // Callback when FaceMesh results are ready
 faceMesh.onResults((results) => {
@@ -91,15 +91,12 @@ faceMesh.onResults((results) => {
     }
 
     // Check if the eyebrows are raised (by comparing with the baseline)
-    const raiseThreshold = 0.01; // Adjust this threshold based on testing
+    const raiseThreshold = 0.02; // Adjust this threshold based on testing
     if (
       leftEyelidToEyebrow - baselineDistance.left > raiseThreshold &&
       rightEyelidToEyebrow - baselineDistance.right > raiseThreshold
     ) {
       console.log("Eyebrows raised!");
-      eyebrowsRaised = true; // Set the flag when eyebrows are raised
-    } else {
-      eyebrowsRaised = false; // Reset the flag if eyebrows are not raised
     }
 
     // Detect eye closure
@@ -176,7 +173,7 @@ faceMesh.onResults((results) => {
       mouthCornerRightBuffer.length;
 
     // Threshold for detecting raised mouth corners (smiling) - only upward movement
-    const mouthCornerRaiseThreshold = 0.05; // Adjust based on testing
+    const mouthCornerRaiseThreshold = 0.01; // Adjust based on testing
 
     // Detect when corners of the mouth move **upward**, not downward or wider
     if (
@@ -187,11 +184,15 @@ faceMesh.onResults((results) => {
       avgLeftMouthCornerHeight < mouthCornerBaseline.left && // Check upward movement
       avgRightMouthCornerHeight < mouthCornerBaseline.right // Check upward movement
     ) {
-      console.log("Mouth corners are raised (smiling)!");
-
-      // Log when both eyebrows are raised and mouth corners are raised
-      if (eyebrowsRaised) {
-        console.log("Smiling with raised eyebrows!");
+      // Check if we weren't smiling before
+      if (!isSmiling) {
+        console.log("Mouth corners are raised (smiling)!");
+        isSmiling = true; // Update smiling state
+      }
+    } else {
+      // Reset the smiling state if not smiling
+      if (isSmiling) {
+        isSmiling = false; // Update smiling state
       }
     }
 

@@ -1,5 +1,6 @@
 window.addEventListener("load", () => {
   const video = document.getElementById("video");
+  const lipBiteImg = document.getElementById("lip-bite"); // Reference to the image
 
   // Load the models after the window is fully loaded
   Promise.all([
@@ -34,9 +35,35 @@ window.addEventListener("load", () => {
         const maxEmotion = Object.keys(emotions).reduce((a, b) =>
           emotions[a] > emotions[b] ? a : b
         );
+
+        // Log when "sad" emotion is detected
+        if (maxEmotion === "sad") {
+          console.log("Emotion detected: Sad");
+        }
+
+        // Get the bounding box of the detected face
+        const box = detections[0].detection.box;
+
+        // Set the position of the emotion box based on the face box
+        const emotionBoxX = box.x + box.width / 2; // Center the text on the face
+        const emotionBoxY = box.y - 10; // Position above the face
+
+        document.getElementById("emotion").style.position = "absolute";
+        document.getElementById("emotion").style.left = `${emotionBoxX}px`;
+        document.getElementById("emotion").style.top = `${emotionBoxY}px`;
         document.getElementById("emotion").textContent = `${maxEmotion} (${(
           emotions[maxEmotion] * 100
         ).toFixed(2)}%)`;
+
+        // Draw the lip bite image on the canvas
+        const imgWidth = 100; // Set the desired width of the image
+        const imgHeight =
+          (lipBiteImg.naturalHeight / lipBiteImg.naturalWidth) * imgWidth; // Maintain aspect ratio
+        const imgX = box.x + box.width / 2 - imgWidth / 2; // Center the image on the face
+        const imgY = box.y - imgHeight; // Position above the face
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(lipBiteImg, imgX, imgY, imgWidth, imgHeight);
       }
     }, 100);
   });

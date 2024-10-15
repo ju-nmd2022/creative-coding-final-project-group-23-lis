@@ -16,7 +16,7 @@ window.addEventListener("load", () => {
   }
 
   const eyeImage = new Image();
-  eyeImage.src = "images/eyes-cross.png"; // Path to your image (e.g., a sticker for the eyes)
+  eyeImage.src = "images/eyes-zombie.png"; // Path to your image (e.g., a sticker for the eyes)
 
   video.addEventListener("play", () => {
     const canvas = faceapi.createCanvasFromMedia(video);
@@ -36,13 +36,6 @@ window.addEventListener("load", () => {
       // Clear the previous frame
       canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Mirror the video stream on the canvas
-      canvasCtx.save();
-      canvasCtx.translate(canvas.width, 0); // Move the origin to the right edge
-      canvasCtx.scale(-1, 1); // Flip the canvas horizontally
-      canvasCtx.drawImage(video, 0, 0, canvas.width, canvas.height); // Draw the mirrored video
-      canvasCtx.restore();
-
       // Draw facial recognition boxes and expressions (unmirrored)
       faceapi.draw.drawDetections(canvas, resizedDetections);
       faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
@@ -51,7 +44,7 @@ window.addEventListener("load", () => {
       if (resizedDetections.length > 0) {
         const landmarks = resizedDetections[0].landmarks;
 
-        // Get the eye positions
+        // Get the eye positions (unmirrored)
         const leftEye = landmarks.getLeftEye();
         const rightEye = landmarks.getRightEye();
 
@@ -84,7 +77,7 @@ window.addEventListener("load", () => {
         );
       }
 
-      // Display detected emotion
+      // Display detected emotion (unmirrored)
       if (detections.length > 0) {
         const emotions = detections[0].expressions;
         const maxEmotion = Object.keys(emotions).reduce((a, b) =>

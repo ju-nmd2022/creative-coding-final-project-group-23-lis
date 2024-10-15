@@ -1,0 +1,90 @@
+setInterval(async () => {
+  const detections = await faceapi
+    .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+    .withFaceLandmarks()
+    .withFaceExpressions();
+  
+  const resizedDetections = faceapi.resizeResults(detections, displaySize);
+  canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+  faceapi.draw.drawDetections(canvas, resizedDetections);
+  faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+
+  if (resizedDetections.length > 0) {
+    const emotions = detections[0].expressions;
+    const maxEmotion = Object.keys(emotions).reduce((a, b) =>
+      emotions[a] > emotions[b] ? a : b
+    );
+
+    // Only process if the emotion has a high enough probability
+    if (emotions[maxEmotion] > 0.5) {  // 50% threshold for displaying an emotion
+      userEmotion = maxEmotion; // Store the detected emotion
+
+      // First, hide any currently displayed emotions
+      hideAllEmotions();
+
+      // Route based on emotion
+      if (maxEmotion === "happy") {
+        return routeHappyEmotion();  // Return after processing the happy emotion
+      } else if (maxEmotion === "sad") {
+        return routeSadEmotion();    // Return after processing the sad emotion
+      } else if (maxEmotion === "angry") {
+        return routeAngryEmotion();  // Return after processing the angry emotion
+      } // Add other emotions as needed
+    }
+  }
+}, 100);
+
+// Function to hide all emotions
+function hideAllEmotions() {
+  // Hide all mood images first
+  document.getElementById("benevolent-image").style.display = "none";
+  document.getElementById("mischievous-image").style.display = "none";
+  document.getElementById("normal-image").style.display = "none";
+  // Hide the emotion label
+  document.getElementById("emotion").style.display = "none";
+}
+
+// Function to route happy emotion
+function routeHappyEmotion() {
+  const moodRoute = Math.random(); // Random decision
+
+  let filters = [];
+  let comment = '';
+
+  if (moodRoute < 0.33) {
+    // Benevolent route: vibrant, uplifting filters
+    filters = [
+      "saturate(2)",      // Increase saturation
+      "brightness(1.5)",  // Make it brighter
+      "contrast(1.2)",    // Enhance contrast
+      "hue-rotate(30deg)" // Add a warm color tone
+    ];
+    comment = "You're happy! Let me make you look even more amazing!";
+    document.getElementById("benevolent-image").style.display = "block";
+  } else if (moodRoute >= 0.33 && moodRoute < 0.66) {
+    // Mischievous route: darker, ruder filters
+    filters = [
+      "invert(100%)",    // Invert colors
+      "brightness(0.6)", // Darker
+      "contrast(200%)",  // High contrast
+      "saturate(0.5)"    // Desaturate colors
+    ];
+    comment = "Oh, you're happy? Let me add a little twist!";
+    document.getElementById("mischievous-image").style.display = "block";
+  } else {
+    // Normal route: semi-happy filter
+    filters = [
+      "saturate(1.1)",    // Slightly increase saturation
+      "brightness(1.1)",  // Slightly brighten
+      "contrast(1.05)"    // A little contrast
+    ];
+    comment = "You're happy! Here’s a little something to match your vibe.";
+    document.getElementById("normal-image").style.display = "block";
+  }
+
+  // Apply the chosen filters
+  applyFilters(filters);
+  // Display comment
+  document.getElementById("emotion").innerHTML = comment;
+  document.getElementById("emotion").style.display = "block"; // Show the emotion label
+}

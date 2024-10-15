@@ -14,7 +14,7 @@ window.addEventListener("load", () => {
       .then((stream) => (video.srcObject = stream))
       .catch((err) => console.error("Error accessing the camera: ", err));
   }
-
+  // Happy images
   const eyeImage = new Image();
   eyeImage.src = "images/eyes-cute.png"; // Path to your image for the eyes
   const noseImage = new Image();
@@ -22,7 +22,7 @@ window.addEventListener("load", () => {
   const mouthImage = new Image();
   mouthImage.src = "images/lip-bite.png"; // Path to your image for the mouth
 
-  // Load images for sad emotion
+  // Sad images
   const sadEyeImage = new Image();
   sadEyeImage.src = "images/eyes-cross.png"; // Path to your sad image for the eyes
   const sadNoseImage = new Image();
@@ -30,7 +30,7 @@ window.addEventListener("load", () => {
   const sadMouthImage = new Image();
   sadMouthImage.src = "images/lip-crooked.png"; // Path to your sad image for the mouth
 
-  // Load images for angry emotion
+  // Angry images
   const angryEyeImage = new Image();
   angryEyeImage.src = "images/eyes-zombie.png"; // Path to your angry image for the eyes
   const angryNoseImage = new Image();

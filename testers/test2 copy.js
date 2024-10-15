@@ -175,3 +175,25 @@ setupCamera()
   .catch((error) => {
     console.error("Camera setup failed:", error);
   });
+const eyeImage = new Image();
+eyeImage.src = "images/eyes-cute.png"; // Path to your image for the eyes
+const noseImage = new Image();
+noseImage.src = "images/nose-wings.png"; // Path to your image for the nose
+const mouthImage = new Image();
+mouthImage.src = "images/lip-bite.png"; // Path to your image for the mouth
+
+// Load images for sad emotion
+const sadEyeImage = new Image();
+sadEyeImage.src = "images/eyes-cross.png"; // Path to your sad image for the eyes
+const sadNoseImage = new Image();
+sadNoseImage.src = "images/nose-pig.png"; // Path to your sad image for the nose
+const sadMouthImage = new Image();
+sadMouthImage.src = "images/lip-crooked.png"; // Path to your sad image for the mouth
+
+// Load images for angry emotion
+const angryEyeImage = new Image();
+angryEyeImage.src = "images/eyes-zombie.png"; // Path to your angry image for the eyes
+const angryNoseImage = new Image();
+angryNoseImage.src = "images/nose-septum.png"; // Path to your angry image for the nose
+const angryMouthImage = new Image();
+angryMouthImage.src = "images/lip-open.png"; // Path to your angry image for the mouth

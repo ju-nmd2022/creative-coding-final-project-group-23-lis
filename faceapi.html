@@ -10,7 +10,7 @@
     <script src="faceapi.js" defer></script>
     <style>
       canvas {
-        position: absolute;
+        position: centered;
       }
     </style>
   </head>
@@ -18,5 +18,12 @@
     <h1>Emotion Detection</h1>
     <p>Detected Emotion: <span id="emotion"></span></p>
     <video id="video" width="640" height="480" autoplay muted></video>
+    <div id="emotion" style="color: blueviolet; font-size: 24px"></div>
+    <img
+      id="lip-bite"
+      src="images/lip-bite.PNG"
+      style="display: none; position: absolute; width: 100px; height: auto"
+      alt="Lip Bite"
+    />
   </body>
 </html>

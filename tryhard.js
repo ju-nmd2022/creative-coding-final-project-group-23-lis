@@ -17,13 +17,14 @@ function startVideo() {
     .catch((err) => console.error("Error accessing the camera: ", err));
 }
 const video = document.getElementById("video");
-
+(randomizeMood);
 //-------------------------------FILTERS-------------------------------
 
 //-------------------------------ARTIST BOT-------------------------------
 let sadArtist, happyArtist, angryArtist, misArtist, benArtist, impatientArtist;
 let comment = document.getElementById("artist-comment");
 let moodTimeout;
+let mood; // Global variable to store the current mood
 
 function preload() {
   //IMAGES FOR THE ARTIST EMOTIONS
@@ -87,32 +88,36 @@ video.addEventListener("play", () => {
         emotions[a] > emotions[b] ? a : b
       );
 
-      // Determine "Good" or "Bad" mode
-      const mode = Math.random() < 0.5 ? "good" : "bad";
+      // Randomize mood and get the mode
+      randomizeMood(); // Call randomizeMood here
+      const mode = mood; // Use the mood set by randomizeMood
 
       // Function to generate art based on emotion and mode
       generateArt(maxEmotion, mode);
 
-      // Display emotion in UI
-      const box = detections[0].detection.box;
-      const emotionBoxX = box.x + box.width / 2;
-      const emotionBoxY = box.y - 10;
-
-      document.getElementById("emotion").style.position = "absolute";
-      document.getElementById("emotion").style.left = `${emotionBoxX}px`;
-      document.getElementById("emotion").style.top = `${emotionBoxY}px`;
-      document.getElementById("emotion").textContent = `${maxEmotion} (${(
-        emotions[maxEmotion] * 100
-      ).toFixed(2)}%)`;
     }
   }, 100);
 });
 
-//-------------------------------ART GENERATION-------------------------------
+
+//-------------------------------ART GENERATION BASED ON USER MOOD-------------------------------
+
+function randomizeMood() {
+  let randomizedMood = Math.floor(Math.random() * 15); 
+
+//set mood based on the randomized number
+  if (randomizedMood <= 2) {
+      mood = "bene";
+  } else if (randomizedMood <= 5) {
+      mood = "misc";
+  } else if (randomizedMood <= 8) {
+      mood = "normal";
+  } 
+  }
 
 // Function to generate art based on emotion and mode
 function generateArt(emotion, mode) {
-  if (mode === "good") {
+  if (mode === "bene") {
     switch (emotion) {
       case "happy":
         drawHappyGoodArt();
@@ -125,7 +130,7 @@ function generateArt(emotion, mode) {
         break;
       // Add more cases for other emotions
     }
-  } else {
+  } else if (mode === "misc") {
     switch (emotion) {
       case "happy":
         drawHappyBadArt();
@@ -138,36 +143,68 @@ function generateArt(emotion, mode) {
         break;
       // Add more cases for other emotions
     }
+  } else if (mode === "normal") {
+    switch (emotion) {
+      case "happy":
+        drawHappyNeutralArt();
+        break;
+      case "sad":
+        drawSadNeutralArt();
+        break;
+      case "angry":
+        drawAngryNeutralArt();
+        break;
+    }
   }
 }
 
+//-------------------------------NORMAL ART-------------------------------
+// Placeholder functions for neutral art generation
+function drawHappyNeutralArt() {
+  console.log("Drawing normal happy art");
+  document.getElementById("happy-image").style.display = "block";
+}
+
+function drawSadNeutralArt() {
+  console.log("Drawing normal sad art");
+  document.getElementById("sad-image").style.display = "block";
+}
+
+function drawAngryNeutralArt() {
+  console.log("Drawing normal angry art");
+  document.getElementById("angry-image").style.display = "block"; 
+}
+
+//-------------------------------BENE ART-------------------------------
 // Placeholder functions to draw the specific art based on emotion and mode
 function drawHappyGoodArt() {
-  console.log("Drawing happy art in good mode");
-  // Draw or generate happy and positive art here (bright colors, smiling faces, etc.)
+  console.log("Drawing happy art in bene mode");
+  document.getElementById("happy-image").style.display = "block";
 }
 
 function drawSadGoodArt() {
-  console.log("Drawing sad art in good mode");
-  // Draw or generate positive art for sadness (e.g., hope, light at the end of the tunnel)
+  console.log("Drawing sad art in bene mode");
+  document.getElementById("sad-image").style.display = "block";
 }
+
 
 function drawAngryGoodArt() {
-  console.log("Drawing angry art in good mode");
-  // Draw or generate art that channels anger positively (e.g., energy, abstract shapes)
+  console.log("Drawing angry art in bene mode");
+  document.getElementById("angry-image").style.display = "block";
 }
 
+//-------------------------------MISC ART-------------------------------
 function drawHappyBadArt() {
-  console.log("Drawing happy art in bad mode");
-  // Draw or generate unsettling or ironic happy art (e.g., overly bright but with distortions)
+  console.log("Drawing happy art in misc mode");
+  document.getElementById("happy-image").style.display = "block";
 }
 
 function drawSadBadArt() {
-  console.log("Drawing sad art in bad mode");
-  // Draw or generate negative art for sadness (e.g., darker colors, heavy lines)
+  console.log("Drawing sad art in misc mode");
+  document.getElementById("sad-image").style.display = "block";
 }
 
 function drawAngryBadArt() {
-  console.log("Drawing angry art in bad mode");
-  // Draw or generate destructive or chaotic art (e.g., jagged lines, aggressive colors)
+  console.log("Drawing angry art in misc mode");
+  document.getElementById("mischievous-image").style.display = "block";
 }

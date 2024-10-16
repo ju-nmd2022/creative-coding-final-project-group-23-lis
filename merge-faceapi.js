@@ -171,9 +171,18 @@ function filterObject() {
 
 //-------------------------------FACE API-------------------------------
 
+//happy eyes
+const eyeNormal = new Image();
+eyeNormal.src = "images/eye-normal.PNG";
+const eyeRound = new Image();
+eyeRound.src = "images/eye-round.PNG";
+const eyeSmile = new Image();
+eyeSmile.src = "images/eye-smile.PNG";
+happyEyesArray = [eyeNormal, eyeRound, eyeSmile];
+
 // Happy images
 const eyeImage = new Image();
-eyeImage.src = "images/eyes-cute.png"; // Path to your image for the eyes
+eyeImage.src = "images/eye-round.png"; // Path to your image for the eyes
 const noseImage = new Image();
 noseImage.src = "images/nose-wings.png"; // Path to your image for the nose
 const mouthImage = new Image();
@@ -181,7 +190,7 @@ mouthImage.src = "images/lip-bite.png"; // Path to your image for the mouth
 
 // Sad images
 const sadEyeImage = new Image();
-sadEyeImage.src = "images/eyes-cross.png"; // Path to your sad image for the eyes
+sadEyeImage.src = "images/eye-shiny.png"; // Path to your sad image for the eyes
 const sadNoseImage = new Image();
 sadNoseImage.src = "images/nose-pig.png"; // Path to your sad image for the nose
 const sadMouthImage = new Image();
@@ -189,7 +198,7 @@ sadMouthImage.src = "images/lip-crooked.png"; // Path to your sad image for the 
 
 // Angry images
 const angryEyeImage = new Image();
-angryEyeImage.src = "images/eyes-zombie.png"; // Path to your angry image for the eyes
+angryEyeImage.src = "images/eye-mad.png"; // Path to your angry image for the eyes
 const angryNoseImage = new Image();
 angryNoseImage.src = "images/nose-septum.png"; // Path to your angry image for the nose
 const angryMouthImage = new Image();
@@ -434,5 +443,4 @@ video.addEventListener("play", () => {
       }
     }
   }, 100);
-  noStroke();
 });

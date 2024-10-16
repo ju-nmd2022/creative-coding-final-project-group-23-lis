@@ -16,6 +16,8 @@ window.addEventListener("load", () => {
   }
 
   faceapi.draw.drawDetections(canvasDraw, box);
+  box.classlist.add = "boxhide";
+
   // Happy images
   const eyeImage = new Image();
   eyeImage.src = "images/eyes-cute.png"; // Path to your image for the eyes

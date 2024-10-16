@@ -14,6 +14,8 @@ window.addEventListener("load", () => {
       .then((stream) => (video.srcObject = stream))
       .catch((err) => console.error("Error accessing the camera: ", err));
   }
+
+  faceapi.draw.drawDetections(canvasDraw, box);
   // Happy images
   const eyeImage = new Image();
   eyeImage.src = "images/eyes-cute.png"; // Path to your image for the eyes

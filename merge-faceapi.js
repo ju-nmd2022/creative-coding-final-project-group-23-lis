@@ -434,4 +434,5 @@ video.addEventListener("play", () => {
       }
     }
   }, 100);
+  noStroke();
 });

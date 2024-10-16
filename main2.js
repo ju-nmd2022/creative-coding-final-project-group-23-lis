@@ -3,186 +3,213 @@
 window.addEventListener("load", () => {
     // Load the face-api models
     Promise.all([
-      faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
-      faceapi.nets.faceExpressionNet.loadFromUri("/models"),
-      faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+        faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+        faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+        faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
     ]).then(() => {
-      startVideo();
-      randomizeMood();  // Randomize mood right after models are loaded
-      displayCurrentMood(mood); // Display the current mood right after randomizing
+        startVideo();
+        randomizeMood();  // Randomize mood right after models are loaded
+        displayCurrentMood(mood); // Display the current mood right after randomizing
     });
-  });
+});
+
+//-------------------------------SET UP-------------------------------
+
+// Arrays holding the images for different emotions
+const noseArray = [
+    "images/nose-septum.png",
+    "images/nose-round.png",
+    "images/nose-fat.png",
+    "images/nose-wings.png",
+    "images/nose-pig.png",
+  ];
   
-  //-------------------------------SET UP-------------------------------
-  function startVideo() {
+  const angryEyeArray = [
+    "images/eye-zombie.png",
+    "images/eye-mad.png",
+    "images/eye-close.png",
+  ];
+  
+  const angryMouthArray = [
+    "images/lip-wide.png",
+    "images/lip-crooked.png",
+    "images/lip-open.png",
+  ];
+  
+  const happyEyeArray = [
+    "images/eye-normal.png",
+    "images/eye-round.png",
+    "images/eye-smile.png",
+  ];
+  const happyMouthArray = [
+    "images/lip-kiss.png",
+    "images/lip-tounge.png",
+    "images/lip-edge.png",
+  ];
+  const sadEyeArray = [
+    "images/eye-drip.png",
+    "images/eye-shiny.png",
+    "images/eye-cry.png",
+  ];
+  const sadMouthArray = [
+    "images/lip-bite.png",
+    "images/lip-frown.png",
+    "images/lip-sad.png",
+  ];
+
+  const video = document.getElementById("video"); 
+
+
+function startVideo() {
     navigator.mediaDevices
-      .getUserMedia({ video: {} })
-      .then((stream) => (video.srcObject = stream))
-      .catch((err) => console.error("Error accessing the camera: ", err));
-  }
-  const video = document.getElementById("video");
+    .getUserMedia({ video: {} })
+    .then((stream) => {
+    video.srcObject = stream;
 
-  
-  
-  //-------------------------------ARTIST BOT-------------------------------
-// Declare global variables at the beginning
-let sadArtist, happyArtist, angryArtist, misArtist, benArtist, impatientArtist;
-let comment = document.getElementById("artist-comment");
-let moodTimeout;
-let mood = "normal"; // Default mood is set to "normal"
-
-// ... rest of your code ...
-
-  
-  function preload() {
-    sadArtist = loadImage(
-      "images/artist-sad.PNG",
-      () => console.log("Sad image loaded."),
-      () => console.error("Failed to load sad image.")
-    );
-    happyArtist = loadImage(
-      "images/artist-happy.PNG",
-      () => console.log("Happy image loaded."),
-      () => console.error("Failed to load happy image.")
-    );
-    angryArtist = loadImage(
-      "images/artist-angry.PNG",
-      () => console.log("Angry image loaded."),
-      () => console.error("Failed to load angry image.")
-    );
-    misArtist = loadImage(
-      "images/artist-mis.PNG",
-      () => console.log("Mischievous image loaded."),
-      () => console.error("Failed to load mischievous image.")
-    );
-    benArtist = loadImage(
-      "images/artist-ben.PNG",
-      () => console.log("Benevolent image loaded."),
-      () => console.error("Failed to load benevolent image.")
-    );
-    impatientArtist = loadImage(
-      "images/artist-impatient.PNG",
-      () => console.log("Impatient image loaded."),
-      () => console.error("Failed to load impatient image.")
-    );
-  }
-  
-  const videoElement = document.getElementById("video");
-  
-  //-------------------------------IMPATIENT MODE-------------------------------
-  
-  function transitionToImpatient() {
-    mood = "impatient";
-    previousEmotion = null;
-    updateMoodImages(null, mood);
-  
-    moodTimeout = setTimeout(() => {
-      randomizeMood();
-    }, 10000);
-  }
-  
-  
-  let lastInteractionTime = Date.now();
-  const impatienceThreshold = 5000;
-  
-  //-------------------------------FACE API-------------------------------
-  
-  video.addEventListener("play", () => {
+    // Wait for the video to fully load its metadata (such as width and height)
+    video.addEventListener("loadedmetadata", () => {
     const canvas = faceapi.createCanvasFromMedia(video);
-    const videoContainer = document.getElementById("video-container");
-    videoContainer.append(canvas); 
-  
-    const displaySize = { width: video.videoWidth, height: video.videoHeight };
+    document.body.append(canvas);
+    const displaySize = {
+    width: video.videoWidth,
+    height: video.videoHeight,
+    }; // Use video dimensions
+
     faceapi.matchDimensions(canvas, displaySize);
-  
-    let lastEmotionDetection = Date.now();
-    const emotionDetectionInterval = 1000; 
-    
+
+    // Start emotion detection
     setInterval(async () => {
-      if (Date.now() - lastEmotionDetection > emotionDetectionInterval) {
         const detections = await faceapi
-          .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-          .withFaceLandmarks()
-          .withFaceExpressions();
-    
+            .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+            .withFaceLandmarks()
+            .withFaceExpressions();
+
         const resizedDetections = faceapi.resizeResults(detections, displaySize);
-        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-        faceapi.draw.drawDetections(canvas, resizedDetections);
-        faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
         const canvasCtx = canvas.getContext("2d");
         canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-    
+        faceapi.draw.drawDetections(canvas, resizedDetections);
+        faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+                    
         if (detections.length > 0) {
-          const emotions = detections[0].expressions;
-          const maxEmotion = Object.keys(emotions).reduce((a, b) =>
+            const emotions = detections[0].expressions;
+            const maxEmotion = Object.keys(emotions).reduce((a, b) =>
             emotions[a] > emotions[b] ? a : b
-          );
-  
-          if (maxEmotion !== previousEmotion) {
+            );
+
+        if (maxEmotion !== previousEmotion) {
             previousEmotion = maxEmotion; 
             generateArt(maxEmotion, mood); 
-          }
-        }
-
+            }
+                        
         if (resizedDetections.length > 0) {
             const landmarks = resizedDetections[0].landmarks;
             const emotions = resizedDetections[0].expressions;
+                
             // Determine the highest emotion
             const currentEmotion = Object.keys(emotions).reduce((a, b) => (emotions[a] > emotions[b] ? a : b));
-
-            if (currentEmotion !== previousEmotion) {
-                previousEmotion = currentEmotion;
-  
-                // Reset all images
-                selectedAngryEyeImage = null;
-                selectedNoseImage = null;
-                selectedAngryMouthImage = null;
-                selectedHappyEyeImage = null;
-                selectedHappyMouthImage = null;
-                selectedSadEyeImage = null;
-                selectedSadMouthImage = null;
-
-                const leftEye = landmarks.getLeftEye();
-                const rightEye = landmarks.getRightEye();
-                const nose = landmarks.getNose();
-                const mouth = landmarks.getMouth();
-    
-                const eyeWidth = 40,
-                  eyeHeight = 40;
-                const noseWidth = 40,
-                  noseHeight = 40;
-                const mouthWidth = 60,
-                  mouthHeight = 40;
-
-
-            if (selectedAngryEyeImage) {
-                canvasCtx.drawImage(selectedAngryEyeImage, leftEye[3].x - eyeWidth / 2, leftEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
-                canvasCtx.drawImage(selectedAngryEyeImage, rightEye[3].x - eyeWidth / 2, rightEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
-                canvasCtx.drawImage(selectedNoseImage, nose[3].x - noseWidth / 2, nose[3].y - noseHeight / 2, noseWidth, noseHeight);
-                canvasCtx.drawImage(selectedAngryMouthImage, mouth[0].x - mouthWidth / 2, mouth[3].y - mouthHeight / 2, mouthWidth, mouthHeight);
-              } else if (selectedHappyEyeImage) {
-                canvasCtx.drawImage(selectedHappyEyeImage, leftEye[3].x - eyeWidth / 2, leftEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
-                canvasCtx.drawImage(selectedHappyEyeImage, rightEye[3].x - eyeWidth / 2, rightEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
-                canvasCtx.drawImage(selectedNoseImage, nose[3].x - noseWidth / 2, nose[3].y - noseHeight / 2, noseWidth, noseHeight);
-                canvasCtx.drawImage(selectedHappyMouthImage, mouth[0].x - mouthWidth / 2, mouth[3].y - mouthHeight / 2, mouthWidth, mouthHeight);
-              } else if (selectedSadEyeImage) {
-                canvasCtx.drawImage(selectedSadEyeImage, leftEye[3].x - eyeWidth / 2, leftEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
-                canvasCtx.drawImage(selectedSadEyeImage, rightEye[3].x - eyeWidth / 2, rightEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
-                canvasCtx.drawImage(selectedNoseImage, nose[3].x - noseWidth / 2, nose[3].y - noseHeight / 2, noseWidth, noseHeight);
-                canvasCtx.drawImage(selectedSadMouthImage, mouth[0].x - mouthWidth / 2, mouth[3].y - mouthHeight / 2, mouthWidth, mouthHeight);
-              }
                 
-            }
-  
+            // Check if the emotion has changed
+        if (currentEmotion !== previousEmotion) {
+            previousEmotion = currentEmotion;
+                
+            // Reset all images
+            selectedAngryEyeImage = null;
+            selectedNoseImage = null;
+            selectedAngryMouthImage = null;
+            selectedHappyEyeImage = null;
+            selectedHappyMouthImage = null;
+            selectedSadEyeImage = null;
+            selectedSadMouthImage = null;
+                
+            // Handle each emotion
+        if (currentEmotion === 'angry' && emotions.angry > 0.5) {
+            [selectedAngryEyeImage, selectedNoseImage, selectedAngryMouthImage] = await Promise.all([
+            getRandomImage(angryEyeArray),
+            getRandomImage(noseArray),
+            getRandomImage(angryMouthArray),
+            ]);
+        } else if (currentEmotion === 'happy' && emotions.happy > 0.5) {
+            [selectedHappyEyeImage, selectedNoseImage, selectedHappyMouthImage] = await Promise.all([
+            getRandomImage(happyEyeArray),
+            getRandomImage(noseArray),
+            getRandomImage(happyMouthArray),
+            ]);
+            } else if (currentEmotion === 'sad' && emotions.sad > 0.5) {
+            [selectedSadEyeImage, selectedNoseImage, selectedSadMouthImage] = await Promise.all([
+            getRandomImage(sadEyeArray),
+            getRandomImage(noseArray),
+            getRandomImage(sadMouthArray),
+            ]);
         }
-    
-        lastEmotionDetection = Date.now();
-      }
-    }, 100);
-    
-  });
-  
-  
+        }
+                
+        // Draw images based on current emotion
+            const leftEye = landmarks.getLeftEye();
+            const rightEye = landmarks.getRightEye();
+            const nose = landmarks.getNose();
+            const mouth = landmarks.getMouth();
+                
+            const eyeWidth = 40,
+                eyeHeight = 40;
+            const noseWidth = 40,
+                noseHeight = 40;
+            const mouthWidth = 60,
+                mouthHeight = 40;
+                
+        if (selectedAngryEyeImage) {
+            canvasCtx.drawImage(selectedAngryEyeImage, leftEye[3].x - eyeWidth / 2, leftEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
+            canvasCtx.drawImage(selectedAngryEyeImage, rightEye[3].x - eyeWidth / 2, rightEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
+            canvasCtx.drawImage(selectedNoseImage, nose[3].x - noseWidth / 2, nose[3].y - noseHeight / 2, noseWidth, noseHeight);
+            canvasCtx.drawImage(selectedAngryMouthImage, mouth[0].x - mouthWidth / 2, mouth[3].y - mouthHeight / 2, mouthWidth, mouthHeight);
+        } else if (selectedHappyEyeImage) {
+            canvasCtx.drawImage(selectedHappyEyeImage, leftEye[3].x - eyeWidth / 2, leftEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
+            canvasCtx.drawImage(selectedHappyEyeImage, rightEye[3].x - eyeWidth / 2, rightEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
+            canvasCtx.drawImage(selectedNoseImage, nose[3].x - noseWidth / 2, nose[3].y - noseHeight / 2, noseWidth, noseHeight);
+            canvasCtx.drawImage(selectedHappyMouthImage, mouth[0].x - mouthWidth / 2, mouth[3].y - mouthHeight / 2, mouthWidth, mouthHeight);
+        } else if (selectedSadEyeImage) {
+            canvasCtx.drawImage(selectedSadEyeImage, leftEye[3].x - eyeWidth / 2, leftEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
+            canvasCtx.drawImage(selectedSadEyeImage, rightEye[3].x - eyeWidth / 2, rightEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
+            canvasCtx.drawImage(selectedNoseImage, nose[3].x - noseWidth / 2, nose[3].y - noseHeight / 2, noseWidth, noseHeight);
+            canvasCtx.drawImage(selectedSadMouthImage, mouth[0].x - mouthWidth / 2, mouth[3].y - mouthHeight / 2, mouthWidth, mouthHeight);
+         }
+        } 
+    }
+}, 100);
+});
+});
+}
+
+
+
+
+//-------------------------------ARTIST BOT-------------------------------
+let sadArtist, happyArtist, angryArtist, misArtist, benArtist, impatientArtist;
+let comment = document.getElementById("artist-comment");
+let moodTimeout;
+let mood = "normal";  // Default mood is set to "normal"
+
+// Preload artist images (ensure the paths are correct)
+function preload() {
+    sadArtist = loadImage("images/artist-sad.PNG");
+    happyArtist = loadImage("images/artist-happy.PNG");
+    angryArtist = loadImage("images/artist-angry.PNG");
+    misArtist = loadImage("images/artist-mis.PNG");
+    benArtist = loadImage("images/artist-ben.PNG");
+    impatientArtist = loadImage("images/artist-impatient.PNG");
+}
+
+/*
+//-------------------------------FACE API-------------------------------
+video.addEventListener("play", () => {
+    const canvas = faceapi.createCanvasFromMedia(video);
+    const videoContainer = document.getElementById("video-container");
+    videoContainer.append(canvas); 
+
+    const displaySize = { width: video.videoWidth, height: video.videoHeight };
+    faceapi.matchDimensions(canvas, displaySize);
+});
+*/
+
   //-------------------------------ART GENERATION BASED ON USER MOOD-------------------------------
   
   function randomizeMood() {
@@ -322,29 +349,6 @@ function getRandomImage(imageArray) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   
   //-------------------------------BENE ART-------------------------------
   function drawHappyBeneArt() {
@@ -449,48 +453,6 @@ function getRandomImage(imageArray) {
     ]
   };
     //-------------------------------ARRAYS WITH EMOTIONS-------------------------------
-
-const noseArray = [
-    "images/nose-septum.png",
-    "images/nose-round.png",
-    "images/nose-fat.png",
-    "images/nose-wings.png",
-    "images/nose-pig.png",
-  ];
-  
-  const angryEyeArray = [
-    "images/eye-zombie.png",
-    "images/eye-mad.png",
-    "images/eye-close.png",
-  ];
-  
-  const angryMouthArray = [
-    "images/lip-wide.png",
-    "images/lip-crooked.png",
-    "images/lip-open.png",
-  ];
-  
-  const happyEyeArray = [
-    "images/eye-normal.png",
-    "images/eye-round.png",
-    "images/eye-smile.png",
-  ];
-  const happyMouthArray = [
-    "images/lip-kiss.png",
-    "images/lip-tounge.png",
-    "images/lip-edge.png",
-  ];
-  const sadEyeArray = [
-    "images/eye-drip.png",
-    "images/eye-shiny.png",
-    "images/eye-cry.png",
-  ];
-  const sadMouthArray = [
-    "images/lip-bite.png",
-    "images/lip-frown.png",
-    "images/lip-sad.png",
-  ];
-
   
   function getRandomMiscFilter(emotion){
     const filters = miscFilter[emotion];

@@ -152,26 +152,26 @@ function generateArt(emotion, mode) {
   if (mode === "bene") {
     switch (emotion) {
       case "happy":
-        drawHappyGoodArt();
+        drawHappyBeneArt();
         break;
       case "sad":
-        drawSadGoodArt();
+        drawSadBeneArt();
         break;
       case "angry":
-        drawAngryGoodArt();
+        drawAngryBeneArt();
         break;
     
     }
   } else if (mode === "misc") {
     switch (emotion) {
       case "happy":
-        drawHappyBadArt();
+        drawHappyMiscArt();
         break;
       case "sad":
-        drawSadBadArt();
+        drawSadMiscArt();
         break;
       case "angry":
-        drawAngryBadArt();
+        drawAngryMiscArt();
         break;
      
     }
@@ -238,20 +238,20 @@ function getRandomNeuComment(emotion) {
 }
 
 //-------------------------------BENE ART-------------------------------
-function drawHappyGoodArt() {
+function drawHappyBeneArt() {
   console.log("Drawing happy art in bene mode");
   document.getElementById("happy-image").style.display = "block";
   comment.innerHTML = getRandomBeneComment("happy"); 
 }
 
-function drawSadGoodArt() {
+function drawSadBeneArt() {
   console.log("Drawing sad art in bene mode");
   document.getElementById("sad-image").style.display = "block";
   comment.innerHTML = getRandomBeneComment("sad"); 
 }
 
 
-function drawAngryGoodArt() {
+function drawAngryBeneArt() {
   console.log("Drawing angry art in bene mode");
   document.getElementById("angry-image").style.display = "block";
   comment.innerHTML = getRandomBeneComment("angry"); 
@@ -282,21 +282,21 @@ function getRandomBeneComment(emotion) {
 }
 
 //-------------------------------MISC ART-------------------------------
-function drawHappyBadArt() {
+function drawHappyMiscArt() {
   console.log("Drawing happy art in misc mode");
   document.getElementById("happy-image").style.display = "block";
   comment.innerHTML = getRandomMischievousComment("happy"); 
   video.style.filter = getRandomMiscFilter("happy");
 }
 
-function drawSadBadArt() {
+function drawSadMiscArt() {
   console.log("Drawing sad art in misc mode");
   document.getElementById("sad-image").style.display = "block";
   comment.innerHTML = getRandomMischievousComment("sad"); 
   video.style.filter = getRandomMiscFilter("happy");
 }
 
-function drawAngryBadArt() {
+function drawAngryMiscArt() {
   console.log("Drawing angry art in misc mode");
   document.getElementById("mischievous-image").style.display = "block";
   comment.innerHTML = getRandomMischievousComment("angry");  

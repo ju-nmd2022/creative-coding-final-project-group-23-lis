@@ -170,7 +170,7 @@ function startVideo() {
               canvasCtx.drawImage(selectedNoseImage, nose[3].x - noseWidth / 2, nose[3].y - noseHeight / 2, noseWidth, noseHeight);
               canvasCtx.drawImage(selectedSadMouthImage, mouth[0].x - mouthWidth / 2, mouth[3].y - mouthHeight / 2, mouthWidth, mouthHeight);
             }
-          }
+          } 
         }, 100); // Update every 100ms
       });
     })

@@ -21,18 +21,15 @@ window.addEventListener("load", () => {
       .catch((err) => console.error("Error accessing the camera: ", err));
   }
   const video = document.getElementById("video");
-
-  
   
   //-------------------------------ARTIST BOT-------------------------------
-// Declare global variables at the beginning
-let sadArtist, happyArtist, angryArtist, misArtist, benArtist, impatientArtist;
-let comment = document.getElementById("artist-comment");
-let moodTimeout;
-let mood = "normal"; // Default mood is set to "normal"
-
-// ... rest of your code ...
-
+  let sadArtist, happyArtist, angryArtist, misArtist, benArtist, impatientArtist;
+  let comment = document.getElementById("artist-comment");
+  let moodTimeout;
+  let mood = "normal";  // Default mood is set to "normal"
+  
+  let previousEmotion = null; // Global variable to store the previously detected emotion
+  
   
   function preload() {
     sadArtist = loadImage(
@@ -109,8 +106,6 @@ let mood = "normal"; // Default mood is set to "normal"
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         faceapi.draw.drawDetections(canvas, resizedDetections);
         faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
-        const canvasCtx = canvas.getContext("2d");
-        canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
     
         if (detections.length > 0) {
           const emotions = detections[0].expressions;
@@ -122,58 +117,6 @@ let mood = "normal"; // Default mood is set to "normal"
             previousEmotion = maxEmotion; 
             generateArt(maxEmotion, mood); 
           }
-        }
-
-        if (resizedDetections.length > 0) {
-            const landmarks = resizedDetections[0].landmarks;
-            const emotions = resizedDetections[0].expressions;
-            // Determine the highest emotion
-            const currentEmotion = Object.keys(emotions).reduce((a, b) => (emotions[a] > emotions[b] ? a : b));
-
-            if (currentEmotion !== previousEmotion) {
-                previousEmotion = currentEmotion;
-  
-                // Reset all images
-                selectedAngryEyeImage = null;
-                selectedNoseImage = null;
-                selectedAngryMouthImage = null;
-                selectedHappyEyeImage = null;
-                selectedHappyMouthImage = null;
-                selectedSadEyeImage = null;
-                selectedSadMouthImage = null;
-
-                const leftEye = landmarks.getLeftEye();
-                const rightEye = landmarks.getRightEye();
-                const nose = landmarks.getNose();
-                const mouth = landmarks.getMouth();
-    
-                const eyeWidth = 40,
-                  eyeHeight = 40;
-                const noseWidth = 40,
-                  noseHeight = 40;
-                const mouthWidth = 60,
-                  mouthHeight = 40;
-
-
-            if (selectedAngryEyeImage) {
-                canvasCtx.drawImage(selectedAngryEyeImage, leftEye[3].x - eyeWidth / 2, leftEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
-                canvasCtx.drawImage(selectedAngryEyeImage, rightEye[3].x - eyeWidth / 2, rightEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
-                canvasCtx.drawImage(selectedNoseImage, nose[3].x - noseWidth / 2, nose[3].y - noseHeight / 2, noseWidth, noseHeight);
-                canvasCtx.drawImage(selectedAngryMouthImage, mouth[0].x - mouthWidth / 2, mouth[3].y - mouthHeight / 2, mouthWidth, mouthHeight);
-              } else if (selectedHappyEyeImage) {
-                canvasCtx.drawImage(selectedHappyEyeImage, leftEye[3].x - eyeWidth / 2, leftEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
-                canvasCtx.drawImage(selectedHappyEyeImage, rightEye[3].x - eyeWidth / 2, rightEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
-                canvasCtx.drawImage(selectedNoseImage, nose[3].x - noseWidth / 2, nose[3].y - noseHeight / 2, noseWidth, noseHeight);
-                canvasCtx.drawImage(selectedHappyMouthImage, mouth[0].x - mouthWidth / 2, mouth[3].y - mouthHeight / 2, mouthWidth, mouthHeight);
-              } else if (selectedSadEyeImage) {
-                canvasCtx.drawImage(selectedSadEyeImage, leftEye[3].x - eyeWidth / 2, leftEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
-                canvasCtx.drawImage(selectedSadEyeImage, rightEye[3].x - eyeWidth / 2, rightEye[3].y - eyeHeight / 2, eyeWidth, eyeHeight);
-                canvasCtx.drawImage(selectedNoseImage, nose[3].x - noseWidth / 2, nose[3].y - noseHeight / 2, noseWidth, noseHeight);
-                canvasCtx.drawImage(selectedSadMouthImage, mouth[0].x - mouthWidth / 2, mouth[3].y - mouthHeight / 2, mouthWidth, mouthHeight);
-              }
-                
-            }
-  
         }
     
         lastEmotionDetection = Date.now();
@@ -256,20 +199,18 @@ let mood = "normal"; // Default mood is set to "normal"
     console.log("Drawing normal happy art");
     document.getElementById("happy-image").style.display = "block";
     comment.innerHTML = getRandomNeuComment("happy"); 
-
   }
   
   function drawSadNeutralArt() {
     console.log("Drawing normal sad art");
     document.getElementById("sad-image").style.display = "block";
-    comment.innerHTML = getRandomNeuComment("sad"); 
+    comment.innerHTML = getRandomNeuComment("happy"); 
   }
   
   function drawAngryNeutralArt() {
     console.log("Drawing normal angry art");
     document.getElementById("angry-image").style.display = "block"; 
-    comment.innerHTML = getRandomNeuComment("angry"); 
-
+    comment.innerHTML = getRandomNeuComment("happy"); 
   }
   
   let neutralComments = {
@@ -295,56 +236,6 @@ let mood = "normal"; // Default mood is set to "normal"
     const randomIndex = Math.floor(Math.random() * comments.length);
     return comments[randomIndex];
   }
-
-// Variables to hold the selected images for each part (to prevent re-randomization)
-let selectedAngryEyeImage = null;
-let selectedNoseImage = null; // Common nose image for all emotions
-let selectedAngryMouthImage = null;
-
-let selectedHappyEyeImage = null;
-let selectedHappyMouthImage = null;
-
-let selectedSadEyeImage = null;
-let selectedSadMouthImage = null;
-
-// Previous emotion states to detect changes
-let previousEmotion = null;
-
-function getRandomImage(imageArray) {
-    return new Promise((resolve) => {
-      const randomIndex = Math.floor(Math.random() * imageArray.length);
-      const img = new Image();
-      img.src = imageArray[randomIndex];
-      img.onload = () => resolve(img); // Resolve the promise once the image is loaded
-    });
-  }
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   
   //-------------------------------BENE ART-------------------------------
   function drawHappyBeneArt() {
@@ -448,49 +339,6 @@ function getRandomImage(imageArray) {
       "contrast(1.5) saturate(2) hue-rotate(180deg)", 
     ]
   };
-    //-------------------------------ARRAYS WITH EMOTIONS-------------------------------
-
-const noseArray = [
-    "images/nose-septum.png",
-    "images/nose-round.png",
-    "images/nose-fat.png",
-    "images/nose-wings.png",
-    "images/nose-pig.png",
-  ];
-  
-  const angryEyeArray = [
-    "images/eye-zombie.png",
-    "images/eye-mad.png",
-    "images/eye-close.png",
-  ];
-  
-  const angryMouthArray = [
-    "images/lip-wide.png",
-    "images/lip-crooked.png",
-    "images/lip-open.png",
-  ];
-  
-  const happyEyeArray = [
-    "images/eye-normal.png",
-    "images/eye-round.png",
-    "images/eye-smile.png",
-  ];
-  const happyMouthArray = [
-    "images/lip-kiss.png",
-    "images/lip-tounge.png",
-    "images/lip-edge.png",
-  ];
-  const sadEyeArray = [
-    "images/eye-drip.png",
-    "images/eye-shiny.png",
-    "images/eye-cry.png",
-  ];
-  const sadMouthArray = [
-    "images/lip-bite.png",
-    "images/lip-frown.png",
-    "images/lip-sad.png",
-  ];
-
   
   function getRandomMiscFilter(emotion){
     const filters = miscFilter[emotion];

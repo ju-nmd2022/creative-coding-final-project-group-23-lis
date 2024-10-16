@@ -145,6 +145,7 @@ function generateArt(emotion, mode) {
   if (emotion === "neutral") {
     comment.innerHTML = "You are not displaying any emotion. The artist is waiting for some emotion."; // Display a neutral comment
     document.getElementById("benevolent-image").style.display = "block"; // Show neutral image
+    video.style.filter ="";
     return;
   }
 
@@ -285,18 +286,21 @@ function drawHappyBadArt() {
   console.log("Drawing happy art in misc mode");
   document.getElementById("happy-image").style.display = "block";
   comment.innerHTML = getRandomMischievousComment("happy"); 
+  video.style.filter = getRandomMiscFilter("happy");
 }
 
 function drawSadBadArt() {
   console.log("Drawing sad art in misc mode");
   document.getElementById("sad-image").style.display = "block";
   comment.innerHTML = getRandomMischievousComment("sad"); 
+  video.style.filter = getRandomMiscFilter("happy");
 }
 
 function drawAngryBadArt() {
   console.log("Drawing angry art in misc mode");
   document.getElementById("mischievous-image").style.display = "block";
   comment.innerHTML = getRandomMischievousComment("angry");  
+  video.style.filter = getRandomMiscFilter("happy");
 }
 
 
@@ -317,6 +321,30 @@ let mischievousComments = {
     "Anger? Let's see how long that lasts before something mischievous happens!"
   ]
 };
+
+let miscFilter = {
+  happy: [
+    "brightness(1.5) saturate(1.5)",        // Filter 1
+    "brightness(1.7) saturate(1.6)",        // Filter 2
+    "sepia(0.5) contrast(1.2)",             // Filter 3
+  ],
+  sad: [
+    "grayscale(1) brightness(0.7)",         // Filter 1
+    "grayscale(1) brightness(0.7)",         // Filter 2
+    "grayscale(1) brightness(0.5) contrast(1.3)",  // Filter 3
+  ],
+  angry: [
+    "contrast(1.5) saturate(2)",            // Filter 1
+    "contrast(1.8) saturate(2)",            // Filter 2
+    "contrast(1.5) saturate(2) hue-rotate(180deg)", 
+  ]
+};
+
+function getRandomMiscFilter(emotion){
+  const filters = miscFilter[emotion];
+  const randomIndex = Math.floor(Math.random() * filters.length);
+  return filters[randomIndex];
+}
 
 // Function to get a random comment for a given emotion
 function getRandomMischievousComment(emotion) {

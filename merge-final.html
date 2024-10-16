@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emotion Detection using Face-api.js</title>
+    <!-- Correct CDN for face-api.js -->
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <link rel="stylesheet" href="merge.css" />
+  </head>
+  <body>
+    <div id="mood-images">
+      <img
+        id="sad-image"
+        src="images/artist-sad.PNG"
+        alt="Sad Artist"
+        style="display: none"
+      />
+      <img
+        id="angry-image"
+        src="images/artist-angry.PNG"
+        alt="Angry Artist"
+        style="display: none"
+      />
+      <img
+        id="mischievous-image"
+        src="images/artist-mis.PNG"
+        alt="Mischievous Artist"
+        style="display: none"
+      />
+      <img
+        id="benevolent-image"
+        src="images/artist-ben.PNG"
+        alt="Benevolent Artist"
+        style="display: none"
+      />
+      <img
+        id="happy-image"
+        src="images/artist-happy.PNG"
+        alt="Happy Artist"
+        style="display: none"
+      />
+      <img
+        id="impatient-image"
+        src="images/artist-impatient.PNG"
+        alt="Impatient Artist"
+        style="display: none"
+      />
+    </div>
+
+    <div id="video-container">
+      <video id="video" autoplay muted></video>
+    </div>
+
+    <p>Emotion: <span id="emotion"></span></p>
+
+    <div class="bubble-container">
+      <img
+        src="images/speech-bubble.PNG"
+        alt="Speech bubble"
+        class="speech-bubble"
+      />
+      <p id="artist-comment"></p>
+    </div>
+
+    <script src="merge-final.js" defer></script>
+  </body>
+</html>

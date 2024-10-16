@@ -58,6 +58,10 @@ function preload() {
     lipOpen = loadImage("images/lip-open.PNG");
     lipFilterArray = [lipBite, lipCrooked, lipOpen];
 
+
+
+    
+    
 /*
     //the facial features in the different emotion eyes arrays
     eyeShiny = loadImage("images/eye-shiny.PNG");

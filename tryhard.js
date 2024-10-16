@@ -6,7 +6,11 @@ window.addEventListener("load", () => {
     faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
     faceapi.nets.faceExpressionNet.loadFromUri("/models"),
     faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
-  ]).then(startVideo);
+  ]).then(() => {
+    startVideo();
+    randomizeMood();  // Randomize mood right after models are loaded
+    displayCurrentMood(mood); // Display the current mood right after randomizing
+  });
 });
 
 //-------------------------------SET UP-------------------------------
@@ -22,7 +26,10 @@ const video = document.getElementById("video");
 let sadArtist, happyArtist, angryArtist, misArtist, benArtist, impatientArtist;
 let comment = document.getElementById("artist-comment");
 let moodTimeout;
-let mood; // Global variable to store the current mood
+let mood = "normal";  // Default mood is set to "normal"
+
+let previousEmotion = null; // Global variable to store the previously detected emotion
+
 
 function preload() {
   sadArtist = loadImage(
@@ -63,59 +70,59 @@ const videoElement = document.getElementById("video");
 
 function transitionToImpatient() {
   mood = "impatient";
-  updateMoodImages(null, mood); // No specific emotion, just display the impatient image
+  previousEmotion = null;
+  updateMoodImages(null, mood);
 
-  // After 10 seconds, return to a randomized mood
   moodTimeout = setTimeout(() => {
-      randomizeMood();
+    randomizeMood();
   }, 10000);
 }
 
-let lastInteractionTime = Date.now(); // To track the last time an emotion or face was detected
-const impatienceThreshold = 5000; // 5 seconds of no interaction before triggering impatience
+
+let lastInteractionTime = Date.now();
+const impatienceThreshold = 5000;
 
 //-------------------------------FACE API-------------------------------
 
 video.addEventListener("play", () => {
   const canvas = faceapi.createCanvasFromMedia(video);
   const videoContainer = document.getElementById("video-container");
-  videoContainer.append(canvas); // Append canvas inside video container
+  videoContainer.append(canvas); 
 
   const displaySize = { width: video.videoWidth, height: video.videoHeight };
   faceapi.matchDimensions(canvas, displaySize);
 
+  let lastEmotionDetection = Date.now();
+  const emotionDetectionInterval = 1000; 
+  
   setInterval(async () => {
-    const detections = await faceapi
-      .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-      .withFaceLandmarks()
-      .withFaceExpressions();
+    if (Date.now() - lastEmotionDetection > emotionDetectionInterval) {
+      const detections = await faceapi
+        .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceExpressions();
+  
+      const resizedDetections = faceapi.resizeResults(detections, displaySize);
+      canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+      faceapi.draw.drawDetections(canvas, resizedDetections);
+      faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+  
+      if (detections.length > 0) {
+        const emotions = detections[0].expressions;
+        const maxEmotion = Object.keys(emotions).reduce((a, b) =>
+          emotions[a] > emotions[b] ? a : b
+        );
 
-    const resizedDetections = faceapi.resizeResults(detections, displaySize);
-    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-    faceapi.draw.drawDetections(canvas, resizedDetections);
-    faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
-
-    if (detections.length > 0) {
-      lastInteractionTime = Date.now(); // Update interaction time when a face is detected
-
-      const emotions = detections[0].expressions;
-      const maxEmotion = Object.keys(emotions).reduce((a, b) =>
-        emotions[a] > emotions[b] ? a : b
-      );
-
-      // Randomize mood and get the mode
-      randomizeMood();
-      const mode = mood;
-
-      // Function to generate art based on emotion and mode
-      generateArt(maxEmotion, mode);
-    }
-
-    // Check if it's time to trigger impatience
-    if (Date.now() - lastInteractionTime > impatienceThreshold) {
-      transitionToImpatient(); // Call to transition to impatient mood
+        if (maxEmotion !== previousEmotion) {
+          previousEmotion = maxEmotion; 
+          generateArt(maxEmotion, mood); 
+        }
+      }
+  
+      lastEmotionDetection = Date.now();
     }
   }, 100);
+  
 });
 
 
@@ -134,8 +141,13 @@ function randomizeMood() {
   } 
   }
 
-// Function to generate art based on emotion and mode
 function generateArt(emotion, mode) {
+  if (emotion === "neutral") {
+    comment.innerHTML = "You are not displaying any emotion. The artist is waiting for some emotion."; // Display a neutral comment
+    document.getElementById("benevolent-image").style.display = "block"; // Show neutral image
+    return;
+  }
+
   if (mode === "bene") {
     switch (emotion) {
       case "happy":
@@ -147,7 +159,7 @@ function generateArt(emotion, mode) {
       case "angry":
         drawAngryGoodArt();
         break;
-      // Add more cases for other emotions
+    
     }
   } else if (mode === "misc") {
     switch (emotion) {
@@ -160,7 +172,7 @@ function generateArt(emotion, mode) {
       case "angry":
         drawAngryBadArt();
         break;
-      // Add more cases for other emotions
+     
     }
   } else if (mode === "normal") {
     switch (emotion) {
@@ -175,12 +187,13 @@ function generateArt(emotion, mode) {
         break;
     }
   }
-  //this is how it updates the artists emotions
+  
   updateMoodImages(emotion, mode);
+  displayCurrentMood(mode);
 }
 
+
 //-------------------------------NORMAL ART-------------------------------
-// Placeholder functions for neutral art generation
 function drawHappyNeutralArt() {
   console.log("Drawing normal happy art");
   document.getElementById("happy-image").style.display = "block";
@@ -314,8 +327,6 @@ function getRandomMischievousComment(emotion) {
 
 
 //-------------------------------UPDATE ARTIST IMAGE LOGIC-------------------------------
-// Function to hide all images and display only the relevant one
-
 document.getElementById("mood-text").innerHTML = "";
 
 // Function to update the mood text
@@ -341,6 +352,7 @@ function displayCurrentMood(mode) {
 }
 
 function updateMoodImages(emotion, mode) {
+  // Clear all images
   document.getElementById("sad-image").style.display = "none";
   document.getElementById("angry-image").style.display = "none";
   document.getElementById("mischievous-image").style.display = "none";
@@ -348,27 +360,58 @@ function updateMoodImages(emotion, mode) {
   document.getElementById("happy-image").style.display = "none";
   document.getElementById("impatient-image").style.display = "none";
 
+
   if (mood === "impatient") {
       document.getElementById("impatient-image").style.display = "block";
       comment.innerHTML = "I'm a little impatient, and this is boring. Do something interesting!";
   } else {
-      // If not impatient, display image based on detected emotion
+      // Display image based on the current emotion
       switch (emotion) {
           case "happy":
               document.getElementById("happy-image").style.display = "block";
+              comment.innerHTML = getRandomComment(emotion, mode); 
               break;
           case "sad":
               document.getElementById("sad-image").style.display = "block";
+              comment.innerHTML = getRandomComment(emotion, mode); 
               break;
+
           case "angry":
               document.getElementById("angry-image").style.display = "block";
+              comment.innerHTML = getRandomComment(emotion, mode); 
               break;
           case "mischievous":
               document.getElementById("mischievous-image").style.display = "block";
+              comment.innerHTML = getRandomComment(emotion, mode); 
               break;
           default:
               console.log("Emotion not handled:", emotion);
+            
       }
   }
   displayCurrentMood(mode);
+}
+
+function getRandomComment(emotion, mode) {
+  let comments = [];
+  
+  if (mode === "bene") {
+    comments = beneComments[emotion];
+  } else if (mode === "misc") {
+    comments = mischievousComments[emotion];
+  } else if (mode === "normal") {
+    comments = neutralComments[emotion];
+  }
+
+  const randomIndex = Math.floor(Math.random() * comments.length);
+  return comments[randomIndex];
+}
+
+function hideAllImages() {
+  document.getElementById("sad-image").style.display = "none";
+  document.getElementById("angry-image").style.display = "none";
+  document.getElementById("mischievous-image").style.display = "none";
+  document.getElementById("benevolent-image").style.display = "none";
+  document.getElementById("happy-image").style.display = "none";
+  document.getElementById("impatient-image").style.display = "none";
 }

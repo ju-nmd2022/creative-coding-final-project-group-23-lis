@@ -20,7 +20,7 @@ window.addEventListener("load", () => {
     
     randomizeMood();
   }
-  
+
 
     let sadArtist, happyArtist, angryArtist, misArtist, benArtist, impatientArtist;
     let mood = "happy";

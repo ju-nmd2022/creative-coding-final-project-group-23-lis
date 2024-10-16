@@ -16,8 +16,74 @@ window.addEventListener("load", () => {
   }
 
   faceapi.draw.drawDetections(canvasDraw, box);
-  box.classlist.add = "boxhide";
 
+  //sad eyes
+  const eyeDrip = new Image();
+  eyeDrip.src = "images/eye-drip.PNG";
+  const eyeShiny = new Image();
+  eyeShiny.src = "images/eye-shiny.PNG";
+  const eyeCry = new Image();
+  eyeCry.src = "images/eye-cry.PNG";
+  sadEyesArray = [eyeDrip, eyeShiny, eyeCry];
+
+  //happy eyes
+  const eyeNormal = new Image();
+  eyeNormal.src = "images/eye-normal.PNG";
+  const eyeRound = new Image();
+  eyeRound.src = "images/eye-round.PNG";
+  const eyeSmile = new Image();
+  eyeSmile.src = "images/eye-smile.PNG";
+  happyEyesArray = [eyeNormal, eyeRound, eyeSmile];
+
+  //angry eyes
+  const eyeMad = new Image();
+  eyeMad.src = "images/eye-mad.PNG";
+  const eyeClose = new Image();
+  eyeClose.src = "images/eye-close.PNG";
+  const eyeZombie = new Image();
+  eyeZombie.src = "images/eye-zombie.PNG";
+  happyEyesArray = [eyeMad, eyeClose, eyeZombie];
+
+  //nose array
+  const noseSeptum = new Image();
+  noseSeptum.src = "images/nose-septum.PNG";
+  const nosePig = new Image();
+  nosePig.src = "images/nose-pig.PNG";
+  const noseFat = new Image();
+  noseFat.src = "images/nose-fat.PNG";
+  const noseRound = new Image();
+  noseRound.src = "images/nose-round.PNG";
+  const noseWings = new Image();
+  noseWings.src = "images/nose-wings.PNG";
+  noseArray = [noseSeptum, nosePig, noseFat, noseRound, noseWings];
+
+  //sad lip
+  const lipBite = new Image();
+  lipBite.src = "images/lip-bite.PNG";
+  const lipFrown = new Image();
+  lipFrown.src = "images/lip-frown.PNG";
+  const lipSad = new Image();
+  lipSad.src = "images/lip-sad.PNG";
+  sadLipArray = [lipBite, lipFrown, lipSad];
+
+  //happy lip
+  const lipKiss = new Image();
+  lipKiss.src = "images/lip-kiss.PNG";
+  const lipEdge = new Image();
+  lipEdge.src = "images/lip-edge.PNG";
+  const lipTounge = new Image();
+  lipTounge.src = "images/lip-tounge.PNG";
+  happyLipArray = [lipKiss, lipEdge, lipTounge];
+
+  //angry lip
+  const lipWide = new Image();
+  lipWide.src = "images/lip-wide.PNG";
+  const lipCrooked = new Image();
+  lipCrooked.src = "images/lip-crooked.PNG";
+  const lipOpen = new Image();
+  lipOpen.src = "images/lip-open.PNG";
+  angryLipArray = [lipWide, lipCrooked, lipOpen];
+  /*
   // Happy images
   const eyeImage = new Image();
   eyeImage.src = "images/eyes-cute.png"; // Path to your image for the eyes
@@ -41,7 +107,7 @@ window.addEventListener("load", () => {
   angryNoseImage.src = "images/nose-septum.png"; // Path to your angry image for the nose
   const angryMouthImage = new Image();
   angryMouthImage.src = "images/lip-open.png"; // Path to your angry image for the mouth
-
+*/
   video.addEventListener("play", () => {
     const canvas = faceapi.createCanvasFromMedia(video);
     document.body.append(canvas);
@@ -97,14 +163,14 @@ window.addEventListener("load", () => {
 
           // Draw the images over the eyes (unmirrored)
           canvasCtx.drawImage(
-            eyeImage,
+            happyEyesArray,
             leftEyePosition.x,
             leftEyePosition.y,
             eyeWidth,
             eyeHeight
           );
           canvasCtx.drawImage(
-            eyeImage,
+            happyEyesArray,
             rightEyePosition.x,
             rightEyePosition.y,
             eyeWidth,

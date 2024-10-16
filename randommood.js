@@ -44,6 +44,9 @@ const lipBiteImg = document.getElementById("lip-bite");
     misArtist = loadImage("images/artist-mis.PNG", () => console.log("Mischievous image loaded."), () => console.error("Failed to load mischievous image."));
     benArtist = loadImage("images/artist-ben.PNG", () => console.log("Benevolent image loaded."), () => console.error("Failed to load benevolent image."));
     impatientArtist = loadImage("images/artist-impatient.PNG", () => console.log("Impatient image loaded."), () => console.error("Failed to load impatient image."));
+  }
+
+
 
     //sad eyes
     const eyeDrip = new Image();
@@ -113,7 +116,6 @@ const lipBiteImg = document.getElementById("lip-bite");
     lipOpen.src = "images/lip-open.PNG"; 
     angryLipArray = [lipWide, lipCrooked, lipOpen];
     
-  }
 
     //-------------------------------ARTIST BOT-------------------------------
 
@@ -279,14 +281,14 @@ eyeImage.src = "images/eyes-zombie.png"; // Path to your image (e.g., a sticker 
 
         // Draw the images over the eyes
         canvasCtx.drawImage(
-          eyeImage,
+          happyEyesArray,
           leftEyePosition.x,
           leftEyePosition.y,
           eyeWidth,
           eyeHeight
         );
         canvasCtx.drawImage(
-          eyeImage,
+            happyEyesArray,
           rightEyePosition.x,
           rightEyePosition.y,
           eyeWidth,

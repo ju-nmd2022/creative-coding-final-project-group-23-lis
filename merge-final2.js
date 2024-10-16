@@ -225,33 +225,19 @@ window.addEventListener("load", () => {
   
       faceapi.draw.drawDetections(canvas, resizedDetections);
       faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+
+    }, 100);
+  });
   
+
+    
       // Overlay image on top of the eyes
       if (resizedDetections.length > 0) {
         const landmarks = resizedDetections[0].landmarks;
         const emotions = resizedDetections[0].expressions;
         
-  
-        
       }
-    }, 100);
-  });
-  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
   if (mood === "impatient") {
     document.getElementById("impatient-image").style.display = "block";
     comment.innerHTML = "I'm a little impatient, and this is boring. Do something interesting!";
@@ -260,19 +246,268 @@ window.addEventListener("load", () => {
     switch (emotion) {
         case "happy":
             document.getElementById("happy-image").style.display = "block";
+            const happyThreshold = 0.5; // Adjust this value as needed
+        if (emotions.happy > happyThreshold) {
+  
+        const happyThreshold = 0.5; // Adjust this value as needed
+        if (emotions.happy > happyThreshold) {
+          const leftEye = landmarks.getLeftEye();
+          const rightEye = landmarks.getRightEye();
+  
+          // Calculate positions to draw the image over the eyes
+          const eyeWidth = 70; // Set the width for the image
+          const eyeHeight = 50; // Set the height for the image
+          const leftEyePosition = {
+            x: leftEye[5].x - eyeWidth / 4, // Center image over the left eye
+            y: leftEye[5].y - eyeHeight / 12,
+          };
+          const rightEyePosition = {
+            x: rightEye[3].x - eyeWidth / 5, // Center image over the right eye
+            y: rightEye[5].y - eyeHeight / 12,
+          };
+  
+          function drawHappyEyes(){
+            canvasCtx.drawImage(
+            eyeImage,
+            leftEyePosition.x,
+            leftEyePosition.y,
+            eyeWidth,
+            eyeHeight
+          );
+          canvasCtx.drawImage(
+            eyeImage,
+            rightEyePosition.x,
+            rightEyePosition.y,
+            eyeWidth,
+            eyeHeight
+          );
+          }
+          
+  
+          // Get the nose position (unmirrored)
+          const nose = landmarks.getNose();
+          const noseWidth = 60; // Set the width for the image
+          const noseHeight = 60; // Set the height for the image
+          const nosePosition = {
+            x: nose[3].x - noseWidth / 18, // Center image over the nose
+            y: nose[3].y - noseHeight / 8,
+          };
+  
+
+          // Draw the image over the nose (unmirrored)
+          function drawNose(){
+            canvasCtx.drawImage(
+            noseImage,
+            nosePosition.x,
+            nosePosition.y,
+            noseWidth,
+            noseHeight
+          );
+          }
+          
+  
+          // Get the mouth position (unmirrored)
+          const mouth = landmarks.getMouth();
+          const mouthWidth = 100; // Set the width for the image
+          const mouthHeight = 80; // Set the height for the image
+          const mouthPosition = {
+            x: mouth[5].x - mouthWidth / 2.5, // Center image over the mouth
+            y: mouth[5].y - mouthHeight / -6, // You may adjust this if needed
+          };
+  
+          // Draw the image over the mouth (unmirrored)
+          function drawHappyMouth(){
+            canvasCtx.drawImage(
+            mouthImage,
+            mouthPosition.x,
+            mouthPosition.y,
+            mouthWidth,
+            mouthHeight
+          );
+          }
+        }
+    }
             break;
+
+
+
+
+
+
+
+
+
         case "sad":
             document.getElementById("sad-image").style.display = "block";
-            drawSadMouth();
-            drawSadEyes();
-            drawNose();
+            const sadThreshold = 0.5; // Adjust this value as needed
+        if (emotions.sad > sadThreshold) {
+          // Get the eye positions (unmirrored)
+          const leftEye = landmarks.getLeftEye();
+          const rightEye = landmarks.getRightEye();
+  
+          // Calculate positions to draw the sad images over the eyes
+          const sadEyeWidth = 80; // Set the width for the sad eye image
+          const sadEyeHeight = 50; // Set the height for the sad eye image
+          const sadLeftEyePosition = {
+            x: leftEye[3].x - sadEyeWidth / 4, // Center image over the left eye
+            y: leftEye[3].y - sadEyeHeight / 20,
+          };
+          const sadRightEyePosition = {
+            x: rightEye[3].x - sadEyeWidth / 8, // Center image over the right eye
+            y: rightEye[3].y - sadEyeHeight / 20,
+          };
+  
+          // Draw the images over the eyes (unmirrored)
+          function drawSadEyes(){
+            canvasCtx.drawImage(
+            sadEyeImage,
+            sadLeftEyePosition.x,
+            sadLeftEyePosition.y,
+            sadEyeWidth,
+            sadEyeHeight
+          );
+        canvasCtx.drawImage(
+            sadEyeImage,
+            sadRightEyePosition.x,
+            sadRightEyePosition.y,
+            sadEyeWidth,
+            sadEyeHeight
+          );
+
+          }
+          
+         
+  
+          // Get the nose position (unmirrored)
+          const nose = landmarks.getNose();
+          const sadNoseWidth = 70; // Set the width for the sad nose image
+          const sadNoseHeight = 60; // Set the height for the sad nose image
+          const sadNosePosition = {
+            x: nose[3].x - sadNoseWidth / 20, // Center image over the nose
+            y: nose[3].y - sadNoseHeight / 20,
+          };
+  
+          /*
+          // Draw the image over the nose (unmirrored)
+          canvasCtx.drawImage(
+            sadNoseImage,
+            sadNosePosition.x,
+            sadNosePosition.y,
+            sadNoseWidth,
+            sadNoseHeight
+          );
+        */
+          // Get the mouth position (unmirrored)
+          const mouth = landmarks.getMouth();
+          const sadMouthWidth = 100; // Set the width for the sad mouth image
+          const sadMouthHeight = 60; // Set the height for the sad mouth image
+          const sadMouthPosition = {
+            x: mouth[0].x - sadMouthWidth / -6, // Center image over the mouth
+            y: mouth[3].y - sadMouthHeight / -3, // You may adjust this if needed
+          };
+  
+          // Draw the image over the mouth (unmirrored)
+          function drawSadMouth(){
+            canvasCtx.drawImage(
+            sadMouthImage,
+            sadMouthPosition.x,
+            sadMouthPosition.y,
+            sadMouthWidth,
+            sadMouthHeight
+          );
+          }
+        }
             break;
+
+
+
+
+
+
+
+
+
+
+
         case "angry":
             document.getElementById("angry-image").style.display = "block";
-            drawAngryMouth();
-            drawAngryEyes();
-            drawNose();
+            const angryThreshold = 0.5; // Adjust this value as needed
+            if (emotions.angry > angryThreshold) {
+              // Get the eye positions (unmirrored)
+              const leftEye = landmarks.getLeftEye();
+              const rightEye = landmarks.getRightEye();
+      
+              // Calculate positions to draw the angry images over the eyes
+              const angryEyeWidth = 80; // Set the width for the angry eye image
+              const angryEyeHeight = 60; // Set the height for the angry eye image
+              const angryLeftEyePosition = {
+                x: leftEye[3].x - angryEyeWidth / 3, // Center image over the left eye
+                y: leftEye[3].y - angryEyeHeight / 4,
+              };
+              const angryRightEyePosition = {
+                x: rightEye[3].x - angryEyeWidth / 5, // Center image over the right eye
+                y: rightEye[3].y - angryEyeHeight / 4,
+              };
+      
+              // Draw the images over the eyes (unmirrored)
+              function drawAngryEyes(){
+                canvasCtx.drawImage(
+                angryEyeImage,
+                angryLeftEyePosition.x,
+                angryLeftEyePosition.y,
+                angryEyeWidth,
+                angryEyeHeight
+                );
+    
+                canvasCtx.drawImage(
+                angryEyeImage,
+                angryRightEyePosition.x,
+                angryRightEyePosition.y,
+                angryEyeWidth,
+                angryEyeHeight
+                );
+              }
+             
+      
+              // Get the nose position (unmirrored)
+              const nose = landmarks.getNose();
+              const angryNoseWidth = 70; // Set the width for the angry nose image
+              const angryNoseHeight = 60; // Set the height for the angry nose image
+              const angryNosePosition = {
+                x: nose[3].x - angryNoseWidth / 9, // Center image over the nose
+                y: nose[3].y - angryNoseHeight / 4,
+              }
+
+              // Get the mouth position (unmirrored)
+              const mouth = landmarks.getMouth();
+              const angryMouthWidth = 90; // Set the width for the angry mouth image
+              const angryMouthHeight = 50; // Set the height for the angry mouth image
+              const angryMouthPosition = {
+                x: mouth[0].x - angryMouthWidth / -4.5, // Center image over the mouth
+                y: mouth[3].y - angryMouthHeight / -2, // You may adjust this if needed
+              };
+      
+              // Draw the image over the mouth (unmirrored)
+              function drawAngryMouth(){
+                canvasCtx.drawImage(
+                    angryMouthImage,
+                    angryMouthPosition.x,
+                    angryMouthPosition.y,
+                    angryMouthWidth,
+                    angryMouthHeight
+                  );
+              }
+              
+            }
             break;
+
+
+
+
+
+
+
+
         case "mischievous":
             document.getElementById("mischievous-image").style.display = "block";
             break;
@@ -284,7 +519,7 @@ window.addEventListener("load", () => {
 
 
 
-//misc function
+
 function drawHappyMiscArt() {
   console.log("Drawing happy art in misc mode");
   document.getElementById("happy-image").style.display = "block";
@@ -304,29 +539,9 @@ function drawAngryMiscArt() {
   comment.innerHTML = getRandomMischievousComment("angry");  
 }
 
-//bene function
-function drawHappyBeneArt() {
-  console.log("Drawing happy art in misc mode");
-  document.getElementById("happy-image").style.display = "block";
-  comment.innerHTML = getRandomMischievousComment("happy"); 
-
-}
-
-function drawSadBeneArt() {
-  console.log("Drawing sad art in misc mode");
-  document.getElementById("sad-image").style.display = "block";
-  comment.innerHTML = getRandomMischievousComment("sad"); 
-}
-
-function drawAngryBeneArt() {
-  console.log("Drawing angry art in misc mode");
-  document.getElementById("mischievous-image").style.display = "block";
-  comment.innerHTML = getRandomMischievousComment("angry");  
-}
 
 
-
-  
+  /*
   if(emotions.angry > angryThreshold && mood === "mischievous"){
     drawAngryMouth();
     drawAngryEyes();

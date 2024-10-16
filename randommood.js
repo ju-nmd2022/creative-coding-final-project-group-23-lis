@@ -26,14 +26,13 @@ window.addEventListener("load", () => {
     let happyEyesArray = [];
     let angryEyesArray = [];
     let sadEyesArray = [];
-    let happyLipsArray = [];
-    let angryLipsArray = [];
-    let sadLipsArray = [];
+    let happyMouthArray = [];
+    let angryMouthArray = [];
+    let sadMouthArray = [];
     let noseArray = [];
     
      
-    const lipBiteImg = document.getElementById("lip-bite"); // Reference to the image
-  
+const lipBiteImg = document.getElementById("lip-bite"); 
   const video = document.getElementById("video");
 
   function preload() {
@@ -46,45 +45,74 @@ window.addEventListener("load", () => {
     benArtist = loadImage("images/artist-ben.PNG", () => console.log("Benevolent image loaded."), () => console.error("Failed to load benevolent image."));
     impatientArtist = loadImage("images/artist-impatient.PNG", () => console.log("Impatient image loaded."), () => console.error("Failed to load impatient image."));
 
-    //the facial features in the different emotion eyes arrays
-    eyeDrip = loadImage("images/eye-drip.PNG");
-    eyeShiny = loadImage("images/eye-shiny.PNG");
-    eyeCry = loadImage("images/eye-cry.PNG");
-    sadEyesArray = [eyeRound, eyeShiny, eyeCry];
+    //sad eyes
+    const eyeDrip = new Image();
+    eyeDrip.src = "images/eye-drip.PNG"; 
+    const eyeShiny = new Image();
+    eyeShiny.src = "images/eye-shiny.PNG"; 
+    const eyeCry = new Image();
+    eyeCry.src = "images/eye-cry.PNG"; 
+    sadEyesArray = [eyeDrip, eyeShiny, eyeCry];
 
-     eyeNormal = loadImage("images/eye-normal.PNG");
-     eyeRound = loadImage("images/eye-round.PNG");
-     eyeSmile = loadImage("images/eye-smile.PNG");
-     happyEyesArray = [eyeNormal, eyeRound, eyeSmile];
+    //happy eyes
+    const eyeNormal = new Image();
+    eyeNormal.src = "images/eye-normal.PNG"; 
+    const eyeRound = new Image();
+    eyeRound.src = "images/eye-round.PNG"; 
+    const eyeSmile = new Image();
+    eyeSmile.src = "images/eye-smile.PNG"; 
+    happyEyesArray = [eyeNormal, eyeRound, eyeSmile];
 
-    eyeMad = loadImage("images/eye-mad.PNG");
-    eyeClose = loadImage("images/eye-close.PNG");
-    eyeZombie = loadImage("images/eyes-zombie.PNG");
-    angryEyesArray = [eyeMood, eyeClose, eyeZombie];
-    
-      //the facial features in the nose array
-    noseSeptum = loadImage("images/nose-septum.PNG");
-    nosePig = loadImage("images/nose-pig.PNG");
-    noseWings = loadImage("images/nose-wings.PNG");
-    noseFat = loadImage("images/nose-fat.PNG");
-    noseRound = loadImage("images/nose-round.PNG");
-    noseArray = [noseSeptum, nosePig, noseWings];
-    
-    //the facial features in the different emotion lip arrays
-    lipBite = loadImage("images/lip-bite.PNG");
-    lipFrown= loadImage("images/lip-frown.PNG");
-    lipSad = loadImage("images/lip-sad.PNG");
-    sadLipArray = [lipBite, lipCrooked, lipSad];
+    //angry eyes
+    const eyeMad = new Image();
+    eyeMad.src = "images/eye-mad.PNG"; 
+    const eyeClose = new Image();
+    eyeClose.src = "images/eye-close.PNG"; 
+    const eyeZombie = new Image();
+    eyeZombie.src = "images/eye-zombie.PNG"; 
+    happyEyesArray = [eyeMad, eyeClose, eyeZombie];
 
-    lipKiss = loadImage("images/lip-kiss.PNG");
-    lipEdge= loadImage("images/lip-edge.PNG");
-    lipTounge = loadImage("images/lip-tounge.PNG");
+
+    //nose array
+    const noseSeptum = new Image();
+    noseSeptum.src = "images/nose-septum.PNG"; 
+    const nosePig = new Image();
+    nosePig.src = "images/nose-pig.PNG"; 
+    const noseFat = new Image();
+    noseFat.src = "images/nose-fat.PNG"; 
+    const noseRound = new Image();
+    noseRound.src = "images/nose-round.PNG"; 
+    const noseWings = new Image();
+    noseWings.src = "images/nose-wings.PNG"; 
+    noseArray = [noseSeptum, nosePig, noseFat, noseRound, noseWings];
+
+    //sad lip
+    const lipBite = new Image();
+    lipBite.src = "images/lip-bite.PNG"; 
+    const lipFrown= new Image();
+    lipFrown.src = "images/lip-frown.PNG"; 
+    const lipSad = new Image();
+    lipSad.src = "images/lip-sad.PNG"; 
+    sadLipArray = [lipBite, lipFrown, lipSad];
+
+    //happy lip
+    const lipKiss = new Image();
+    lipKiss.src = "images/lip-kiss.PNG"; 
+    const lipEdge = new Image();
+    lipEdge.src = "images/lip-edge.PNG"; 
+    const lipTounge = new Image();
+    lipTounge.src = "images/lip-tounge.PNG"; 
     happyLipArray = [lipKiss, lipEdge, lipTounge];
 
-    lipWide = loadImage("images/lip-wide.PNG");
-    lipCrooked= loadImage("images/lip-crooked.PNG");
-    lipOpen = loadImage("images/lip-open.PNG");
+    //angry lip
+    const lipWide = new Image();
+    lipWide.src = "images/lip-wide.PNG"; 
+    const lipCrooked = new Image();
+    lipCrooked.src = "images/lip-crooked.PNG"; 
+    const lipOpen = new Image();
+    lipOpen.src = "images/lip-open.PNG"; 
     angryLipArray = [lipWide, lipCrooked, lipOpen];
+    
   }
 
     //-------------------------------ARTIST BOT-------------------------------
@@ -173,8 +201,6 @@ function updateMoodImages() {
 function filterObject() {
     filtersShowing = [];
 
-    let randomHead = headFilterArray[Math.floor(Math.random() * headFilterArray.length)];
-    let randomBrows = browsFilterArray[Math.floor(Math.random() * browsFilterArray.length)];
     let randomEyes = eyesFilterArray[Math.floor(Math.random() * eyesFilterArray.length)];
     let randomNose = noseFilterArray[Math.floor(Math.random() * noseFilterArray.length)];
     let randomLips = lipFilterArray[Math.floor(Math.random() * lipFilterArray.length)];
@@ -305,7 +331,7 @@ eyeImage.src = "images/eyes-zombie.png"; // Path to your image (e.g., a sticker 
     }, 100);
   });
   
-//Connects emotion of the user and the mood of the artist
+//Connects emotion of the user and the mood of the artist and randomises images from that
 function emotionAndMood(){
     if (emotion === emotion.happy && artistMood === normal){
         filtersShowing = []; 
@@ -316,5 +342,9 @@ function emotionAndMood(){
 
     }
 }
+
+
+
+
 
 

@@ -228,15 +228,15 @@ video.addEventListener("play", () => {
         const rightEye = landmarks.getRightEye();
 
         // Calculate positions to draw the image over the eyes
-        const eyeWidth = 40; // Set the width for the image
-        const eyeHeight = 40; // Set the height for the image
+        const eyeWidth = 70; // Set the width for the image
+        const eyeHeight = 50; // Set the height for the image
         const leftEyePosition = {
-          x: leftEye[3].x - eyeWidth / 2, // Center image over the left eye
-          y: leftEye[3].y - eyeHeight / 2,
+          x: leftEye[5].x - eyeWidth / 4, // Center image over the left eye
+          y: leftEye[5].y - eyeHeight / 12,
         };
         const rightEyePosition = {
-          x: rightEye[3].x - eyeWidth / 2, // Center image over the right eye
-          y: rightEye[3].y - eyeHeight / 2,
+          x: rightEye[3].x - eyeWidth / 5, // Center image over the right eye
+          y: rightEye[5].y - eyeHeight / 12,
         };
 
         // Draw the images over the eyes (unmirrored)
@@ -257,11 +257,11 @@ video.addEventListener("play", () => {
 
         // Get the nose position (unmirrored)
         const nose = landmarks.getNose();
-        const noseWidth = 40; // Set the width for the image
-        const noseHeight = 40; // Set the height for the image
+        const noseWidth = 60; // Set the width for the image
+        const noseHeight = 60; // Set the height for the image
         const nosePosition = {
-          x: nose[3].x - noseWidth / 2, // Center image over the nose
-          y: nose[3].y - noseHeight / 2,
+          x: nose[3].x - noseWidth / 18, // Center image over the nose
+          y: nose[3].y - noseHeight / 8,
         };
 
         // Draw the image over the nose (unmirrored)
@@ -275,11 +275,11 @@ video.addEventListener("play", () => {
 
         // Get the mouth position (unmirrored)
         const mouth = landmarks.getMouth();
-        const mouthWidth = 60; // Set the width for the image
-        const mouthHeight = 40; // Set the height for the image
+        const mouthWidth = 100; // Set the width for the image
+        const mouthHeight = 80; // Set the height for the image
         const mouthPosition = {
-          x: mouth[0].x - mouthWidth / 2, // Center image over the mouth
-          y: mouth[3].y - mouthHeight / 2, // You may adjust this if needed
+          x: mouth[5].x - mouthWidth / 2.5, // Center image over the mouth
+          y: mouth[5].y - mouthHeight / -6, // You may adjust this if needed
         };
 
         // Draw the image over the mouth (unmirrored)
@@ -298,15 +298,15 @@ video.addEventListener("play", () => {
         const rightEye = landmarks.getRightEye();
 
         // Calculate positions to draw the sad images over the eyes
-        const sadEyeWidth = 40; // Set the width for the sad eye image
-        const sadEyeHeight = 40; // Set the height for the sad eye image
+        const sadEyeWidth = 80; // Set the width for the sad eye image
+        const sadEyeHeight = 50; // Set the height for the sad eye image
         const sadLeftEyePosition = {
-          x: leftEye[3].x - sadEyeWidth / 2, // Center image over the left eye
-          y: leftEye[3].y - sadEyeHeight / 2,
+          x: leftEye[3].x - sadEyeWidth / 4, // Center image over the left eye
+          y: leftEye[3].y - sadEyeHeight / 20,
         };
         const sadRightEyePosition = {
-          x: rightEye[3].x - sadEyeWidth / 2, // Center image over the right eye
-          y: rightEye[3].y - sadEyeHeight / 2,
+          x: rightEye[3].x - sadEyeWidth / 8, // Center image over the right eye
+          y: rightEye[3].y - sadEyeHeight / 20,
         };
 
         // Draw the images over the eyes (unmirrored)
@@ -327,11 +327,11 @@ video.addEventListener("play", () => {
 
         // Get the nose position (unmirrored)
         const nose = landmarks.getNose();
-        const sadNoseWidth = 40; // Set the width for the sad nose image
-        const sadNoseHeight = 40; // Set the height for the sad nose image
+        const sadNoseWidth = 70; // Set the width for the sad nose image
+        const sadNoseHeight = 60; // Set the height for the sad nose image
         const sadNosePosition = {
-          x: nose[3].x - sadNoseWidth / 2, // Center image over the nose
-          y: nose[3].y - sadNoseHeight / 2,
+          x: nose[3].x - sadNoseWidth / 20, // Center image over the nose
+          y: nose[3].y - sadNoseHeight / 20,
         };
 
         // Draw the image over the nose (unmirrored)
@@ -345,11 +345,11 @@ video.addEventListener("play", () => {
 
         // Get the mouth position (unmirrored)
         const mouth = landmarks.getMouth();
-        const sadMouthWidth = 60; // Set the width for the sad mouth image
-        const sadMouthHeight = 40; // Set the height for the sad mouth image
+        const sadMouthWidth = 100; // Set the width for the sad mouth image
+        const sadMouthHeight = 60; // Set the height for the sad mouth image
         const sadMouthPosition = {
-          x: mouth[0].x - sadMouthWidth / 2, // Center image over the mouth
-          y: mouth[3].y - sadMouthHeight / 2, // You may adjust this if needed
+          x: mouth[0].x - sadMouthWidth / -6, // Center image over the mouth
+          y: mouth[3].y - sadMouthHeight / -3, // You may adjust this if needed
         };
 
         // Draw the image over the mouth (unmirrored)
@@ -369,15 +369,15 @@ video.addEventListener("play", () => {
         const rightEye = landmarks.getRightEye();
 
         // Calculate positions to draw the angry images over the eyes
-        const angryEyeWidth = 40; // Set the width for the angry eye image
-        const angryEyeHeight = 40; // Set the height for the angry eye image
+        const angryEyeWidth = 80; // Set the width for the angry eye image
+        const angryEyeHeight = 60; // Set the height for the angry eye image
         const angryLeftEyePosition = {
-          x: leftEye[3].x - angryEyeWidth / 2, // Center image over the left eye
-          y: leftEye[3].y - angryEyeHeight / 2,
+          x: leftEye[3].x - angryEyeWidth / 3, // Center image over the left eye
+          y: leftEye[3].y - angryEyeHeight / 4,
         };
         const angryRightEyePosition = {
-          x: rightEye[3].x - angryEyeWidth / 2, // Center image over the right eye
-          y: rightEye[3].y - angryEyeHeight / 2,
+          x: rightEye[3].x - angryEyeWidth / 5, // Center image over the right eye
+          y: rightEye[3].y - angryEyeHeight / 4,
         };
 
         // Draw the images over the eyes (unmirrored)
@@ -398,11 +398,11 @@ video.addEventListener("play", () => {
 
         // Get the nose position (unmirrored)
         const nose = landmarks.getNose();
-        const angryNoseWidth = 40; // Set the width for the angry nose image
-        const angryNoseHeight = 40; // Set the height for the angry nose image
+        const angryNoseWidth = 70; // Set the width for the angry nose image
+        const angryNoseHeight = 60; // Set the height for the angry nose image
         const angryNosePosition = {
-          x: nose[3].x - angryNoseWidth / 2, // Center image over the nose
-          y: nose[3].y - angryNoseHeight / 2,
+          x: nose[3].x - angryNoseWidth / 9, // Center image over the nose
+          y: nose[3].y - angryNoseHeight / 4,
         };
 
         // Draw the image over the nose (unmirrored)
@@ -416,11 +416,11 @@ video.addEventListener("play", () => {
 
         // Get the mouth position (unmirrored)
         const mouth = landmarks.getMouth();
-        const angryMouthWidth = 60; // Set the width for the angry mouth image
-        const angryMouthHeight = 40; // Set the height for the angry mouth image
+        const angryMouthWidth = 90; // Set the width for the angry mouth image
+        const angryMouthHeight = 50; // Set the height for the angry mouth image
         const angryMouthPosition = {
-          x: mouth[0].x - angryMouthWidth / 2, // Center image over the mouth
-          y: mouth[3].y - angryMouthHeight / 2, // You may adjust this if needed
+          x: mouth[0].x - angryMouthWidth / -4.5, // Center image over the mouth
+          y: mouth[3].y - angryMouthHeight / -2, // You may adjust this if needed
         };
 
         // Draw the image over the mouth (unmirrored)

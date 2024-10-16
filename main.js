@@ -58,6 +58,46 @@ function preload() {
     lipOpen = loadImage("images/lip-open.PNG");
     lipFilterArray = [lipBite, lipCrooked, lipOpen];
 
+/*
+    //the facial features in the different emotion eyes arrays
+    eyeShiny = loadImage("images/eye-shiny.PNG");
+    eyeCry = loadImage("images/eye-cry.PNG");
+    sadEyesArray = [eyeRound, eyeShiny, eyeCry];
+
+     eyeNormal = loadImage("images/eye-normal.PNG");
+     eyeRound = loadImage("images/eye-round.PNG");
+     eyeSmile = loadImage("images/eye-smile.PNG");
+     happyEyesArray = [eyeNormal, eyeRound, eyeSmile];
+
+    eyeMad = loadImage("images/eye-mad.PNG");
+    eyeClose = loadImage("images/eye-close.PNG");
+    eyeZombie = loadImage("images/eyes-zombie.PNG");
+    angryEyesArray = [eyeMood, eyeClose, eyeZombie];
+    
+      //the facial features in the nose array
+    noseSeptum = loadImage("images/nose-septum.PNG");
+    nosePig = loadImage("images/nose-pig.PNG");
+    noseWings = loadImage("images/nose-wings.PNG");
+    noseFat = loadImage("images/nose-fat.PNG");
+    noseRound = loadImage("images/nose-round.PNG");
+    noseArray = [noseSeptum, nosePig, noseWings];
+    
+    //the facial features in the different emotion lip arrays
+    lipBite = loadImage("images/lip-bite.PNG");
+    lipFrown= loadImage("images/lip-frown.PNG");
+    lipSad = loadImage("images/lip-sad.PNG");
+    sadMouthArray = [lipBite, lipCrooked, lipSad];
+
+    lipKiss = loadImage("images/lip-kiss.PNG");
+    lipEdge= loadImage("images/lip-edge.PNG");
+    lipTounge = loadImage("images/lip-tounge.PNG");
+    happyMouthArray = [lipKiss, lipEdge, lipTounge];
+
+    lipWide = loadImage("images/lip-wide.PNG");
+    lipCrooked= loadImage("images/lip-crooked.PNG");
+    lipOpen = loadImage("images/lip-open.PNG");
+    angryMouthArray = [lipWide, lipCrooked, lipOpen];
+*/
 
     //arrays for benevolent and mischievous
     happyBenevolentArray = [headHeart, browsLift, eyesCute, noseWings, lipBite];

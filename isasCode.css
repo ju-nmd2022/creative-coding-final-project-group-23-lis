@@ -48,13 +48,13 @@ canvas {
   left: 0;
 }
 
-#artcanvas {
+#artCanvas {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  z-index: 999; /* Make sure it's on top of the video */
 }
+
 
 #mood-images img {
   max-height: 300px;

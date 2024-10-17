@@ -143,6 +143,8 @@ function generateArt(emotion, mode) {
     document.getElementById("neutral-image").style.display = "block";
     video.style.filter = "";
     ctxx.clearRect(0, 0, canvas2.width, canvas2.height);
+    stopRainEffect();
+    stopFloatingHearts();
     return;
   }
 
@@ -193,8 +195,104 @@ function generateArt(emotion, mode) {
 //------------------------------------------------------------------------
 const canvas2 = document.getElementById("artCanvas2");
 const ctxx = canvas2.getContext("2d"); // Define it once for global access
+// Get the canvas element
+
+
 
 //-------------------------------FUNCTIONS FOR CANVAS ART-----------------
+
+// Get the canvas element
+function applyScreenGlitchEffect() {
+  let glitchTimeouts = [];
+
+  // Glitch function for the entire screen
+  function glitch() {
+    // Randomly translate the screen
+    document.body.style.transform = `translate(${Math.random() * 20 - 10}px, ${
+      Math.random() * 20 - 10
+    }px)`;
+
+    // Apply random hue rotation and contrast to the whole screen
+    document.body.style.filter = `hue-rotate(${Math.random() * 360}deg) contrast(${Math.random() * 2 + 1})`;
+
+    // Random opacity effect
+    document.body.style.opacity = Math.random() * 0.3 + 0.9;
+
+    // Reset the transformations after a random period
+    glitchTimeouts.push(
+      setTimeout(() => {
+        document.body.style.transform = "";
+        document.body.style.filter = "";
+        document.body.style.opacity = 1;
+      }, Math.random() * 500 + 50)
+    );
+  }
+
+  // Glitch interval for continuous effect
+  const glitchInterval = setInterval(glitch, Math.random() * 300 + 100);
+
+  // Stop the glitch effect after 2 seconds
+  setTimeout(() => {
+    clearInterval(glitchInterval);
+    glitchTimeouts.forEach(clearTimeout);
+    document.body.style.transform = "";
+    document.body.style.filter = "";
+    document.body.style.opacity = 1;
+  }, 2000); // Glitch for 2 seconds
+}
+
+//-------------------------------FUNCTIONS FOR CANVAS ART-----------------
+function drawSun() {
+  // Clear the canvas
+  ctxx.clearRect(0, 0, canvas2.width, canvas2.height);
+
+  // Number of suns to draw
+  const numberOfSuns = 5; // For example, let's draw 5 suns
+  const spacingX = 200; // Horizontal spacing between suns
+  const spacingY = 150; // Vertical spacing between suns
+
+  for (let i = 0; i < numberOfSuns; i++) {
+    let offsetX = (i % 2) * spacingX + 150; // Calculate X position (alternating between two columns)
+    let offsetY = Math.floor(i / 2) * spacingY + 150; // Calculate Y position (rows)
+
+    // Save the current context before applying transformations
+    ctxx.save();
+
+    // Draw the sun's body (a yellow circle)
+    ctxx.fillStyle = "yellow";
+    ctxx.beginPath();
+    ctxx.arc(offsetX, offsetY, 50, 0, Math.PI * 2); // x, y, radius, startAngle, endAngle
+    ctxx.fill();
+
+    // Draw the sun's rays
+    ctxx.strokeStyle = "orange"; // Rays will be orange
+    ctxx.lineWidth = 5; // Thickness of the rays
+    const radius = 70; // Length of the rays
+
+    for (let j = 0; j < 12; j++) {
+      let angle = (j * Math.PI) / 6; // Dividing the full circle into 12 rays
+      let startX = offsetX + Math.cos(angle) * 50; // Start at the edge of the sun
+      let startY = offsetY + Math.sin(angle) * 50;
+      let endX = offsetX + Math.cos(angle) * radius; // End point for the ray
+      let endY = offsetY + Math.sin(angle) * radius;
+
+      ctxx.beginPath();
+      ctxx.moveTo(startX, startY); // Start at the edge of the sun
+      ctxx.lineTo(endX, endY); // Draw the line outward
+      ctxx.stroke(); // Draw the ray
+    }
+
+    // Restore the original context (before rotation)
+    ctxx.restore();
+  }
+
+  // Add some text below the last sun
+  ctxx.fillStyle = "black";
+  ctxx.font = "30px Arial";
+  ctxx.fillText("Shining Suns", 100, 400); // Adjusted position for the text
+}
+
+
 function happyNeutralArt1() {
   ctxx.clearRect(0, 0, canvas2.width, canvas2.height);
   ctxx.fillStyle = "yellow";
@@ -228,11 +326,70 @@ function angryNeutralArt1() {
   ctxx.fillText("Angry Flame", 90, 250);
 }
 
-// the array
+//-------------------------------RAIN ANIMATION-------------------------------
+const raindrops = [];
+let isRaining = false; 
+
+function stopRainEffect() {
+  isRaining = false; 
+  raindrops.length = 0; 
+  ctxx.clearRect(0, 0, canvas2.width, canvas2.height); 
+}
+
+function startRainEffect() {
+  if (!isRaining) {
+    isRaining = true;
+    createRaindrops(100);
+    animateRain();
+  }
+}
+
+
+function createRaindrops(numDrops) {
+  for (let i = 0; i < numDrops; i++) {
+    raindrops.push({
+      x: Math.random() * canvas2.width,
+      y: Math.random() * canvas2.height,
+      length: Math.random() * 20 + 10,
+      speed: Math.random() * 2 + 2 
+    });
+  }
+}
+
+function rainEffect() {
+  ctxx.clearRect(0, 0, canvas2.width, canvas2.height); 
+
+  if (isRaining) {
+      raindrops.forEach((drop) => {
+          ctxx.beginPath();
+          ctxx.moveTo(drop.x, drop.y);
+          ctxx.lineTo(drop.x, drop.y + drop.length);
+          ctxx.strokeStyle = "rgba(173, 216, 230, 0.6)";
+          ctxx.lineWidth = 2;
+          ctxx.stroke();
+
+          drop.y += drop.speed;
+
+          if (drop.y > canvas2.height) {
+              drop.y = 0; 
+              drop.x = Math.random() * canvas2.width;
+          }
+      });
+  }
+}
+
+function animateRain() {
+  rainEffect(); 
+  if (isRaining) {
+    requestAnimationFrame(animateRain);
+  }
+}
+
+//array for all emotions of neutral
 let neutralArt = {
-  happy: [happyNeutralArt1],
-  sad: [sadNeutralArt1],
-  angry: [angryNeutralArt1],
+  happy: [happyNeutralArt1, drawSun, ],
+  sad: [sadNeutralArt1, startRainEffect], 
+  angry: [angryNeutralArt1, applyScreenGlitchEffect],
 };
 
 // the function for the array
@@ -299,8 +456,112 @@ function getRandomNeuComment(emotion) {
 //----------------------------------------------------------------------
 //-------------------------------BENE ART-------------------------------
 //----------------------------------------------------------------------
+let beneArt = {
+  happy: [createFloatingHearts, drawSun, ],
+  sad: [sadNeutralArt1, startRainEffect], 
+  angry: [angryNeutralArt1, applyScreenGlitchEffect],
+};
 
+function beneArtGenerator(emotion) {
+  const art = beneArt[emotion];
+  const randomIndex = Math.floor(Math.random() * art.length);
+  const selectedArtFunction = art[randomIndex];
+
+  selectedArtFunction();
+}
 //-------------------------------FUNCTIONS FOR CANVAS ART-----------------
+let floatingHeartsInterval;
+let heartsArray = []; // Array to keep track of hearts
+
+function createFloatingHearts() {
+  // Function to create a new heart element
+  function createHeart() {
+    // Create the heart element
+    const heart = document.createElement("div");
+    heart.classList.add("floating-heart"); // Add a class to style hearts
+    document.body.appendChild(heart);
+
+    // Store the heart element in the array
+    heartsArray.push(heart);
+
+    // Randomly position the heart
+    heart.style.left = `${Math.random() * 100}vw`; // 100vw allows it to be anywhere across the screen width
+    heart.style.top = `${Math.random() * 100}vh`;  // 100vh allows it to be anywhere across the screen height
+
+    // Set random size for the heart
+    const size = Math.random() * 15 + 10; // Random size between 10px and 25px
+    heart.style.width = `${size}px`;
+    heart.style.height = `${size}px`;
+
+    // Set animation duration for smooth floating
+    const duration = Math.random() * 3 + 3; // Heart floats for 3-6 seconds
+    heart.style.animationDuration = `${duration}s`;
+
+    // Random opacity for a more ethereal look
+    heart.style.opacity = Math.random() * 0.5 + 0.5; // Opacity between 0.5 and 1
+  }
+
+  // Create hearts at regular intervals
+  floatingHeartsInterval = setInterval(createHeart, 500); // Create a new heart every 500ms
+
+  // CSS to style the hearts and animation
+  const style = document.createElement("style");
+  style.innerHTML = `
+    .floating-heart {
+      position: absolute;
+      width: 100px;
+      height: 90px;
+      background: transparent;
+    }
+
+    .floating-heart:before, .floating-heart:after {
+      position: absolute;
+      content: "";
+      left: 50px;
+      top: 0;
+      width: 50px;
+      height: 80px;
+      background: red;
+      border-radius: 50px 50px 0 0;
+      transform: rotate(-45deg);
+      transform-origin: 0 100%;
+    }
+
+    .floating-heart:after {
+      left: 0;
+      transform: rotate(45deg);
+      transform-origin: 100% 100%;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// Function to stop all floating hearts and clear the interval
+function stopFloatingHearts() {
+  // Stop the interval for creating hearts
+  clearInterval(floatingHeartsInterval);
+
+  // Remove all heart elements from the screen
+  heartsArray.forEach(heart => {
+    heart.remove();
+  });
+
+  // Clear the array holding heart elements
+  heartsArray = [];
+}
+
 
 const canvas3 = document.getElementById("artCanvas");
 const ctx3 = canvas3.getContext("2d"); // Define it once for global access
@@ -340,9 +601,8 @@ function drawHappyBeneArt() {
 
   // Update the comment
   comment.innerHTML = getRandomBeneComment("happy");
-
-  // Start animating the gradient for "happy" emotion
-  animateGradient("happy");
+  beneArtGenerator("happy");
+  
 }
 
 function drawSadBeneArt() {
@@ -350,6 +610,7 @@ function drawSadBeneArt() {
   document.getElementById("sad-image").style.display = "block";
   document.getElementById("neutral-image").style.display = "none";
   comment.innerHTML = getRandomBeneComment("sad");
+  beneArtGenerator("sad");
 }
 
 function drawAngryBeneArt() {
@@ -357,6 +618,7 @@ function drawAngryBeneArt() {
   document.getElementById("angry-image").style.display = "block";
   document.getElementById("neutral-image").style.display = "none";
   comment.innerHTML = getRandomBeneComment("angry");
+  beneArtGenerator("angry");
 }
 
 //-------------------------------COMMENTS FOR BENE AND FUNCTION-------------------------------

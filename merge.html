@@ -5,16 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Emotion Detection using Face-api.js</title>
     <!-- Correct CDN for face-api.js -->
+
     <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
     <link rel="stylesheet" href="merge.css" />
   </head>
   <body>
     <div id="mood-text"></div>
-      
+
     <div id="artist-image">
-      <img id="nose-round" style="position: absolute; top: 0; left: 0; display: none;" />
-      <img id="nose-wings" style="position: absolute; top: 0; left: 0; display: none;" /> 
-      <img id="lip-wide" style="position: absolute; top: 0; left: 0; display: none;" />
+      <img
+        id="nose-round"
+        style="position: absolute; top: 0; left: 0; display: none"
+      />
+      <img
+        id="nose-wings"
+        style="position: absolute; top: 0; left: 0; display: none"
+      />
+      <img
+        id="lip-wide"
+        style="position: absolute; top: 0; left: 0; display: none"
+      />
     </div>
 
     <div id="mood-images">
@@ -54,12 +64,21 @@
         alt="Impatient Artist"
         style="display: none"
       />
+      <img
+        id="neutral-image"
+        src="images/artist-neutral.png"
+        alt="Neutral Artist"
+        style="display: block"
+      />
     </div>
 
     <div id="video-container">
       <video id="video" autoplay muted></video>
+      <canvas id="canvas-overlay"></canvas>
+      <canvas id="artCanvas" width="300" height="300"></canvas>
+      <canvas id="particleCanvas"></canvas>
     </div>
-    <p>Emotion: <span id="emotion"></span></p>
+    <span id="emotion"></span>
 
     <div class="bubble-container">
       <img
@@ -70,6 +89,6 @@
       <p id="artist-comment"></p>
     </div>
 
-    <script src="merging.js" defer></script>
+    <script src="tryhard.js" defer></script>
   </body>
 </html>

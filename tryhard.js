@@ -127,7 +127,6 @@ video.addEventListener("play", () => {
 function randomizeMood() {
   let randomizedMood = Math.floor(Math.random() * 15);
 
-  //set mood based on the randomized number
   if (randomizedMood <= 2) {
     mood = "bene";
   } else if (randomizedMood <= 5) {
@@ -140,8 +139,9 @@ function randomizeMood() {
 function generateArt(emotion, mode) {
   if (emotion === "neutral") {
     comment.innerHTML =
-      "You are not displaying any emotion. The artist is waiting for some emotion."; // Display a neutral comment
-    document.getElementById("benevolent-image").style.display = "block"; // Show neutral image
+      "You are not displaying any emotion. The artist is waiting for some emotion.";
+    document.getElementById("neutral-image").style.display = "block";
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     video.style.filter = "";
     return;
   }
@@ -188,75 +188,92 @@ function generateArt(emotion, mode) {
   displayCurrentMood(mode);
 }
 
+//------------------------------------------------------------------------
 //-------------------------------NORMAL ART-------------------------------
+//------------------------------------------------------------------------
+const canvas = document.getElementById("artCanvas");
+const ctx = canvas.getContext("2d");
+
+//-------------------------------FUNCTIONS FOR CANVAS ART-----------------
+function happyNeutralArt1() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "yellow";
+  ctx.beginPath();
+  ctx.arc(150, 150, 50, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "black";
+  ctx.font = "30px Arial";
+  ctx.fillText("Smiling Sun", 100, 250);
+}
+
+function sadNeutralArt1() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "blue";
+  ctx.beginPath();
+  ctx.arc(150, 150, 50, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "white";
+  ctx.font = "30px Arial";
+  ctx.fillText("Raindrop", 110, 250);
+}
+
+function angryNeutralArt1() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "red";
+  ctx.beginPath();
+  ctx.arc(150, 150, 50, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "black";
+  ctx.font = "30px Arial";
+  ctx.fillText("Angry Flame", 90, 250);
+}
+
+// the array
+let neutralArt = {
+  happy: [happyNeutralArt1],
+  sad: [sadNeutralArt1],
+  angry: [angryNeutralArt1],
+};
+
+// the function for the array
+function neutralArtGenerator(emotion) {
+  const art = neutralArt[emotion];
+  const randomIndex = Math.floor(Math.random() * art.length);
+  const selectedArtFunction = art[randomIndex];
+
+  selectedArtFunction();
+}
+
+//-------------------------------FUNCTIONS FOR DISPLAYING ALL NEUTRAL-------------------------------
+
 function drawHappyNeutralArt() {
   console.log("Drawing normal happy art");
   document.getElementById("happy-image").style.display = "block";
+  document.getElementById("neutral-image").style.display = "none";
   comment.innerHTML = getRandomNeuComment("happy");
-  generateDynamicArt("happy");
+  neutralArtGenerator("happy");
 }
 
 function drawSadNeutralArt() {
   console.log("Drawing normal sad art");
   document.getElementById("sad-image").style.display = "block";
+  document.getElementById("neutral-image").style.display = "none";
   comment.innerHTML = getRandomNeuComment("sad");
-  generateDynamicArt("sad");
+  neutralArtGenerator("sad");
 }
 
 function drawAngryNeutralArt() {
   console.log("Drawing normal angry art");
   document.getElementById("angry-image").style.display = "block";
+  document.getElementById("neutral-image").style.display = "none";
   comment.innerHTML = getRandomNeuComment("angry");
-  generateDynamicArt("angry");
+  neutralArtGenerator("angry");
 }
 
-let lastDrawnEmotion = null; // Variable to store the last drawn emotion
-
-function generateDynamicArt(emotion) {
-  const canvas = document.querySelector("canvas");
-  if (!canvas) return;
-
-  // Avoid drawing again if the same emotion is displayed
-  if (emotion === lastDrawnEmotion) return;
-
-  const ctx = canvas.getContext("2d");
-  //ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear previous drawing
-
-  // Adjust canvas size to video size
-  const videoElement = document.getElementById("video");
-  const displaySize = {
-    width: videoElement.videoWidth,
-    height: videoElement.videoHeight,
-  };
-  faceapi.matchDimensions(canvas, displaySize);
-
-  // Drawing logic based on emotion
-  if (emotion === "happy") {
-    ctx.fillStyle = "yellow";
-    ctx.beginPath();
-    ctx.arc(150, 150, 50, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "black";
-    ctx.font = "30px Arial";
-    ctx.fillText("Smiling Sun", 100, 250);
-  } else if (emotion === "sad") {
-    ctx.fillStyle = "blue";
-    ctx.beginPath();
-    ctx.arc(150, 150, 50, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "white";
-    ctx.font = "30px Arial";
-    ctx.fillText("Raindrop", 110, 250);
-  } else if (emotion === "angry") {
-    ctx.fillStyle = "red";
-    ctx.beginPath();
-    ctx.arc(150, 150, 50, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "black";
-    ctx.font = "30px Arial";
-    ctx.fillText("Angry Flame", 90, 250);
-  }
-}
+//-------------------------------COMMENTS FOR NEUTRAL AND FUNCTION-------------------------------
 
 let neutralComments = {
   happy: [
@@ -282,25 +299,67 @@ function getRandomNeuComment(emotion) {
   return comments[randomIndex];
 }
 
+//----------------------------------------------------------------------
 //-------------------------------BENE ART-------------------------------
+//----------------------------------------------------------------------
+
+//-------------------------------FUNCTIONS FOR CANVAS ART-----------------
+
+function animateGradient(emotion) {
+  let gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+
+  if (emotion === "happy") {
+    gradient.addColorStop(0, "yellow");
+    gradient.addColorStop(1, "orange");
+  } else if (emotion === "sad") {
+    gradient.addColorStop(0, "blue");
+    gradient.addColorStop(1, "purple");
+  } else if (emotion === "angry") {
+    gradient.addColorStop(0, "red");
+    gradient.addColorStop(1, "black");
+  }
+
+  // Clear the canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Apply the gradient with transparency (so you can still see the video)
+  ctx.globalAlpha = 0.5;
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Recursive animation
+  requestAnimationFrame(() => animateGradient(emotion));
+}
+
 function drawHappyBeneArt() {
   console.log("Drawing happy art in bene mode");
+
+  // Show the happy image and hide the neutral image
   document.getElementById("happy-image").style.display = "block";
+  document.getElementById("neutral-image").style.display = "none";
+
+  // Update the comment
   comment.innerHTML = getRandomBeneComment("happy");
+
+  // Start animating the gradient for "happy" emotion
+  animateGradient("happy");
 }
 
 function drawSadBeneArt() {
   console.log("Drawing sad art in bene mode");
   document.getElementById("sad-image").style.display = "block";
+  document.getElementById("neutral-image").style.display = "none";
   comment.innerHTML = getRandomBeneComment("sad");
 }
 
 function drawAngryBeneArt() {
   console.log("Drawing angry art in bene mode");
   document.getElementById("angry-image").style.display = "block";
+  document.getElementById("neutral-image").style.display = "none";
   comment.innerHTML = getRandomBeneComment("angry");
 }
 
+//-------------------------------COMMENTS FOR BENE AND FUNCTION-------------------------------
 let beneComments = {
   happy: [
     "I'm so glad to see you happy! Keep smiling, you're doing great! 😊",
@@ -325,28 +384,145 @@ function getRandomBeneComment(emotion) {
   return comments[randomIndex];
 }
 
+//----------------------------------------------------------------------
 //-------------------------------MISC ART-------------------------------
+//----------------------------------------------------------------------
+
+//-------------------------------THE EFFECTS FOR MISC-------------------
+
+//this is a glitch effect applied for happy
+function applyGlitchEffect() {
+  let glitchTimeouts = [];
+  const videoElement = document.getElementById("video");
+
+  function glitch() {
+    videoElement.style.transform = `translate(${Math.random() * 20 - 10}px, ${
+      Math.random() * 20 - 10
+    }px)`;
+    videoElement.style.filter = `hue-rotate(${
+      Math.random() * 360
+    }deg) contrast(${Math.random() * 2 + 1})`;
+    videoElement.style.opacity = Math.random() * 0.6 + 0.4;
+
+    glitchTimeouts.push(
+      setTimeout(() => {
+        videoElement.style.transform = "";
+        videoElement.style.filter = "";
+        videoElement.style.opacity = 1;
+      }, Math.random() * 500 + 50)
+    );
+  }
+
+  const glitchInterval = setInterval(glitch, Math.random() * 300 + 100);
+
+  setTimeout(() => {
+    clearInterval(glitchInterval);
+    glitchTimeouts.forEach(clearTimeout);
+    videoElement.style.transform = "";
+    videoElement.style.filter = "";
+    videoElement.style.opacity = 1;
+  }, 2000); // glitch for 2 seconds
+}
+
+//this is particle code for all the emotions on misc
+const canvas2 = document.getElementById("particleCanvas");
+const ctx2 = canvas2.getContext("2d");
+
+let particles = [];
+
+class Particle {
+  constructor(x, y, velocityX, velocityY, color, size = 3) {
+    this.x = x;
+    this.y = y;
+    this.velocityX = velocityX;
+    this.velocityY = velocityY;
+    this.color = color;
+    this.size = size;
+  }
+
+  update() {
+    this.x += this.velocityX;
+    this.y += this.velocityY;
+    if (this.size < 5) this.size += 0.05;
+  }
+
+  draw(ctx) {
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function createParticles(emotion) {
+  particles = [];
+  const numParticles = 100;
+
+  let color, speed, opacity;
+  if (emotion === "happy") {
+    color = "yellow";
+    speed = 2;
+    opacity = 1;
+  } else if (emotion === "sad") {
+    color = "blue";
+    speed = 0.5;
+    opacity = 0.8;
+  } else if (emotion === "angry") {
+    color = "red";
+    speed = 4;
+    opacity = 1;
+  }
+
+  for (let i = 0; i < numParticles; i++) {
+    let x = Math.random() * canvas2.width;
+    let y = Math.random() * canvas2.height;
+    let velocityX = (Math.random() - 0.5) * speed;
+    let velocityY = (Math.random() - 0.5) * speed;
+    particles.push(new Particle(x, y, velocityX, velocityY, color, opacity));
+  }
+
+  requestAnimationFrame(animateParticles);
+}
+
+function animateParticles() {
+  ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+
+  particles.forEach((particle) => {
+    particle.update();
+    particle.draw(ctx2);
+  });
+
+  requestAnimationFrame(animateParticles);
+}
+
+//-------------------FUNCTIONS FOR DISPLAYING MISC-------------------
 function drawHappyMiscArt() {
   console.log("Drawing happy art in misc mode");
   document.getElementById("happy-image").style.display = "block";
+  document.getElementById("neutral-image").style.display = "none";
   comment.innerHTML = getRandomMischievousComment("happy");
-  video.style.filter = getRandomMiscFilter("happy");
+  applyGlitchEffect();
+  createParticles("happy");
 }
 
 function drawSadMiscArt() {
   console.log("Drawing sad art in misc mode");
   document.getElementById("sad-image").style.display = "block";
+  document.getElementById("neutral-image").style.display = "none";
   comment.innerHTML = getRandomMischievousComment("sad");
-  video.style.filter = getRandomMiscFilter("sad");
+  createParticles("sad");
 }
 
 function drawAngryMiscArt() {
   console.log("Drawing angry art in misc mode");
   document.getElementById("mischievous-image").style.display = "block";
+  document.getElementById("neutral-image").style.display = "none";
   comment.innerHTML = getRandomMischievousComment("angry");
   video.style.filter = getRandomMiscFilter("angry");
+  createParticles("angry");
 }
 
+//-------------------------COMMENTS FOR MISC AND FUNCTION--------------------------
 let mischievousComments = {
   happy: [
     "Oh, you're happy? Let’s see how long that lasts!",
@@ -366,37 +542,43 @@ let mischievousComments = {
 };
 
 let miscFilter = {
+  //not in use
   happy: [
-    "brightness(1.5) saturate(1.5)", // Filter 1
-    "brightness(1.7) saturate(1.6)", // Filter 2
-    "sepia(0.5) contrast(1.2)", // Filter 3
+    "brightness(1.5) saturate(1.5)",
+    "brightness(2) saturate(1.6)",
+    "sepia(0.5) contrast(1.2)",
   ],
+  //not in use
   sad: [
-    "grayscale(1) brightness(0.7)", // Filter 1
-    "grayscale(1) brightness(0.7)", // Filter 2
-    "grayscale(1) brightness(0.5) contrast(1.3)", // Filter 3
+    "grayscale(1) brightness(2)",
+    "grayscale(1) brightness(0.7)",
+    "grayscale(1) brightness(0.5) contrast(1.3)",
   ],
   angry: [
-    "contrast(1.5) saturate(2)", // Filter 1
-    "contrast(1.8) saturate(2)", // Filter 2
-    "contrast(1.5) saturate(2) hue-rotate(180deg)",
+    "contrast(2) saturate(3)",
+    "contrast(1) saturate(2) grayscale(1)",
+    "contrast(4) saturate(2) hue-rotate(180deg)",
   ],
 };
 
+//random filter
 function getRandomMiscFilter(emotion) {
   const filters = miscFilter[emotion];
   const randomIndex = Math.floor(Math.random() * filters.length);
   return filters[randomIndex];
 }
 
-// Function to get a random comment for a given emotion
+// random comment
 function getRandomMischievousComment(emotion) {
   const comments = mischievousComments[emotion];
   const randomIndex = Math.floor(Math.random() * comments.length);
   return comments[randomIndex];
 }
 
+//---------------------------------------------------------------------------------------
 //-------------------------------UPDATE ARTIST IMAGE LOGIC-------------------------------
+//---------------------------------------------------------------------------------------
+
 document.getElementById("mood-text").innerHTML = "";
 
 // Function to update the mood text
@@ -439,7 +621,6 @@ function updateMoodImages(emotion, mode) {
     comment.innerHTML =
       "I'm a little impatient, and this is boring. Do something interesting!";
   } else {
-    // Display image based on the current emotion
     switch (emotion) {
       case "happy":
         document.getElementById("happy-image").style.display = "block";
@@ -484,7 +665,6 @@ function hideAllImages() {
   document.getElementById("sad-image").style.display = "none";
   document.getElementById("angry-image").style.display = "none";
   document.getElementById("mischievous-image").style.display = "none";
-  document.getElementById("benevolent-image").style.display = "none";
   document.getElementById("happy-image").style.display = "none";
   document.getElementById("impatient-image").style.display = "none";
 }

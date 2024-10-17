@@ -141,7 +141,7 @@ function generateArt(emotion, mode) {
     comment.innerHTML =
       "You are not displaying any emotion. The artist is waiting for some emotion.";
     document.getElementById("neutral-image").style.display = "block";
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas2.width, canvas2.height);
     video.style.filter = "";
     return;
   }
@@ -191,13 +191,12 @@ function generateArt(emotion, mode) {
 //------------------------------------------------------------------------
 //-------------------------------NORMAL ART-------------------------------
 //------------------------------------------------------------------------
-const canvas = document.getElementById("artCanvas");
-const ctx = canvas.getContext("2d");
+const canvas2 = document.getElementById("artCanvas");
+const ctx = canvas2.getContext("2d"); // Define it once for global access
 
 //-------------------------------FUNCTIONS FOR CANVAS ART-----------------
 function happyNeutralArt1() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+  ctx.clearRect(0, 0, canvas2.width, canvas2.height);
   ctx.fillStyle = "yellow";
   ctx.beginPath();
   ctx.arc(150, 150, 50, 0, Math.PI * 2);
@@ -208,7 +207,7 @@ function happyNeutralArt1() {
 }
 
 function sadNeutralArt1() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas2.width, canvas2.height);
 
   ctx.fillStyle = "blue";
   ctx.beginPath();
@@ -220,7 +219,7 @@ function sadNeutralArt1() {
 }
 
 function angryNeutralArt1() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas2.width, canvas2.height);
 
   ctx.fillStyle = "red";
   ctx.beginPath();
@@ -305,8 +304,11 @@ function getRandomNeuComment(emotion) {
 
 //-------------------------------FUNCTIONS FOR CANVAS ART-----------------
 
+const canvas3 = document.getElementById("artCanvas");
+const ctx3 = canvas3.getContext("2d"); // Define it once for global access
+
 function animateGradient(emotion) {
-  let gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+  let gradient = ctx3.createLinearGradient(0, 0, canvas3.width, canvas3.height);
 
   if (emotion === "happy") {
     gradient.addColorStop(0, "yellow");
@@ -320,12 +322,12 @@ function animateGradient(emotion) {
   }
 
   // Clear the canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx3.clearRect(0, 0, canvas3.width, canvas3.height);
 
   // Apply the gradient with transparency (so you can still see the video)
-  ctx.globalAlpha = 0.5;
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx3.globalAlpha = 0.5;
+  ctx3.fillStyle = gradient;
+  ctx3.fillRect(0, 0, canvas3.width, canvas3.height);
 
   // Recursive animation
   requestAnimationFrame(() => animateGradient(emotion));
@@ -393,7 +395,6 @@ function getRandomBeneComment(emotion) {
 //this is a glitch effect applied for happy
 function applyGlitchEffect() {
   let glitchTimeouts = [];
-  const videoElement = document.getElementById("video");
 
   function glitch() {
     videoElement.style.transform = `translate(${Math.random() * 20 - 10}px, ${
@@ -425,8 +426,9 @@ function applyGlitchEffect() {
 }
 
 //this is particle code for all the emotions on misc
-const canvas2 = document.getElementById("particleCanvas");
-const ctx2 = canvas2.getContext("2d");
+
+const canvas4 = document.getElementById("artCanvas");
+const ctx4 = canvas4.getContext("2d"); // Only define once here
 
 let particles = [];
 
@@ -446,11 +448,11 @@ class Particle {
     if (this.size < 5) this.size += 0.05;
   }
 
-  draw(ctx) {
-    ctx.fillStyle = this.color;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fill();
+  draw(ctx4) {
+    ctx4.fillStyle = this.color;
+    ctx4.beginPath();
+    ctx4.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx4.fill();
   }
 }
 
@@ -474,8 +476,8 @@ function createParticles(emotion) {
   }
 
   for (let i = 0; i < numParticles; i++) {
-    let x = Math.random() * canvas2.width;
-    let y = Math.random() * canvas2.height;
+    let x = Math.random() * canvas4.width;
+    let y = Math.random() * canvas4.height;
     let velocityX = (Math.random() - 0.5) * speed;
     let velocityY = (Math.random() - 0.5) * speed;
     particles.push(new Particle(x, y, velocityX, velocityY, color, opacity));
@@ -485,11 +487,11 @@ function createParticles(emotion) {
 }
 
 function animateParticles() {
-  ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+  ctx4.clearRect(0, 0, canvas4.width, canvas4.height);
 
   particles.forEach((particle) => {
     particle.update();
-    particle.draw(ctx2);
+    particle.draw(ctx4);
   });
 
   requestAnimationFrame(animateParticles);

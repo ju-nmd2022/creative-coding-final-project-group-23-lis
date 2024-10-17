@@ -141,8 +141,8 @@ function generateArt(emotion, mode) {
     comment.innerHTML =
       "You are not displaying any emotion. The artist is waiting for some emotion.";
     document.getElementById("neutral-image").style.display = "block";
-    ctx.clearRect(0, 0, canvas2.width, canvas2.height);
     video.style.filter = "";
+    ctxx.clearRect(0, 0, canvas2.width, canvas2.height);
     return;
   }
 
@@ -191,43 +191,41 @@ function generateArt(emotion, mode) {
 //------------------------------------------------------------------------
 //-------------------------------NORMAL ART-------------------------------
 //------------------------------------------------------------------------
-const canvas2 = document.getElementById("artCanvas");
-const ctx = canvas2.getContext("2d"); // Define it once for global access
+const canvas2 = document.getElementById("artCanvas2");
+const ctxx = canvas2.getContext("2d"); // Define it once for global access
 
 //-------------------------------FUNCTIONS FOR CANVAS ART-----------------
 function happyNeutralArt1() {
-  ctx.clearRect(0, 0, canvas2.width, canvas2.height);
-  ctx.fillStyle = "yellow";
-  ctx.beginPath();
-  ctx.arc(150, 150, 50, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = "black";
-  ctx.font = "30px Arial";
-  ctx.fillText("Smiling Sun", 100, 250);
+  ctxx.clearRect(0, 0, canvas2.width, canvas2.height);
+  ctxx.fillStyle = "yellow";
+  ctxx.beginPath();
+  ctxx.arc(150, 150, 50, 0, Math.PI * 2);
+  ctxx.fill();
+  ctxx.fillStyle = "black";
+  ctxx.font = "30px Arial";
+  ctxx.fillText("Smiling Sun", 100, 250);
 }
 
 function sadNeutralArt1() {
-  ctx.clearRect(0, 0, canvas2.width, canvas2.height);
-
-  ctx.fillStyle = "blue";
-  ctx.beginPath();
-  ctx.arc(150, 150, 50, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = "white";
-  ctx.font = "30px Arial";
-  ctx.fillText("Raindrop", 110, 250);
+  ctxx.clearRect(0, 0, canvas2.width, canvas2.height);
+  ctxx.fillStyle = "blue";
+  ctxx.beginPath();
+  ctxx.arc(150, 150, 50, 0, Math.PI * 2);
+  ctxx.fill();
+  ctxx.fillStyle = "black";
+  ctxx.font = "30px Arial";
+  ctxx.fillText("Raindrop", 110, 250);
 }
 
 function angryNeutralArt1() {
-  ctx.clearRect(0, 0, canvas2.width, canvas2.height);
-
-  ctx.fillStyle = "red";
-  ctx.beginPath();
-  ctx.arc(150, 150, 50, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = "black";
-  ctx.font = "30px Arial";
-  ctx.fillText("Angry Flame", 90, 250);
+  ctxx.clearRect(0, 0, canvas2.width, canvas2.height);
+  ctxx.fillStyle = "red";
+  ctxx.beginPath();
+  ctxx.arc(150, 150, 50, 0, Math.PI * 2);
+  ctxx.fill();
+  ctxx.fillStyle = "black";
+  ctxx.font = "30px Arial";
+  ctxx.fillText("Angry Flame", 90, 250);
 }
 
 // the array

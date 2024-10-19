@@ -40,21 +40,20 @@ body {
   width: 720px; /* Set the desired video size */
   height: auto;
 }
-
-/* The canvas is absolutely positioned over the video */
 canvas {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-#artCanvas {
+#artCanvas2 {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 999; /* Make sure it's on top of the video */
+  z-index: 999;
+  width: 100%;
+  height: 100%;
 }
-
 
 #mood-images img {
   max-height: 300px;
@@ -63,22 +62,17 @@ canvas {
 }
 
 #mood-text {
-  position: fixed; /* Fixes the text to the bottom of the screen */
-  bottom: 20px; /* Space from the bottom */
-  left: 50%; /* Centers the text horizontally */
-  transform: translateX(-50%); /* Perfect centering */
-  font-size: 20px; /* Adjust font size as needed */
-  color: #333; /* Set text color */
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.7
-  ); /* Optional: Add a background to make it more readable */
-  padding: 10px; /* Space around the text */
-  border-radius: 8px; /* Rounded corners for the background */
-  text-align: center; /* Center-align the text */
-  width: 80%; /* Adjust width as needed */
-  box-sizing: border-box; /* Ensures padding doesn't affect width */
-  z-index: 9999; /* Keeps it on top of other elements */
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  width: 80%;
+  box-sizing: border-box;
+  z-index: 9999;
 }

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Emotion Detection using Face-api.js</title>
     <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simplex-noise@2.4.0/simplex-noise.min.js"></script>
+
     <link rel="stylesheet" href="isasCode.css" />
   </head>
   <body>
@@ -54,15 +56,13 @@
         style="display: none"
       />
     </div>
-
-      <div id="artCANVA"></div>
+    <div id="artCANVA"></div>
     <div id="video-container">
       <video id="video" autoplay muted></video>
       <canvas id="artCanvas"></canvas>
-      <canvas id="artCanvas2" width="300" height="300"></canvas>
+      <canvas id="artCanvas2"></canvas>
     </div>
     <p><span id="emotion"></span></p>
-
     <div class="bubble-container">
       <img
         src="images/speech-bubble.PNG"

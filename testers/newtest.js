@@ -41,27 +41,51 @@ const sadMouthArray = [
 ];
 
 // Variables to hold the selected images for each part (to prevent re-randomization)
-let selectedAngryEyeImage = null;
-let selectedNoseImage = null; // Common nose image for all emotions
-let selectedAngryMouthImage = null;
+let previousEmotion = null; // Previous emotion state to detect changes
 
-let selectedHappyEyeImage = null;
-let selectedHappyMouthImage = null;
-
-let selectedSadEyeImage = null;
-let selectedSadMouthImage = null;
-
-// Previous emotion states to detect changes
-let previousEmotion = null;
-
-// Function to load random images from an array and ensure they are loaded before use
+// Function to load random images from an array
 function getRandomImage(imageArray) {
   return new Promise((resolve) => {
     const randomIndex = Math.floor(Math.random() * imageArray.length);
     const img = new Image();
     img.src = imageArray[randomIndex];
-    img.onload = () => resolve(img); // Resolve the promise once the image is loaded
+    img.onload = () => resolve(img);
   });
+}
+
+// Function to handle image selection based on emotion and mode
+async function handleEmotionSelection(emotion, mode) {
+  let eyeImages, mouthImages;
+
+  switch (emotion) {
+    case "angry":
+      eyeImages = angryEyeArray;
+      mouthImages = angryMouthArray;
+      break;
+    case "happy":
+      eyeImages = happyEyeArray;
+      mouthImages = happyMouthArray;
+      break;
+    case "sad":
+      eyeImages = sadEyeArray;
+      mouthImages = sadMouthArray;
+      break;
+    default:
+      return {}; // No valid emotion detected
+  }
+
+  // Adjust images based on the bot's mode (neutral, mischievous, etc.)
+  if (mode === "mischievous") {
+    // Modify the arrays or images for mischievous mode if needed
+  }
+
+  const selectedNoseImage = await getRandomImage(noseArray);
+  const [selectedEyeImage, selectedMouthImage] = await Promise.all([
+    getRandomImage(eyeImages),
+    getRandomImage(mouthImages),
+  ]);
+
+  return { selectedEyeImage, selectedNoseImage, selectedMouthImage };
 }
 
 // Load the Face API models
@@ -78,14 +102,13 @@ function startVideo() {
     .then((stream) => {
       video.srcObject = stream;
 
-      // Wait for the video to fully load its metadata (such as width and height)
       video.addEventListener("loadedmetadata", () => {
         const canvas = faceapi.createCanvasFromMedia(video);
         document.body.append(canvas);
         const displaySize = {
           width: video.videoWidth,
           height: video.videoHeight,
-        }; // Use video dimensions
+        };
         faceapi.matchDimensions(canvas, displaySize);
 
         // Start processing the video
@@ -95,7 +118,10 @@ function startVideo() {
             .withFaceLandmarks()
             .withFaceExpressions();
 
-          const resizedDetections = faceapi.resizeResults(detections, displaySize);
+          const resizedDetections = faceapi.resizeResults(
+            detections,
+            displaySize
+          );
           const canvasCtx = canvas.getContext("2d");
           canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -104,42 +130,69 @@ function startVideo() {
             const emotions = resizedDetections[0].expressions;
 
             // Determine the highest emotion
-            const currentEmotion = Object.keys(emotions).reduce((a, b) => (emotions[a] > emotions[b] ? a : b));
+            const currentEmotion = Object.keys(emotions).reduce((a, b) =>
+              emotions[a] > emotions[b] ? a : b
+            );
 
             // Check if the emotion has changed
             if (currentEmotion !== previousEmotion) {
               previousEmotion = currentEmotion;
 
-              // Reset all images
-              selectedAngryEyeImage = null;
-              selectedNoseImage = null;
-              selectedAngryMouthImage = null;
-              selectedHappyEyeImage = null;
-              selectedHappyMouthImage = null;
-              selectedSadEyeImage = null;
-              selectedSadMouthImage = null;
+              // Get the artist bot's mode (for example, neutral or mischievous)
+              const botMode = "neutral"; // You can change this dynamically
 
-              // Handle each emotion
-              if (currentEmotion === 'angry' && emotions.angry > 0.5) {
-                [selectedAngryEyeImage, selectedNoseImage, selectedAngryMouthImage] = await Promise.all([
-                  getRandomImage(angryEyeArray),
-                  getRandomImage(noseArray),
-                  getRandomImage(angryMouthArray),
-                ]);
-              } else if (currentEmotion === 'happy' && emotions.happy > 0.5) {
-                [selectedHappyEyeImage, selectedNoseImage, selectedHappyMouthImage] = await Promise.all([
-                  getRandomImage(happyEyeArray),
-                  getRandomImage(noseArray),
-                  getRandomImage(happyMouthArray),
-                ]);
-              } else if (currentEmotion === 'sad' && emotions.sad > 0.5) {
-                [selectedSadEyeImage, selectedNoseImage, selectedSadMouthImage] = await Promise.all([
-                  getRandomImage(sadEyeArray),
-                  getRandomImage(noseArray),
-                  getRandomImage(sadMouthArray),
-                ]);
+              // Call the function to handle the emotion and mode
+              const {
+                selectedEyeImage,
+                selectedNoseImage,
+                selectedMouthImage,
+              } = await handleEmotionSelection(currentEmotion, botMode);
+
+              if (selectedEyeImage && selectedNoseImage && selectedMouthImage) {
+                // Draw images based on current emotion and landmarks
+                const leftEye = landmarks.getLeftEye();
+                const rightEye = landmarks.getRightEye();
+                const nose = landmarks.getNose();
+                const mouth = landmarks.getMouth();
+
+                const eyeWidth = 40,
+                  eyeHeight = 40;
+                const noseWidth = 40,
+                  noseHeight = 40;
+                const mouthWidth = 60,
+                  mouthHeight = 40;
+
+                canvasCtx.drawImage(
+                  selectedEyeImage,
+                  leftEye[3].x - eyeWidth / 2,
+                  leftEye[3].y - eyeHeight / 2,
+                  eyeWidth,
+                  eyeHeight
+                );
+                canvasCtx.drawImage(
+                  selectedEyeImage,
+                  rightEye[3].x - eyeWidth / 2,
+                  rightEye[3].y - eyeHeight / 2,
+                  eyeWidth,
+                  eyeHeight
+                );
+                canvasCtx.drawImage(
+                  selectedNoseImage,
+                  nose[3].x - noseWidth / 2,
+                  nose[3].y - noseHeight / 2,
+                  noseWidth,
+                  noseHeight
+                );
+                canvasCtx.drawImage(
+                  selectedMouthImage,
+                  mouth[0].x - mouthWidth / 2,
+                  mouth[3].y - mouthHeight / 2,
+                  mouthWidth,
+                  mouthHeight
+                );
               }
             }
+<<<<<<< Updated upstream:testers/newtest.js
 
             // Draw images based on current emotion
             const leftEye = landmarks.getLeftEye();
@@ -171,6 +224,9 @@ function startVideo() {
               canvasCtx.drawImage(selectedSadMouthImage, mouth[0].x - mouthWidth / 2, mouth[3].y - mouthHeight / 2, mouthWidth, mouthHeight);
             }
           } 
+=======
+          }
+>>>>>>> Stashed changes:newtest.js
         }, 100); // Update every 100ms
       });
     })

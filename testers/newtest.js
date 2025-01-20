@@ -193,6 +193,7 @@ function startVideo() {
               }
             }
 <<<<<<< Updated upstream:testers/newtest.js
+<<<<<<< Updated upstream:testers/newtest.js
 
             // Draw images based on current emotion
             const leftEye = landmarks.getLeftEye();
@@ -225,6 +226,8 @@ function startVideo() {
             }
           } 
 =======
+=======
+>>>>>>> Stashed changes:newtest.js
           }
 >>>>>>> Stashed changes:newtest.js
         }, 100); // Update every 100ms

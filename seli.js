@@ -176,4 +176,43 @@ const noseArray = [
       })
       .catch((err) => console.error("Error accessing webcam:", err));
   }
+
+
+
+// Hide or display images and text based on the current mood
+function updateMoodImages() {
+  document.getElementById("sad-image").style.display = "none";
+  document.getElementById("angry-image").style.display = "none";
+  document.getElementById("mischievous-image").style.display = "none";
+  document.getElementById("benevolent-image").style.display = "none";
+  document.getElementById("happy-image").style.display = "none";
+  document.getElementById("impatient-image").style.display = "none";
+
+  // Update the displayed image and comment based on the current mood
+  if (mood === "sad") {
+      document.getElementById("sad-image").style.display = "block";
+      comment.innerHTML = "Oh... I guess I could paint you blue :(";
+      
+  } else if (mood === "angry") {
+      document.getElementById("angry-image").style.display = "block";
+      comment.innerHTML = "AARRGH!!! Here you go stupid, I'll paint you in red >:(";
+      
+  } else if (mood === "mischievous") {
+      document.getElementById("mischievous-image").style.display = "block";
+      comment.innerHTML = "Look at you! Ridiculous. This is how you look, haha! >:)";
+      
+  } else if (mood === "benevolent") {
+      document.getElementById("benevolent-image").style.display = "block";
+      comment.innerHTML = "Aww, you look lovely today, let's make you look even cuter! :)";
+     
+  } else if (mood === "happy") {
+      document.getElementById("happy-image").style.display = "block";
+      comment.innerHTML = "Ah look, I can paint you in a lovely yellow shade :D";
+     
+  } else if (mood === "impatient") {
+      document.getElementById("impatient-image").style.display = "block";
+      comment.innerHTML = "I'm a little impatient, and this is boring. If you don't do something interesting soon, my mood will change.";
+  }
+}
+  
   

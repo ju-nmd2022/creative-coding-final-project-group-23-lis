@@ -1,3 +1,9 @@
+/*
+We worked on the code to make the artist appear. He does (yay!), but, we cannot seem to make sure that the correct emotion is showed
+at the right place. We only want the artist to be sad/angry/happy when the user input is the same. It always has the option of three 
+emotions (bene, misc and sad/happy/angry).
+*/
+
 // Arrays holding the images for different emotions
 const noseArray = [
   "images/nose-septum.png",
@@ -51,25 +57,55 @@ let selectedHappyMouthImage = null;
 let selectedSadEyeImage = null;
 let selectedSadMouthImage = null;
 
+let chanceMiscOrBene = 5;
+// artistImage();
+
 // Previous emotion states to detect changes
 let previousEmotion = null;
 
-let randomizedMood = Math.floor(Math.random() * 15);
+let artistComment = document.getElementById("artist-comment");
 
 let mood = "normal";
 
 //SET MOOD BASED ON RANDOM NUMBER
-if (randomizedMood <= 2) {
-  mood = "sad";
-} else if (randomizedMood <= 5) {
-  mood = "angry";
-} else if (randomizedMood <= 8) {
-  mood = "mischievous";
-} else if (randomizedMood <= 11) {
-  mood = "benevolent";
-} else {
-  mood = "happy";
+function changeMoodImg() {
+  let randomizedMood = Math.floor(Math.random() * 15);
+  console.log(randomizedMood);
+
+  if (randomizedMood <= 2) {
+    mood = "sad";
+    artistImage("sad");
+    artistComment.innerHTML = "<p>sad</p>";
+  } else if (randomizedMood <= 5) {
+    mood = "angry";
+    artistImage("angry");
+    artistComment.innerHTML = "<p>angry</p>";
+  } else if (randomizedMood <= 8) {
+    console.log("wiho!");
+    mood = "miscOrBene";
+  } else {
+    mood = "happy";
+    artistImage("happy");
+    artistComment.innerHTML = "<p>happy</p>";
+  }
+  if (mood === "miscOrBene") {
+    let miscOrBene = Math.floor(Math.random() * 10);
+    if (miscOrBene <= chanceMiscOrBene) {
+      mood = "mischievous";
+      artistImage("mischievous");
+      artistComment.innerHTML = "<p>misc</p>";
+      chanceMiscOrBene += 0.025;
+    } else {
+      mood = "benvolent";
+      artistImage("benevolent");
+      artistComment.innerHTML = "<p>bene</p>";
+      chanceMiscOrBene -= 0.025;
+    }
+    console.log("chance: " + chanceMiscOrBene);
+    console.log("randomnr: " + miscOrBene);
+  }
 }
+
 // Hide or display images and text based on the current mood
 function updateMoodImages() {
   document.getElementById("sad-image").style.display = "none";
@@ -183,6 +219,7 @@ function startVideo() {
 
               // Handle each emotion
               if (currentEmotion === "angry" && emotions.angry > 0.5) {
+                changeMoodImg();
                 [
                   selectedAngryEyeImage,
                   selectedNoseImage,
@@ -193,6 +230,7 @@ function startVideo() {
                   getRandomImage(angryMouthArray),
                 ]);
               } else if (currentEmotion === "happy" && emotions.happy > 0.5) {
+                changeMoodImg();
                 [
                   selectedHappyEyeImage,
                   selectedNoseImage,
@@ -203,6 +241,7 @@ function startVideo() {
                   getRandomImage(happyMouthArray),
                 ]);
               } else if (currentEmotion === "sad" && emotions.sad > 0.5) {
+                changeMoodImg();
                 [
                   selectedSadEyeImage,
                   selectedNoseImage,
@@ -323,6 +362,62 @@ function startVideo() {
     .catch((err) => console.error("Error accessing webcam:", err));
 }
 
+function artistImage(moodImages) {
+  let angryImg = document.getElementById("angry-image");
+  let sadImg = document.getElementById("sad-image");
+  let happyImg = document.getElementById("happy-image");
+  let miscImg = document.getElementById("mischievous-image");
+  let beneImg = document.getElementById("benevolent-image");
+
+  if (moodImages === "angry") {
+    console.log("it works!" + moodImages);
+    angryImg.style.display = "block";
+    sadImg.style.display = "none";
+    happyImg.style.display = "none";
+    miscImg.style.display = "none";
+    beneImg.style.display = "none";
+  }
+  if (moodImages === "sad") {
+    console.log("it works!" + moodImages);
+    angryImg.style.display = "none";
+    sadImg.style.display = "block";
+    happyImg.style.display = "none";
+    miscImg.style.display = "none";
+    beneImg.style.display = "none";
+  }
+  if (moodImages === "happy") {
+    console.log("it works!" + moodImages);
+    angryImg.style.display = "none";
+    sadImg.style.display = "none";
+    happyImg.style.display = "block";
+    miscImg.style.display = "none";
+    beneImg.style.display = "none";
+  }
+  if (moodImages === "mischievous") {
+    console.log("it works!" + moodImages);
+    angryImg.style.display = "none";
+    sadImg.style.display = "none";
+    happyImg.style.display = "none";
+    miscImg.style.display = "block";
+    beneImg.style.display = "none";
+  }
+  if (moodImages === "benevolent") {
+    console.log("it works!" + moodImages);
+    angryImg.style.display = "none";
+    sadImg.style.display = "none";
+    happyImg.style.display = "none";
+    miscImg.style.display = "none";
+    beneImg.style.display = "block";
+  }
+}
+//
+//
+//
+//
+//
+//
+//
+//
 // Hide or display images and text based on the current mood
 function updateMoodImages() {
   document.getElementById("sad-image").style.display = "none";

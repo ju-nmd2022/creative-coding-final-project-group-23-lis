@@ -14,10 +14,24 @@ canvas {
   top: 100;
   left: 100;
 }
+
+#angry-image,
+#sad-image,
+#happy-image,
+#benevolent-image,
+#mischievous-image,
+#neutral-image,
+#impatient-image {
+  display: none; /* Initially hide the image */
+  position: absolute;
+  top: 125px;
+  left: 950px;
+}
+
 .bubble-container {
   position: absolute;
   top: 425px;
-  right: 120px;
+  left: 865px;
 }
 
 .speech-bubble {
@@ -33,12 +47,6 @@ canvas {
   color: black;
   width: 60%;
   z-index: 1;
-}
-
-#mood-images img {
-  max-height: 300px;
-  position: absolute;
-  right: 175px;
 }
 
 .abs {

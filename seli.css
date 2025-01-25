@@ -73,3 +73,7 @@ canvas {
   width: 640px;
   height: 480px;
 }
+
+.bw-video{
+    filter: grayscale(100%);
+}

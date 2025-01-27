@@ -56,8 +56,6 @@ let chanceMiscOrBene = 5;
 // Previous emotion states to detect changes
 let previousEmotion = null;
 
-let artistComment = document.getElementById("artist-comment");
-
 let mood = "normal";
 
 let dislikeImg = document.getElementById("dislikeButton");
@@ -76,7 +74,7 @@ function dislikeButton() {
 function likeButton() {
   console.log("yes!");
   console.log(artistMood);
-  if (artistMood === "benevolent" || "mischievous") {
+  if (artistMood === "benevolent" || artistMood === "mischievous") {
     console.log("we want to add");
     chanceMiscOrBene -= 0.025;
   }
@@ -112,6 +110,8 @@ function changeMoodImg() {
       //chanceMiscOrBene -= 0.025;
     }
   }
+
+  
 
   //calls the artist image for each mood
   artistImage(artistMood);
@@ -173,7 +173,7 @@ function startVideo() {
           const canvasCtx = canvas.getContext("2d");
           canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-          if (mood === "lazy") {
+          if (artistMood === "lazy") {
             return;
           }
 
@@ -420,40 +420,47 @@ function artistImage(moodImages) {
 //
 //
 //comments that are randomized for each artist mood
+let artistComment = document.getElementById("artist-comment");
 const comments = {
   sad: [
     "I'm feeling so down today... I guess I could paint you blue :(",
     "Life is depressing. I'm sorry, I can only paint you blue right now.",
     "Oh, I am not feeling too good. Do you ever feel like crying?",
+    "Do you ever feel really down? That's what I'm feeling now:(",
   ],
 
   angry: [
     "What are you looking at? Here you go with the red pictures, now leave me alone!",
     "Why does everything have to be so frustrating?",
     "AARRGH!!! Here you go stupid, I'll paint you in red >:(",
+    "Stop looking at me like that!!! What do you want? Here, have some silly picures.",
   ],
 
   mischievous: [
-    "Look at you! Ridiculous. This is how you look, haha! >:)",
+    "Look at you! Ridiculous. You look so stupid right now hahah >:)",
     "You want to look cute? Impossible with that face.",
     "Do you like these images? No? Good, I'll add them in more often then!",
+    "So you like the pictures? I'll stop using them if you do. I don't want you to be happy haha!",
   ],
 
   benevolent: [
     "Aww, you look lovely today, let's make you look even cuter! :)",
     "Look how cute! If you like these images, I'll add them in more frequently!",
-    "You are truly beautiful❤️",
+    "You are truly beautiful❤️ Look at that face!",
+    "Wow! You are incredible. I'll try to brigthen your day! If you dont like these images, I'll stop adding them so often.",
   ],
 
   happy: [
     "Ah look, I can paint you in a lovely yellow shade :D",
     "I'm feeling amazing!",
     "Everything is awesome!",
+    "WOOOO! Life is so good right now, don't you agree?",
   ],
 
   lazy: [
     "Uuuuuuugh I don't know what you expect from me... I'm like reaaaally tired.",
     "Maaaan I just wanna sleep, I don't even have the energy to give you color right now...",
     "ZZZ I cannot be bothered with your wishes, can I be left to chill for like 3 seconds??",
+    "Hmmm? Paint your face? I can't even be bothered to add color to you today.",
   ],
 };

@@ -1,6 +1,4 @@
-/*
-Copy because i was afraid to mess anything up. Lazy mood added, changed color of images, added randomized comments.
-*/
+//backup file so i have the working code saved to fall back on
 
 // Arrays holding the images for different emotions
 const noseArray = [
@@ -60,53 +58,62 @@ let chanceMiscOrBene = 5;
 // Previous emotion states to detect changes
 let previousEmotion = null;
 
-let artistComment = document.getElementById("artist-comment");
-
 let mood = "normal";
 
-//SET MOOD BASED ON RANDOM NUMBER
-function changeMoodImg() {
-  let randomizedMood = Math.floor(Math.random() * 15);
-  let artistMood;
+let dislikeImg = document.getElementById("dislikeButton");
+let likeImg = document.getElementById("likeButton");
 
+let dislikeImgGray = document.getElementById("dislikeButtonGray");
+let likeImgGray = document.getElementById("likeButtonGray");
+
+let artistMood;
+
+let freezeEmotionDetection = 0;
+
+function dislikeButton() {
+  console.log("hey!");
+}
+function likeButton() {
+  console.log("yes!");
+  console.log(artistMood);
+  if (artistMood === "benevolent" || artistMood === "mischievous") {
+    console.log("we want to add");
+    chanceMiscOrBene -= 0.025;
+  }
+}
+
+//SET MOOD BASED ON RANDOM NUMBER. 
+function setArtistMood(currentEmotion) {
+  const randomNum = Math.random();
+  if (randomNum < 0.6) {
+      artistMood = currentEmotion; 
+  } else if (randomNum < 0.9) {
+      artistMood = "miscOrBene";
+  } else {
+      artistMood = "lazy";
+  }
+
+  //default to "neutral" if currentEmotion is undefined
+  if (!["angry", "sad", "happy"].includes(artistMood)) {
+      artistMood = "neutral";
+  }
+}
+
+
+function changeMoodImg() {
   video.classList.remove("bw-video");
 
-  if (randomizedMood <= 2) {
-    artistMood = "sad";
-  } else if (randomizedMood <= 5) {
-    artistMood = "angry";
-  } else if (randomizedMood <= 8) {
-    artistMood = "miscOrBene";
-  } else if (randomizedMood === 9){
-    artistMood = "lazy";
-    video.classList.add("bw-video");
-  } else {
-    artistMood = "happy";
-  }
-
-  //handle "miscOrBene" mood
-  if (artistMood === "miscOrBene") {
-    let miscOrBene = Math.floor(Math.random() * 10);
-    if (miscOrBene <= chanceMiscOrBene) {
-      artistMood = "mischievous";
-      chanceMiscOrBene += 0.025;
-    } else {
-      artistMood = "benevolent";
-      chanceMiscOrBene -= 0.025;
-    }
-  }
-
   //calls the artist image for each mood
-  artistImage(artistMood);  
+  artistImage(artistMood);
 
   //comments for the current mood
   const moodComments = comments[artistMood];
   if (moodComments && moodComments.length > 0) {
-    const randomComment = moodComments[Math.floor(Math.random() * moodComments.length)];
+    const randomComment =
+      moodComments[Math.floor(Math.random() * moodComments.length)];
     artistComment.innerHTML = `<p>${randomComment}</p>`;
   }
 }
-
 
 // Function to load random images from an array and ensure they are loaded before use
 function getRandomImage(imageArray) {
@@ -156,7 +163,7 @@ function startVideo() {
           const canvasCtx = canvas.getContext("2d");
           canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-          if (mood === "lazy") {
+          if (artistMood === "lazy") {
             return;
           }
 
@@ -168,10 +175,15 @@ function startVideo() {
             const currentEmotion = Object.keys(emotions).reduce((a, b) =>
               emotions[a] > emotions[b] ? a : b
             );
-
+            freezeEmotionDetection += 1;
+            console.log(freezeEmotionDetection);
             // Check if the emotion has changed
-            if (currentEmotion !== previousEmotion) {
+            if (
+              currentEmotion !== previousEmotion //&&
+              //freezeEmotionDetection > 30
+            ) {
               previousEmotion = currentEmotion;
+              //freezeEmotionDetection = 0;
 
               // Reset all images
               selectedAngryEyeImage = null;
@@ -184,6 +196,7 @@ function startVideo() {
 
               // Handle each emotion
               if (currentEmotion === "angry" && emotions.angry > 0.5) {
+                setArtistMood(currentEmotion);
                 changeMoodImg();
                 [
                   selectedAngryEyeImage,
@@ -195,6 +208,7 @@ function startVideo() {
                   getRandomImage(angryMouthArray),
                 ]);
               } else if (currentEmotion === "happy" && emotions.happy > 0.5) {
+                setArtistMood(currentEmotion);
                 changeMoodImg();
                 [
                   selectedHappyEyeImage,
@@ -206,6 +220,7 @@ function startVideo() {
                   getRandomImage(happyMouthArray),
                 ]);
               } else if (currentEmotion === "sad" && emotions.sad > 0.5) {
+                setArtistMood(currentEmotion);
                 changeMoodImg();
                 [
                   selectedSadEyeImage,
@@ -235,14 +250,14 @@ function startVideo() {
             if (selectedAngryEyeImage) {
               canvasCtx.drawImage(
                 selectedAngryEyeImage,
-                leftEye[3].x - eyeWidth / 2 - 30,
+                leftEye[3].x - eyeWidth / 2 - 10,
                 leftEye[3].y - eyeHeight / 2,
                 eyeWidth,
                 eyeHeight
               );
               canvasCtx.drawImage(
                 selectedAngryEyeImage,
-                rightEye[3].x - eyeWidth / 2 - 30,
+                rightEye[3].x - eyeWidth / 2 - 10,
                 rightEye[3].y - eyeHeight / 2,
                 eyeWidth,
                 eyeHeight
@@ -344,27 +359,50 @@ function artistImage(moodImages) {
   if (moodImages === "angry") {
     console.log("it works!" + moodImages);
     angryImg.style.display = "block";
-
+    likeImg.style.display = "none";
+    dislikeImg.style.display = "none";
+    likeImgGray.style.display = "block";
+    dislikeImgGray.style.display = "block";
   }
   if (moodImages === "sad") {
     console.log("it works!" + moodImages);
     sadImg.style.display = "block";
+    likeImg.style.display = "none";
+    dislikeImg.style.display = "none";
+    likeImgGray.style.display = "block";
+    dislikeImgGray.style.display = "block";
   }
   if (moodImages === "happy") {
     console.log("it works!" + moodImages);
     happyImg.style.display = "block";
+    likeImg.style.display = "none";
+    dislikeImg.style.display = "none";
+    likeImgGray.style.display = "block";
+    dislikeImgGray.style.display = "block";
   }
   if (moodImages === "mischievous") {
     console.log("it works!" + moodImages);
     miscImg.style.display = "block";
+    dislikeImg.style.display = "block";
+    likeImg.style.display = "block";
+    likeImgGray.style.display = "none";
+    dislikeImgGray.style.display = "none";
   }
   if (moodImages === "benevolent") {
     console.log("it works!" + moodImages);
     beneImg.style.display = "block";
+    dislikeImg.style.display = "block";
+    likeImg.style.display = "block";
+    likeImgGray.style.display = "none";
+    dislikeImgGray.style.display = "none";
   }
   if (moodImages === "lazy") {
     console.log("it works!" + moodImages);
     lazyImg.style.display = "block";
+    likeImg.style.display = "none";
+    dislikeImg.style.display = "none";
+    likeImgGray.style.display = "block";
+    dislikeImgGray.style.display = "block";
   }
 }
 //
@@ -375,32 +413,47 @@ function artistImage(moodImages) {
 //
 //
 //comments that are randomized for each artist mood
+let artistComment = document.getElementById("artist-comment");
 const comments = {
-  sad: ["I'm feeling so down today... I guess I could paint you blue :(", 
-  "Life is depressing. I'm sorry, I can only paint you blue right now.", 
-  "Oh, I am not feeling too good. Do you ever feel like crying?"],
+  sad: [
+    "I'm feeling so down today... I guess I could paint you blue :(",
+    "Life is depressing. I'm sorry, I can only paint you blue right now.",
+    "Oh, I am not feeling too good. Do you ever feel like crying?",
+    "Do you ever feel really down? That's what I'm feeling now:(",
+  ],
 
-  angry: ["What are you looking at? Here you go with the red pictures, now leave me alone!", 
-  "Why does everything have to be so frustrating?", 
-  "AARRGH!!! Here you go stupid, I'll paint you in red >:("],
+  angry: [
+    "What are you looking at? Here you go with the red pictures, now leave me alone!",
+    "Why does everything have to be so frustrating?",
+    "AARRGH!!! Here you go stupid, I'll paint you in red >:(",
+    "Stop looking at me like that!!! What do you want? Here, have some silly picures.",
+  ],
 
   mischievous: [
-    "Look at you! Ridiculous. This is how you look, haha! >:)",
+    "Look at you! Ridiculous. You look so stupid right now hahah >:)",
     "You want to look cute? Impossible with that face.",
     "Do you like these images? No? Good, I'll add them in more often then!",
+    "So you like the pictures? I'll stop using them if you do. I don't want you to be happy haha!",
   ],
 
   benevolent: [
     "Aww, you look lovely today, let's make you look even cuter! :)",
     "Look how cute! If you like these images, I'll add them in more frequently!",
-    "You are truly beautiful❤️",
+    "You are truly beautiful❤️ Look at that face!",
+    "Wow! You are incredible. I'll try to brigthen your day! If you dont like these images, I'll stop adding them so often.",
   ],
 
-  happy: ["Ah look, I can paint you in a lovely yellow shade :D", 
-  "I'm feeling amazing!", 
-  "Everything is awesome!"],
+  happy: [
+    "Ah look, I can paint you in a lovely yellow shade :D",
+    "I'm feeling amazing!",
+    "Everything is awesome!",
+    "WOOOO! Life is so good right now, don't you agree?",
+  ],
 
-  lazy: ["Uuuuuuugh I don't know what you expect from me... I'm like reaaaally tired.", 
-  "Maaaan I just wanna sleep, I don't even have the energy to give you color right now...", 
-  "ZZZ I cannot be bothered with your wishes, can I be left to chill for like 3 seconds??"],
+  lazy: [
+    "Uuuuuuugh I don't know what you expect from me... I'm like reaaaally tired.",
+    "Maaaan I just wanna sleep, I don't even have the energy to give you color right now...",
+    "ZZZ I cannot be bothered with your wishes, can I be left to chill for like 3 seconds??",
+    "Hmmm? Paint your face? I can't even be bothered to add color to you today.",
+  ],
 };

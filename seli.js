@@ -1,9 +1,3 @@
-/*
-We worked on the code to make the artist appear. He does (yay!), but, we cannot seem to make sure that the correct emotion is showed
-at the right place. We only want the artist to be sad/angry/happy when the user input is the same. It always has the option of three 
-emotions (bene, misc and sad/happy/angry).
-*/
-
 // Arrays holding the images for different emotions
 const noseArray = [
   "images/nose-septum.png",
@@ -58,7 +52,6 @@ let selectedSadEyeImage = null;
 let selectedSadMouthImage = null;
 
 let chanceMiscOrBene = 5;
-// artistImage();
 
 // Previous emotion states to detect changes
 let previousEmotion = null;
@@ -70,80 +63,44 @@ let mood = "normal";
 //SET MOOD BASED ON RANDOM NUMBER
 function changeMoodImg() {
   let randomizedMood = Math.floor(Math.random() * 15);
-  console.log(randomizedMood);
+  let artistMood;
+
+  video.classList.remove("bw-video");
 
   if (randomizedMood <= 2) {
-    mood = "sad";
-    artistImage("sad");
-    artistComment.innerHTML = "<p>sad</p>";
+    artistMood = "sad";
   } else if (randomizedMood <= 5) {
-    mood = "angry";
-    artistImage("angry");
-    artistComment.innerHTML = "<p>angry</p>";
+    artistMood = "angry";
   } else if (randomizedMood <= 8) {
-    console.log("wiho!");
-    mood = "miscOrBene";
+    artistMood = "miscOrBene";
+  } else if (randomizedMood === 9) {
+    artistMood = "lazy";
+    video.classList.add("bw-video");
   } else {
-    mood = "happy";
-    artistImage("happy");
-    artistComment.innerHTML = "<p>happy</p>";
+    artistMood = "happy";
   }
-  if (mood === "miscOrBene") {
+
+  //handle "miscOrBene" mood
+  if (artistMood === "miscOrBene") {
     let miscOrBene = Math.floor(Math.random() * 10);
     if (miscOrBene <= chanceMiscOrBene) {
-      mood = "mischievous";
-      artistImage("mischievous");
-      artistComment.innerHTML = "<p>misc</p>";
+      artistMood = "mischievous";
       chanceMiscOrBene += 0.025;
     } else {
-      mood = "benvolent";
-      artistImage("benevolent");
-      artistComment.innerHTML = "<p>bene</p>";
+      artistMood = "benevolent";
       chanceMiscOrBene -= 0.025;
     }
-    console.log("chance: " + chanceMiscOrBene);
-    console.log("randomnr: " + miscOrBene);
   }
-}
 
-// Hide or display images and text based on the current mood
-function updateMoodImages() {
-  document.getElementById("sad-image").style.display = "none";
-  document.getElementById("angry-image").style.display = "none";
-  document.getElementById("mischievous-image").style.display = "none";
-  document.getElementById("benevolent-image").style.display = "none";
-  document.getElementById("happy-image").style.display = "none";
-  document.getElementById("impatient-image").style.display = "none";
+  //calls the artist image for each mood
+  artistImage(artistMood);
 
-  // Update the displayed image and comment based on the current mood
-  if (mood === "sad") {
-    //document.getElementById("sad-image").style.display = "block";
-    //comment.innerHTML = "Oh... I guess I could paint you blue :(";
-    console.log("mood is sad");
-  } else if (mood === "angry") {
-    //document.getElementById("angry-image").style.display = "block";
-    //comment.innerHTML =
-    //"AARRGH!!! Here you go stupid, I'll paint you in red >:(";
-    console.log("mood is angry");
-  } else if (mood === "mischievous") {
-    //document.getElementById("mischievous-image").style.display = "block";
-    //comment.innerHTML =
-    //"Look at you! Ridiculous. This is how you look, haha! >:)";
-    console.log("mood is mean");
-  } else if (mood === "benevolent") {
-    //document.getElementById("benevolent-image").style.display = "block";
-    //comment.innerHTML =
-    //"Aww, you look lovely today, let's make you look even cuter! :)"
-    console.log("mood is kind");
-  } else if (mood === "happy") {
-    //document.getElementById("happy-image").style.display = "block";
-    //comment.innerHTML = "Ah look, I can paint you in a lovely yellow shade :D";
-    console.log("mood is happy");
-  } else if (mood === "impatient") {
-    //document.getElementById("impatient-image").style.display = "block";
-    //comment.innerHTML =
-    // "I'm a little impatient, and this is boring. If you don't do something interesting soon, my mood will change.";
-    console.log("mood is impatient");
+  //comments for the current mood
+  const moodComments = comments[artistMood];
+  if (moodComments && moodComments.length > 0) {
+    const randomComment =
+      moodComments[Math.floor(Math.random() * moodComments.length)];
+    artistComment.innerHTML = `<p>${randomComment}</p>`;
   }
 }
 
@@ -194,6 +151,10 @@ function startVideo() {
           );
           const canvasCtx = canvas.getContext("2d");
           canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+          if (mood === "lazy") {
+            return;
+          }
 
           if (resizedDetections.length > 0) {
             const landmarks = resizedDetections[0].landmarks;
@@ -262,22 +223,22 @@ function startVideo() {
 
             const eyeWidth = 70,
               eyeHeight = 60;
-            const noseWidth = 60,
-              noseHeight = 60;
+            const noseWidth = 70,
+              noseHeight = 80;
             const mouthWidth = 80,
               mouthHeight = 60;
 
             if (selectedAngryEyeImage) {
               canvasCtx.drawImage(
                 selectedAngryEyeImage,
-                leftEye[3].x - eyeWidth / 2 - 10,
+                leftEye[3].x - eyeWidth / 2 - 30,
                 leftEye[3].y - eyeHeight / 2,
                 eyeWidth,
                 eyeHeight
               );
               canvasCtx.drawImage(
                 selectedAngryEyeImage,
-                rightEye[3].x - eyeWidth / 2 - 10,
+                rightEye[3].x - eyeWidth / 2 - 30,
                 rightEye[3].y - eyeHeight / 2,
                 eyeWidth,
                 eyeHeight
@@ -368,87 +329,81 @@ function artistImage(moodImages) {
   let happyImg = document.getElementById("happy-image");
   let miscImg = document.getElementById("mischievous-image");
   let beneImg = document.getElementById("benevolent-image");
+  let lazyImg = document.getElementById("neutral-image");
+  angryImg.style.display = "none";
+  sadImg.style.display = "none";
+  happyImg.style.display = "none";
+  miscImg.style.display = "none";
+  beneImg.style.display = "none";
+  lazyImg.style.display = "none";
 
   if (moodImages === "angry") {
     console.log("it works!" + moodImages);
     angryImg.style.display = "block";
-    sadImg.style.display = "none";
-    happyImg.style.display = "none";
-    miscImg.style.display = "none";
-    beneImg.style.display = "none";
   }
   if (moodImages === "sad") {
     console.log("it works!" + moodImages);
-    angryImg.style.display = "none";
     sadImg.style.display = "block";
-    happyImg.style.display = "none";
-    miscImg.style.display = "none";
-    beneImg.style.display = "none";
   }
   if (moodImages === "happy") {
     console.log("it works!" + moodImages);
-    angryImg.style.display = "none";
-    sadImg.style.display = "none";
     happyImg.style.display = "block";
-    miscImg.style.display = "none";
-    beneImg.style.display = "none";
   }
   if (moodImages === "mischievous") {
     console.log("it works!" + moodImages);
-    angryImg.style.display = "none";
-    sadImg.style.display = "none";
-    happyImg.style.display = "none";
     miscImg.style.display = "block";
-    beneImg.style.display = "none";
   }
   if (moodImages === "benevolent") {
     console.log("it works!" + moodImages);
-    angryImg.style.display = "none";
-    sadImg.style.display = "none";
-    happyImg.style.display = "none";
-    miscImg.style.display = "none";
     beneImg.style.display = "block";
   }
-}
-//
-//
-//
-//
-//
-//
-//
-//
-// Hide or display images and text based on the current mood
-function updateMoodImages() {
-  document.getElementById("sad-image").style.display = "none";
-  document.getElementById("angry-image").style.display = "none";
-  document.getElementById("mischievous-image").style.display = "none";
-  document.getElementById("benevolent-image").style.display = "none";
-  document.getElementById("happy-image").style.display = "none";
-  document.getElementById("impatient-image").style.display = "none";
-
-  // Update the displayed image and comment based on the current mood
-  if (mood === "sad") {
-    document.getElementById("sad-image").style.display = "block";
-    comment.innerHTML = "Oh... I guess I could paint you blue :(";
-  } else if (mood === "angry") {
-    document.getElementById("angry-image").style.display = "block";
-    comment.innerHTML =
-      "AARRGH!!! Here you go stupid, I'll paint you in red >:(";
-  } else if (mood === "mischievous") {
-    document.getElementById("mischievous-image").style.display = "block";
-    comment.innerHTML =
-      "Look at you! Ridiculous. This is how you look, haha! >:)";
-  } else if (mood === "benevolent") {
-    document.getElementById("benevolent-image").style.display = "block";
-    comment.innerHTML =
-      "Aww, you look lovely today, let's make you look even cuter! :)";
-  } else if (mood === "happy") {
-    document.getElementById("happy-image").style.display = "block";
-    comment.innerHTML = "Ah look, I can paint you in a lovely yellow shade :D";
-  } else if (mood === "impatient") {
-    document.getElementById("impatient-image").style.display = "block";
-    comment.innerHTML =
-      "I'm a little impatient, and this is boring. If you don't do something interesting soon, my mood will change.";
+  if (moodImages === "lazy") {
+    console.log("it works!" + moodImages);
+    lazyImg.style.display = "block";
   }
 }
+//
+//
+//
+//
+//
+//
+//
+//comments that are randomized for each artist mood
+const comments = {
+  sad: [
+    "I'm feeling so down today... I guess I could paint you blue :(",
+    "Life is depressing. I'm sorry, I can only paint you blue right now.",
+    "Oh, I am not feeling too good. Do you ever feel like crying?",
+  ],
+
+  angry: [
+    "What are you looking at? Here you go with the red pictures, now leave me alone!",
+    "Why does everything have to be so frustrating?",
+    "AARRGH!!! Here you go stupid, I'll paint you in red >:(",
+  ],
+
+  mischievous: [
+    "Look at you! Ridiculous. This is how you look, haha! >:)",
+    "You want to look cute? Impossible with that face.",
+    "Do you like these images? No? Good, I'll add them in more often then!",
+  ],
+
+  benevolent: [
+    "Aww, you look lovely today, let's make you look even cuter! :)",
+    "Look how cute! If you like these images, I'll add them in more frequently!",
+    "You are truly beautiful❤️",
+  ],
+
+  happy: [
+    "Ah look, I can paint you in a lovely yellow shade :D",
+    "I'm feeling amazing!",
+    "Everything is awesome!",
+  ],
+
+  lazy: [
+    "Uuuuuuugh I don't know what you expect from me... I'm like reaaaally tired.",
+    "Maaaan I just wanna sleep, I don't even have the energy to give you color right now...",
+    "ZZZ I cannot be bothered with your wishes, can I be left to chill for like 3 seconds??",
+  ],
+};

@@ -60,10 +60,31 @@ let artistComment = document.getElementById("artist-comment");
 
 let mood = "normal";
 
+let dislikeImg = document.getElementById("dislikeButton");
+let likeImg = document.getElementById("likeButton");
+
+let dislikeImgGray = document.getElementById("dislikeButtonGray");
+let likeImgGray = document.getElementById("likeButtonGray");
+
+let artistMood;
+
+let freezeEmotionDetection = 0;
+
+function dislikeButton() {
+  console.log("hey!");
+}
+function likeButton() {
+  console.log("yes!");
+  console.log(artistMood);
+  if (artistMood === "benevolent" || "mischievous") {
+    console.log("we want to add");
+    chanceMiscOrBene -= 0.025;
+  }
+}
+
 //SET MOOD BASED ON RANDOM NUMBER
 function changeMoodImg() {
   let randomizedMood = Math.floor(Math.random() * 15);
-  let artistMood;
 
   video.classList.remove("bw-video");
 
@@ -85,10 +106,10 @@ function changeMoodImg() {
     let miscOrBene = Math.floor(Math.random() * 10);
     if (miscOrBene <= chanceMiscOrBene) {
       artistMood = "mischievous";
-      chanceMiscOrBene += 0.025;
+      //chanceMiscOrBene += 0.025;
     } else {
       artistMood = "benevolent";
-      chanceMiscOrBene -= 0.025;
+      //chanceMiscOrBene -= 0.025;
     }
   }
 
@@ -164,10 +185,15 @@ function startVideo() {
             const currentEmotion = Object.keys(emotions).reduce((a, b) =>
               emotions[a] > emotions[b] ? a : b
             );
-
+            freezeEmotionDetection += 1;
+            console.log(freezeEmotionDetection);
             // Check if the emotion has changed
-            if (currentEmotion !== previousEmotion) {
+            if (
+              currentEmotion !== previousEmotion //&&
+              //freezeEmotionDetection > 30
+            ) {
               previousEmotion = currentEmotion;
+              //freezeEmotionDetection = 0;
 
               // Reset all images
               selectedAngryEyeImage = null;
@@ -231,14 +257,14 @@ function startVideo() {
             if (selectedAngryEyeImage) {
               canvasCtx.drawImage(
                 selectedAngryEyeImage,
-                leftEye[3].x - eyeWidth / 2 - 30,
+                leftEye[3].x - eyeWidth / 2 - 10,
                 leftEye[3].y - eyeHeight / 2,
                 eyeWidth,
                 eyeHeight
               );
               canvasCtx.drawImage(
                 selectedAngryEyeImage,
-                rightEye[3].x - eyeWidth / 2 - 30,
+                rightEye[3].x - eyeWidth / 2 - 10,
                 rightEye[3].y - eyeHeight / 2,
                 eyeWidth,
                 eyeHeight
@@ -340,26 +366,50 @@ function artistImage(moodImages) {
   if (moodImages === "angry") {
     console.log("it works!" + moodImages);
     angryImg.style.display = "block";
+    likeImg.style.display = "none";
+    dislikeImg.style.display = "none";
+    likeImgGray.style.display = "block";
+    dislikeImgGray.style.display = "block";
   }
   if (moodImages === "sad") {
     console.log("it works!" + moodImages);
     sadImg.style.display = "block";
+    likeImg.style.display = "none";
+    dislikeImg.style.display = "none";
+    likeImgGray.style.display = "block";
+    dislikeImgGray.style.display = "block";
   }
   if (moodImages === "happy") {
     console.log("it works!" + moodImages);
     happyImg.style.display = "block";
+    likeImg.style.display = "none";
+    dislikeImg.style.display = "none";
+    likeImgGray.style.display = "block";
+    dislikeImgGray.style.display = "block";
   }
   if (moodImages === "mischievous") {
     console.log("it works!" + moodImages);
     miscImg.style.display = "block";
+    dislikeImg.style.display = "block";
+    likeImg.style.display = "block";
+    likeImgGray.style.display = "none";
+    dislikeImgGray.style.display = "none";
   }
   if (moodImages === "benevolent") {
     console.log("it works!" + moodImages);
     beneImg.style.display = "block";
+    dislikeImg.style.display = "block";
+    likeImg.style.display = "block";
+    likeImgGray.style.display = "none";
+    dislikeImgGray.style.display = "none";
   }
   if (moodImages === "lazy") {
     console.log("it works!" + moodImages);
     lazyImg.style.display = "block";
+    likeImg.style.display = "none";
+    dislikeImg.style.display = "none";
+    likeImgGray.style.display = "block";
+    dislikeImgGray.style.display = "block";
   }
 }
 //

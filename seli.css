@@ -74,6 +74,47 @@ canvas {
   height: 480px;
 }
 
-.bw-video{
-    filter: grayscale(100%);
+.bw-video {
+  filter: grayscale(100%);
+}
+
+#dis-like-buttons {
+  position: absolute;
+  top: 600px;
+  left: 950px;
+}
+
+#dislikeButton {
+  display: none;
+  background-color: white;
+  border: none;
+  border-radius: 30px;
+  position: absolute;
+  left: 195px;
+  top: -1px;
+}
+#likeButton {
+  display: none;
+  background-color: white;
+  border: none;
+  border-radius: 30px;
+  position: absolute;
+  left: 5px;
+  top: -1px;
+}
+
+#dislikeButtonGray {
+  background-color: white;
+  border: none;
+  border-radius: 30px;
+  position: absolute;
+  left: 200px;
+}
+
+#likeButtonGray {
+  background-color: white;
+  border: none;
+  border-radius: 30px;
+  position: absolute;
+  left: 10px;
 }

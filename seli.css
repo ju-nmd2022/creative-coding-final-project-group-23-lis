@@ -41,7 +41,7 @@ canvas {
 
 #artist-comment {
   position: absolute;
-  top: 40px;
+  top: 10px;
   left: 110px;
   font-size: 20px;
   color: black;

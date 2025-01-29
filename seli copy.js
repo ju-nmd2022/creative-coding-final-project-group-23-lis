@@ -58,15 +58,13 @@ let chanceMiscOrBene = 5;
 // Previous emotion states to detect changes
 let previousEmotion = null;
 
-let mood = "normal";
-
 let dislikeImg = document.getElementById("dislikeButton");
 let likeImg = document.getElementById("likeButton");
 
 let dislikeImgGray = document.getElementById("dislikeButtonGray");
 let likeImgGray = document.getElementById("likeButtonGray");
 
-let artistMood;
+let artistMood = "neutral";
 
 let freezeEmotionDetection = 0;
 
@@ -85,26 +83,46 @@ function likeButton() {
 //SET MOOD BASED ON RANDOM NUMBER. 
 function setArtistMood(currentEmotion) {
   const randomNum = Math.random();
-  if (randomNum < 0.6) {
+  if (randomNum < 0.5) {
       artistMood = currentEmotion; 
   } else if (randomNum < 0.9) {
       artistMood = "miscOrBene";
   } else {
       artistMood = "lazy";
+
+      //reset mood after 7 seconds so it starts to draw again and the user is not stuck in lazy
+      setTimeout(() => {
+        artistMood = "neutral";
+        console.log("Lazy mode ended, resuming painting.");
+      }, 7000);
   }
 
-  //default to "neutral" if currentEmotion is undefined
-  if (!["angry", "sad", "happy"].includes(artistMood)) {
-      artistMood = "neutral";
-  }
+  if (artistMood === undefined || (artistMood === currentEmotion && !currentEmotion)) {
+    artistMood = "neutral";
+}
 }
 
 
 function changeMoodImg() {
   video.classList.remove("bw-video");
 
+  //black and white filter for lazy
+  if (artistMood === "lazy") {
+    video.classList.add("bw-video");
+}
+
   //calls the artist image for each mood
   artistImage(artistMood);
+
+   //handle "miscOrBene" mood
+   if (artistMood === "miscOrBene") {
+    let miscOrBene = Math.floor(Math.random() * 10);
+    if (miscOrBene <= chanceMiscOrBene) {
+      artistMood = "mischievous";
+    } else {
+      artistMood = "benevolent";
+    }
+  }
 
   //comments for the current mood
   const moodComments = comments[artistMood];
@@ -151,6 +169,11 @@ function startVideo() {
 
         // Start processing the video
         setInterval(async () => {
+          //if mood is lazy, stop drawing images on face 7 secs
+          if (artistMood === "lazy") {
+            return;
+          }
+
           const detections = await faceapi
             .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
             .withFaceLandmarks()
@@ -162,10 +185,6 @@ function startVideo() {
           );
           const canvasCtx = canvas.getContext("2d");
           canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-
-          if (artistMood === "lazy") {
-            return;
-          }
 
           if (resizedDetections.length > 0) {
             const landmarks = resizedDetections[0].landmarks;
@@ -416,44 +435,44 @@ function artistImage(moodImages) {
 let artistComment = document.getElementById("artist-comment");
 const comments = {
   sad: [
-    "I'm feeling so down today... I guess I could paint you blue :(",
-    "Life is depressing. I'm sorry, I can only paint you blue right now.",
-    "Oh, I am not feeling too good. Do you ever feel like crying?",
-    "Do you ever feel really down? That's what I'm feeling now:(",
+    "I'm feeling so down today... I guess I could paint you blue :( I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a differnet mood...",
+    "Life is depressing. I'm sorry, I can only paint you blue right now. I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a differnet mood...",
+    "Oh, I am not feeling too good. Do you ever feel like crying? I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a differnet mood...",
+    "Do you ever feel really down? That's what I'm feeling now:( I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a differnet mood...",
   ],
 
   angry: [
-    "What are you looking at? Here you go with the red pictures, now leave me alone!",
-    "Why does everything have to be so frustrating?",
-    "AARRGH!!! Here you go stupid, I'll paint you in red >:(",
-    "Stop looking at me like that!!! What do you want? Here, have some silly picures.",
+    "What are you looking at? Here you go with the red pictures, now leave me alone! You cannot use the buttons below right now. Maybe when I'm in a differnet mood...",
+    "Why does everything have to be so frustrating? You cannot use the buttons below right now. Maybe when I'm in a differnet mood...",
+    "AARRGH!!! Here you go stupid, I'll paint you in red >:( You cannot use the buttons below right now. Maybe when I'm in a differnet mood...",
+    "Stop looking at me like that!!! What do you want? Here, have some silly picures. You cannot use the buttons below right now. Maybe when I'm in a differnet mood...",
   ],
 
   mischievous: [
-    "Look at you! Ridiculous. You look so stupid right now hahah >:)",
-    "You want to look cute? Impossible with that face.",
-    "Do you like these images? No? Good, I'll add them in more often then!",
-    "So you like the pictures? I'll stop using them if you do. I don't want you to be happy haha!",
+    "Look at you! Ridiculous. You look so stupid right now hahah >:) Use the buttons below to tell me if you like them or not.",
+    "You want to look cute? Impossible with that face. Use the buttons below to tell me if you like them or not.",
+    "Do you like these images? No? Good, I'll add them in more often then! Use the buttons below to tell me if you like them or not.",
+    "So you like the pictures? I'll stop using them if you do. I don't want you to be happy haha! Use the buttons below to tell me if you like them or not.",
   ],
 
   benevolent: [
-    "Aww, you look lovely today, let's make you look even cuter! :)",
-    "Look how cute! If you like these images, I'll add them in more frequently!",
-    "You are truly beautiful❤️ Look at that face!",
-    "Wow! You are incredible. I'll try to brigthen your day! If you dont like these images, I'll stop adding them so often.",
+    "Aww, you look lovely today, let's make you look even cuter! :) Use the buttons below to tell me if you like them or not!",
+    "Look how cute! If you like these images, I'll add them in more frequently! Use the buttons below to tell me if you like them or not!",
+    "You are truly beautiful❤️ Look at that face! Use the buttons below to tell me if you like them or not!",
+    "Wow! You are incredible. I'll try to brigthen your day! If you dont like these images, I'll stop adding them so often. Use the buttons below to tell me if you like them or not!",
   ],
 
   happy: [
-    "Ah look, I can paint you in a lovely yellow shade :D",
-    "I'm feeling amazing!",
-    "Everything is awesome!",
-    "WOOOO! Life is so good right now, don't you agree?",
+    "Ah look, I can paint you in a lovely yellow shade :D I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
+    "I'm feeling amazing! I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
+    "Everything is awesome! I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
+    "WOOOO! Life is so good right now, don't you agree? I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
   ],
 
   lazy: [
-    "Uuuuuuugh I don't know what you expect from me... I'm like reaaaally tired.",
-    "Maaaan I just wanna sleep, I don't even have the energy to give you color right now...",
-    "ZZZ I cannot be bothered with your wishes, can I be left to chill for like 3 seconds??",
-    "Hmmm? Paint your face? I can't even be bothered to add color to you today.",
+    "Uuuuuuugh I don't know what you expect from me... I'm like reaaaally tired. Annnd you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
+    "Maaaan I just wanna sleep, I don't even have the energy to give you color right now... Annnd you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
+    "ZZZ I cannot be bothered with your wishes, can I be left to chill for like 3 seconds?? Annnd you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
+    "Hmmm? Paint your face? I can't even be bothered to add color to you today. Annnd you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
   ],
 };

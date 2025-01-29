@@ -82,11 +82,13 @@ function likeButton() {
 
 //SET MOOD BASED ON RANDOM NUMBER. 
 function setArtistMood(currentEmotion) {
-  const randomNum = Math.random();
-  if (randomNum < 0.5) {
+  const randomNum = Math.floor(Math.random() * 15);
+  if (randomNum <= 7) {
       artistMood = currentEmotion; 
-  } else if (randomNum < 0.9) {
-      artistMood = "miscOrBene";
+  } else if (randomNum > 10) {
+      artistMood = "mischievous";
+  } else if (randomNum < 13) {
+    artistMood = "benevolent";
   } else {
       artistMood = "lazy";
 
@@ -113,16 +115,6 @@ function changeMoodImg() {
 
   //calls the artist image for each mood
   artistImage(artistMood);
-
-   //handle "miscOrBene" mood
-   if (artistMood === "miscOrBene") {
-    let miscOrBene = Math.floor(Math.random() * 10);
-    if (miscOrBene <= chanceMiscOrBene) {
-      artistMood = "mischievous";
-    } else {
-      artistMood = "benevolent";
-    }
-  }
 
   //comments for the current mood
   const moodComments = comments[artistMood];

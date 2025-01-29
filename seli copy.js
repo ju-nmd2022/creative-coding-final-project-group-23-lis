@@ -68,6 +68,8 @@ let artistMood = "neutral";
 
 let freezeEmotionDetection = 0;
 
+let video = document.getElementById("video");
+
 function dislikeButton() {
   console.log("hey!");
 }
@@ -104,7 +106,6 @@ function setArtistMood(currentEmotion) {
 }
 }
 
-
 function changeMoodImg() {
   video.classList.remove("bw-video");
 
@@ -112,7 +113,6 @@ function changeMoodImg() {
   if (artistMood === "lazy") {
     video.classList.add("bw-video");
 }
-
   //calls the artist image for each mood
   artistImage(artistMood);
 
@@ -251,24 +251,47 @@ function startVideo() {
             const nose = landmarks.getNose();
             const mouth = landmarks.getMouth();
 
-            const eyeWidth = 70,
-              eyeHeight = 60;
-            const noseWidth = 70,
-              noseHeight = 80;
-            const mouthWidth = 80,
-              mouthHeight = 60;
+            //calculate distance between eyes
+            const eyeDistance = Math.hypot(
+              rightEye[0].x - leftEye[0].x,
+              rightEye[0].y - leftEye[0].y
+            );
+
+            //factor to multiply by to scale up or down
+            const scaleFactor = eyeDistance / 100;
+
+            //use these values to resize the drawn images on the canvas
+            const eyeWidth = 70 * scaleFactor;
+            const eyeHeight = 60 * scaleFactor;
+            const noseWidth = 70 * scaleFactor;
+            const noseHeight = 80 * scaleFactor;
+            const mouthWidth = 90 * scaleFactor;
+            const mouthHeight = 70 * scaleFactor;
+
+            drawFaceElements(
+              leftEye,
+              rightEye,
+              eyeWidth,
+              eyeHeight,
+              noseWidth,
+              noseHeight,
+              mouthWidth,
+              mouthHeight
+            );
+
+            const canvasCtx = canvas.getContext("2d");
 
             if (selectedAngryEyeImage) {
               canvasCtx.drawImage(
                 selectedAngryEyeImage,
-                leftEye[3].x - eyeWidth / 2 - 10,
+                leftEye[3].x - eyeWidth / 2 - 20,
                 leftEye[3].y - eyeHeight / 2,
                 eyeWidth,
                 eyeHeight
               );
               canvasCtx.drawImage(
                 selectedAngryEyeImage,
-                rightEye[3].x - eyeWidth / 2 - 10,
+                rightEye[3].x - eyeWidth / 2 - 20,
                 rightEye[3].y - eyeHeight / 2,
                 eyeWidth,
                 eyeHeight
@@ -282,7 +305,7 @@ function startVideo() {
               );
               canvasCtx.drawImage(
                 selectedAngryMouthImage,
-                mouth[0].x - mouthWidth / 2 + 35,
+                mouth[0].x - mouthWidth / 2 + 40,
                 mouth[3].y - mouthHeight / 2 + 20,
                 mouthWidth,
                 mouthHeight
@@ -290,14 +313,14 @@ function startVideo() {
             } else if (selectedHappyEyeImage) {
               canvasCtx.drawImage(
                 selectedHappyEyeImage,
-                leftEye[3].x - eyeWidth / 2 - 10,
+                leftEye[3].x - eyeWidth / 2 - 20,
                 leftEye[3].y - eyeHeight / 2,
                 eyeWidth,
                 eyeHeight
               );
               canvasCtx.drawImage(
                 selectedHappyEyeImage,
-                rightEye[3].x - eyeWidth / 2 - 10,
+                rightEye[3].x - eyeWidth / 2 - 20,
                 rightEye[3].y - eyeHeight / 2,
                 eyeWidth,
                 eyeHeight
@@ -311,22 +334,22 @@ function startVideo() {
               );
               canvasCtx.drawImage(
                 selectedHappyMouthImage,
-                mouth[0].x - mouthWidth / 2 + 40,
-                mouth[3].y - mouthHeight / 2 + 20,
+                mouth[0].x - mouthWidth / 2 + 50,
+                mouth[3].y - mouthHeight / 2 + 25,
                 mouthWidth,
                 mouthHeight
               );
             } else if (selectedSadEyeImage) {
               canvasCtx.drawImage(
                 selectedSadEyeImage,
-                leftEye[3].x - eyeWidth / 2 - 10,
+                leftEye[3].x - eyeWidth / 2 - 20,
                 leftEye[3].y - eyeHeight / 2,
                 eyeWidth,
                 eyeHeight
               );
               canvasCtx.drawImage(
                 selectedSadEyeImage,
-                rightEye[3].x - eyeWidth / 2 - 10,
+                rightEye[3].x - eyeWidth / 2 - 20,
                 rightEye[3].y - eyeHeight / 2,
                 eyeWidth,
                 eyeHeight
@@ -351,6 +374,28 @@ function startVideo() {
       });
     })
     .catch((err) => console.error("Error accessing webcam:", err));
+}
+
+function drawFaceElements(leftEye, rightEye, eyeWidth, eyeHeight, noseWidth, noseHeight, mouthWidth, mouthHeight) {
+  const ctx = document.getElementById("artCanvas").getContext("2d");
+
+  // Use the selected images based on the current emotion
+  if (selectedAngryEyeImage) {
+    ctx.drawImage(selectedAngryEyeImage, leftEye[0].x - eyeWidth / 2, leftEye[0].y - eyeHeight / 2, eyeWidth, eyeHeight);
+    ctx.drawImage(selectedAngryEyeImage, rightEye[0].x - eyeWidth / 2, rightEye[0].y - eyeHeight / 2, eyeWidth, eyeHeight);
+    ctx.drawImage(selectedNoseImage, (leftEye[0].x + rightEye[0].x) / 2 - noseWidth / 2, leftEye[0].y + 20 - noseHeight / 2, noseWidth, noseHeight);
+    ctx.drawImage(selectedAngryMouthImage, (leftEye[0].x + rightEye[0].x) / 2 - mouthWidth / 2, leftEye[0].y + 50 - mouthHeight / 2, mouthWidth, mouthHeight);
+  } else if (selectedHappyEyeImage) {
+    ctx.drawImage(selectedHappyEyeImage, leftEye[0].x - eyeWidth / 2, leftEye[0].y - eyeHeight / 2, eyeWidth, eyeHeight);
+    ctx.drawImage(selectedHappyEyeImage, rightEye[0].x - eyeWidth / 2, rightEye[0].y - eyeHeight / 2, eyeWidth, eyeHeight);
+    ctx.drawImage(selectedNoseImage, (leftEye[0].x + rightEye[0].x) / 2 - noseWidth / 2, leftEye[0].y + 20 - noseHeight / 2, noseWidth, noseHeight);
+    ctx.drawImage(selectedHappyMouthImage, (leftEye[0].x + rightEye[0].x) / 2 - mouthWidth / 2, leftEye[0].y + 50 - mouthHeight / 2, mouthWidth, mouthHeight);
+  } else if (selectedSadEyeImage) {
+    ctx.drawImage(selectedSadEyeImage, leftEye[0].x - eyeWidth / 2, leftEye[0].y - eyeHeight / 2, eyeWidth, eyeHeight);
+    ctx.drawImage(selectedSadEyeImage, rightEye[0].x - eyeWidth / 2, rightEye[0].y - eyeHeight / 2, eyeWidth, eyeHeight);
+    ctx.drawImage(selectedNoseImage, (leftEye[0].x + rightEye[0].x) / 2 - noseWidth / 2, leftEye[0].y + 20 - noseHeight / 2, noseWidth, noseHeight);
+    ctx.drawImage(selectedSadMouthImage, (leftEye[0].x + rightEye[0].x) / 2 - mouthWidth / 2, leftEye[0].y + 50 - mouthHeight / 2, mouthWidth, mouthHeight);
+  }
 }
 
 function artistImage(moodImages) {

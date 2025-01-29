@@ -7,39 +7,47 @@ const noseArray = [
   "images/nose-fat.png",
   "images/nose-wings.png",
   "images/nose-pig.png",
+  "images/nose-regular.png",
 ];
 
 const angryEyeArray = [
   "images/eye-zombie.png",
   "images/eye-mad.png",
   "images/eye-close.png",
+  "images/eye-tear.png",
 ];
 
 const angryMouthArray = [
   "images/lip-wide.png",
   "images/lip-crooked.png",
   "images/lip-open.png",
+  "images/lip-grr.png",
 ];
 
 const happyEyeArray = [
   "images/eye-normal.png",
   "images/eye-round.png",
   "images/eye-smile.png",
+  "images/eye-hope.png",
 ];
 const happyMouthArray = [
   "images/lip-kiss.png",
   "images/lip-tounge.png",
-  "images/lip-edge.png",
+  "images/lip-gap.png",
 ];
+
 const sadEyeArray = [
   "images/eye-drip.png",
   "images/eye-shiny.png",
   "images/eye-cry.png",
+  "images/eye-wet.png",
 ];
+
 const sadMouthArray = [
   "images/lip-bite.png",
   "images/lip-frown.png",
   "images/lip-sad.png",
+  "images/lip-scream.png",
 ];
 
 // Variables to hold the selected images for each part (to prevent re-randomization)
@@ -84,15 +92,16 @@ function likeButton() {
 
 //SET MOOD BASED ON RANDOM NUMBER. 
 function setArtistMood(currentEmotion) {
-  const randomNum = Math.floor(Math.random() * 15);
+  const randomNum = Math.floor(Math.random() * 16);
   if (randomNum <= 7) {
       artistMood = currentEmotion; 
-  } else if (randomNum > 10) {
+  } else if (randomNum > 12) {
       artistMood = "mischievous";
-  } else if (randomNum < 13) {
+  } else if (randomNum >= 8 && randomNum <= 10) {
     artistMood = "benevolent";
   } else {
       artistMood = "lazy";
+      ctx.clearRect(0, 0, artCanvas.width, artCanvas.height);
 
       //reset mood after 7 seconds so it starts to draw again and the user is not stuck in lazy
       setTimeout(() => {
@@ -404,13 +413,15 @@ function artistImage(moodImages) {
   let happyImg = document.getElementById("happy-image");
   let miscImg = document.getElementById("mischievous-image");
   let beneImg = document.getElementById("benevolent-image");
-  let lazyImg = document.getElementById("neutral-image");
+  let lazyImg = document.getElementById("lazy-image");
+  let neutralImg = document.getElementById("neutral-image");
   angryImg.style.display = "none";
   sadImg.style.display = "none";
   happyImg.style.display = "none";
   miscImg.style.display = "none";
   beneImg.style.display = "none";
   lazyImg.style.display = "none";
+  neutralImg.style.display = "none";
 
   if (moodImages === "angry") {
     console.log("it works!" + moodImages);
@@ -461,13 +472,7 @@ function artistImage(moodImages) {
     dislikeImgGray.style.display = "block";
   }
 }
-//
-//
-//
-//
-//
-//
-//
+
 //comments that are randomized for each artist mood
 let artistComment = document.getElementById("artist-comment");
 const comments = {
@@ -513,3 +518,10 @@ const comments = {
     "Hmmm? Paint your face? I can't even be bothered to add color to you today. Annnd you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
   ],
 };
+
+/*
+let command = document.getElementById("command")
+if (command && currentEmotion === detected) {
+  command.remove();
+}
+*/

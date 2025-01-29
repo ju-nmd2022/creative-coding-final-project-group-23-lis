@@ -20,6 +20,7 @@ canvas {
 #happy-image,
 #benevolent-image,
 #mischievous-image,
+#lazy-image,
 #neutral-image,
 #impatient-image {
   display: none; /* Initially hide the image */
@@ -118,3 +119,15 @@ canvas {
   position: absolute;
   left: 10px;
 }
+/*
+#command{
+  background-color: white;
+  font-size: 20px;
+  border: none;
+  padding: 15px;
+  border-radius: 5px;
+  position: absolute;
+  left: 165px;
+  bottom: 8px;
+}
+  */

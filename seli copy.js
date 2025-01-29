@@ -14,7 +14,7 @@ const angryEyeArray = [
   "images/eye-zombie.png",
   "images/eye-mad.png",
   "images/eye-close.png",
-  "images/eye-tear.png",
+  "images/eye-pissed.png",
 ];
 
 const angryMouthArray = [
@@ -34,6 +34,7 @@ const happyMouthArray = [
   "images/lip-kiss.png",
   "images/lip-tounge.png",
   "images/lip-gap.png",
+  "images/lip-L.png",
 ];
 
 const sadEyeArray = [
@@ -41,6 +42,7 @@ const sadEyeArray = [
   "images/eye-shiny.png",
   "images/eye-cry.png",
   "images/eye-wet.png",
+  "images/eye-tear.png",
 ];
 
 const sadMouthArray = [

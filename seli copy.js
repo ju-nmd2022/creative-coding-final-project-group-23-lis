@@ -80,6 +80,8 @@ let freezeEmotionDetection = 0;
 
 let video = document.getElementById("video");
 
+const ctx = document.getElementById("artCanvas").getContext("2d");
+
 function dislikeButton() {
   console.log("hey!");
 }
@@ -92,29 +94,32 @@ function likeButton() {
   }
 }
 
-//SET MOOD BASED ON RANDOM NUMBER. 
+//SET MOOD BASED ON RANDOM NUMBER.
 function setArtistMood(currentEmotion) {
   const randomNum = Math.floor(Math.random() * 16);
   if (randomNum <= 7) {
-      artistMood = currentEmotion; 
+    artistMood = currentEmotion;
   } else if (randomNum > 12) {
-      artistMood = "mischievous";
+    artistMood = "mischievous";
   } else if (randomNum >= 8 && randomNum <= 10) {
     artistMood = "benevolent";
   } else {
-      artistMood = "lazy";
-      ctx.clearRect(0, 0, artCanvas.width, artCanvas.height);
+    artistMood = "lazy";
+    ctx.clearRect(0, 0, artCanvas.width, artCanvas.height);
 
-      //reset mood after 7 seconds so it starts to draw again and the user is not stuck in lazy
-      setTimeout(() => {
-        artistMood = "neutral";
-        console.log("Lazy mode ended, resuming painting.");
-      }, 7000);
+    //reset mood after 7 seconds so it starts to draw again and the user is not stuck in lazy
+    setTimeout(() => {
+      artistMood = "neutral";
+      console.log("Lazy mode ended, resuming painting.");
+    }, 7000);
   }
 
-  if (artistMood === undefined || (artistMood === currentEmotion && !currentEmotion)) {
+  if (
+    artistMood === undefined ||
+    (artistMood === currentEmotion && !currentEmotion)
+  ) {
     artistMood = "neutral";
-}
+  }
 }
 
 function changeMoodImg() {
@@ -123,7 +128,7 @@ function changeMoodImg() {
   //black and white filter for lazy
   if (artistMood === "lazy") {
     video.classList.add("bw-video");
-}
+  }
   //calls the artist image for each mood
   artistImage(artistMood);
 
@@ -387,25 +392,104 @@ function startVideo() {
     .catch((err) => console.error("Error accessing webcam:", err));
 }
 
-function drawFaceElements(leftEye, rightEye, eyeWidth, eyeHeight, noseWidth, noseHeight, mouthWidth, mouthHeight) {
-  const ctx = document.getElementById("artCanvas").getContext("2d");
-
+function drawFaceElements(
+  leftEye,
+  rightEye,
+  eyeWidth,
+  eyeHeight,
+  noseWidth,
+  noseHeight,
+  mouthWidth,
+  mouthHeight
+) {
   // Use the selected images based on the current emotion
   if (selectedAngryEyeImage) {
-    ctx.drawImage(selectedAngryEyeImage, leftEye[0].x - eyeWidth / 2, leftEye[0].y - eyeHeight / 2, eyeWidth, eyeHeight);
-    ctx.drawImage(selectedAngryEyeImage, rightEye[0].x - eyeWidth / 2, rightEye[0].y - eyeHeight / 2, eyeWidth, eyeHeight);
-    ctx.drawImage(selectedNoseImage, (leftEye[0].x + rightEye[0].x) / 2 - noseWidth / 2, leftEye[0].y + 20 - noseHeight / 2, noseWidth, noseHeight);
-    ctx.drawImage(selectedAngryMouthImage, (leftEye[0].x + rightEye[0].x) / 2 - mouthWidth / 2, leftEye[0].y + 50 - mouthHeight / 2, mouthWidth, mouthHeight);
+    ctx.drawImage(
+      selectedAngryEyeImage,
+      leftEye[0].x - eyeWidth / 2,
+      leftEye[0].y - eyeHeight / 2,
+      eyeWidth,
+      eyeHeight
+    );
+    ctx.drawImage(
+      selectedAngryEyeImage,
+      rightEye[0].x - eyeWidth / 2,
+      rightEye[0].y - eyeHeight / 2,
+      eyeWidth,
+      eyeHeight
+    );
+    ctx.drawImage(
+      selectedNoseImage,
+      (leftEye[0].x + rightEye[0].x) / 2 - noseWidth / 2,
+      leftEye[0].y + 20 - noseHeight / 2,
+      noseWidth,
+      noseHeight
+    );
+    ctx.drawImage(
+      selectedAngryMouthImage,
+      (leftEye[0].x + rightEye[0].x) / 2 - mouthWidth / 2,
+      leftEye[0].y + 50 - mouthHeight / 2,
+      mouthWidth,
+      mouthHeight
+    );
   } else if (selectedHappyEyeImage) {
-    ctx.drawImage(selectedHappyEyeImage, leftEye[0].x - eyeWidth / 2, leftEye[0].y - eyeHeight / 2, eyeWidth, eyeHeight);
-    ctx.drawImage(selectedHappyEyeImage, rightEye[0].x - eyeWidth / 2, rightEye[0].y - eyeHeight / 2, eyeWidth, eyeHeight);
-    ctx.drawImage(selectedNoseImage, (leftEye[0].x + rightEye[0].x) / 2 - noseWidth / 2, leftEye[0].y + 20 - noseHeight / 2, noseWidth, noseHeight);
-    ctx.drawImage(selectedHappyMouthImage, (leftEye[0].x + rightEye[0].x) / 2 - mouthWidth / 2, leftEye[0].y + 50 - mouthHeight / 2, mouthWidth, mouthHeight);
+    ctx.drawImage(
+      selectedHappyEyeImage,
+      leftEye[0].x - eyeWidth / 2,
+      leftEye[0].y - eyeHeight / 2,
+      eyeWidth,
+      eyeHeight
+    );
+    ctx.drawImage(
+      selectedHappyEyeImage,
+      rightEye[0].x - eyeWidth / 2,
+      rightEye[0].y - eyeHeight / 2,
+      eyeWidth,
+      eyeHeight
+    );
+    ctx.drawImage(
+      selectedNoseImage,
+      (leftEye[0].x + rightEye[0].x) / 2 - noseWidth / 2,
+      leftEye[0].y + 20 - noseHeight / 2,
+      noseWidth,
+      noseHeight
+    );
+    ctx.drawImage(
+      selectedHappyMouthImage,
+      (leftEye[0].x + rightEye[0].x) / 2 - mouthWidth / 2,
+      leftEye[0].y + 50 - mouthHeight / 2,
+      mouthWidth,
+      mouthHeight
+    );
   } else if (selectedSadEyeImage) {
-    ctx.drawImage(selectedSadEyeImage, leftEye[0].x - eyeWidth / 2, leftEye[0].y - eyeHeight / 2, eyeWidth, eyeHeight);
-    ctx.drawImage(selectedSadEyeImage, rightEye[0].x - eyeWidth / 2, rightEye[0].y - eyeHeight / 2, eyeWidth, eyeHeight);
-    ctx.drawImage(selectedNoseImage, (leftEye[0].x + rightEye[0].x) / 2 - noseWidth / 2, leftEye[0].y + 20 - noseHeight / 2, noseWidth, noseHeight);
-    ctx.drawImage(selectedSadMouthImage, (leftEye[0].x + rightEye[0].x) / 2 - mouthWidth / 2, leftEye[0].y + 50 - mouthHeight / 2, mouthWidth, mouthHeight);
+    ctx.drawImage(
+      selectedSadEyeImage,
+      leftEye[0].x - eyeWidth / 2,
+      leftEye[0].y - eyeHeight / 2,
+      eyeWidth,
+      eyeHeight
+    );
+    ctx.drawImage(
+      selectedSadEyeImage,
+      rightEye[0].x - eyeWidth / 2,
+      rightEye[0].y - eyeHeight / 2,
+      eyeWidth,
+      eyeHeight
+    );
+    ctx.drawImage(
+      selectedNoseImage,
+      (leftEye[0].x + rightEye[0].x) / 2 - noseWidth / 2,
+      leftEye[0].y + 20 - noseHeight / 2,
+      noseWidth,
+      noseHeight
+    );
+    ctx.drawImage(
+      selectedSadMouthImage,
+      (leftEye[0].x + rightEye[0].x) / 2 - mouthWidth / 2,
+      leftEye[0].y + 50 - mouthHeight / 2,
+      mouthWidth,
+      mouthHeight
+    );
   }
 }
 

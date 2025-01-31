@@ -1,5 +1,3 @@
-//backup file so i have the working code saved to fall back on
-
 // Arrays holding the images for different emotions
 
 let noseArray = [
@@ -31,6 +29,7 @@ let happyEyeArray = [
   { image: "images/eye-smile.png", weight: 1 },
   { image: "images/eye-hope.png", weight: 1 },
 ];
+
 let happyMouthArray = [
   { image: "images/lip-kiss.png", weight: 1 },
   { image: "images/lip-tounge.png", weight: 1 },
@@ -53,6 +52,17 @@ let sadMouthArray = [
   { image: "images/lip-scream.png", weight: 1 },
 ];
 
+// 1 = used, 0 = not used
+let lastUsedImages = [
+  { faceArray: "noseArray", used: 0 },
+  { faceArray: "angryEyeArray", used: 0 },
+  { faceArray: "angryMouthArray", used: 0 },
+  { faceArray: "happyEyeArray", used: 0 },
+  { faceArray: "happyMouthArray", used: 0 },
+  { faceArray: "sadEyeArray", used: 0 },
+  { faceArray: "sadMouthArray", used: 0 },
+];
+
 // Variables to hold the selected images for each part (to prevent re-randomization)
 let selectedAngryEyeImage = null;
 let selectedNoseImage = null; // Common nose image for all emotions
@@ -63,8 +73,6 @@ let selectedHappyMouthImage = null;
 
 let selectedSadEyeImage = null;
 let selectedSadMouthImage = null;
-
-let chanceMiscOrBene = 5;
 
 // Previous emotion states to detect changes
 let previousEmotion = null;
@@ -86,14 +94,13 @@ let video = document.getElementById("video");
 const ctx = document.getElementById("artCanvas").getContext("2d");
 
 function dislikeButton() {
-  console.log("hey!");
+  //console.log("hey!");
 }
 function likeButton() {
-  console.log("yes!");
-  console.log(artistMood);
+  //console.log("yes!");
+  //console.log(artistMood);
   if (artistMood === "benevolent" || artistMood === "mischievous") {
-    console.log("we want to add");
-    chanceMiscOrBene -= 0.025;
+    //console.log("we want to add");
   }
 }
 
@@ -113,7 +120,7 @@ function setArtistMood(currentEmotion) {
     //reset mood after 7 seconds so it starts to draw again and the user is not stuck in lazy
     setTimeout(() => {
       artistMood = "neutral";
-      console.log("Lazy mode ended, resuming painting.");
+      //console.log("Lazy mode ended, resuming painting.");
     }, 1);
   }
 
@@ -123,7 +130,7 @@ function setArtistMood(currentEmotion) {
   ) {
     artistMood = "neutral";
   }
-  console.log(randomNum);
+  //console.log(randomNum);
 }
 
 function changeMoodImg() {
@@ -164,8 +171,13 @@ function getRandomImage(imageArray) {
     const randomIndex = Math.floor(Math.random() * imageArray.length);
     const img = new Image();
     img.src = imageArray[randomIndex].image;
-    console.log("nose image: " + noseArray[randomIndex].weight);
+    // console.log("nose image: " + noseArray[randomIndex].weight);
     img.onload = () => resolve(img); // Resolve the promise once the image is loaded
+    // Write last used image to the lastUsedImages-array
+    let filteredArray = lastUsedImages.filter((arrayName) => {
+      return arrayName.faceArray === imageArray;
+    });
+    console.log("filtered array" + filteredArray);
   });
 }
 
@@ -231,11 +243,11 @@ function startVideo() {
               freezeEmotionDetection > 10 //Change the length of the visible emotions here!!! <-------------------------------
             ) {
               previousEmotion = currentEmotion;
-              console.log(
+              /*console.log(
                 "current emotion is not the previous" +
                   previousEmotion +
                   currentEmotion
-              );
+              );*/
               console.log("freeze:" + freezeEmotionDetection);
               freezeEmotionDetection = 0;
 
@@ -292,7 +304,6 @@ function startVideo() {
               ) {
                 setArtistMood(currentEmotion);
                 changeMoodImg();
-                console.log("neutral mood loaded");
               }
             }
 
@@ -545,7 +556,6 @@ function artistImage(moodImages) {
   neutralImg.style.display = "none";
 
   if (moodImages === "angry") {
-    console.log("it works!" + moodImages);
     angryImg.style.display = "block";
     likeImg.style.display = "none";
     dislikeImg.style.display = "none";
@@ -554,7 +564,6 @@ function artistImage(moodImages) {
     neutralImg.style.display = "none";
   }
   if (moodImages === "sad") {
-    console.log("it works!" + moodImages);
     sadImg.style.display = "block";
     likeImg.style.display = "none";
     dislikeImg.style.display = "none";
@@ -563,7 +572,6 @@ function artistImage(moodImages) {
     neutralImg.style.display = "none";
   }
   if (moodImages === "happy") {
-    console.log("it works!" + moodImages);
     happyImg.style.display = "block";
     likeImg.style.display = "none";
     dislikeImg.style.display = "none";
@@ -572,7 +580,6 @@ function artistImage(moodImages) {
     neutralImg.style.display = "none";
   }
   if (moodImages === "mischievous") {
-    console.log("it works!" + moodImages);
     miscImg.style.display = "block";
     dislikeImg.style.display = "block";
     likeImg.style.display = "block";
@@ -581,7 +588,6 @@ function artistImage(moodImages) {
     neutralImg.style.display = "none";
   }
   if (moodImages === "benevolent") {
-    console.log("it works!" + moodImages);
     beneImg.style.display = "block";
     dislikeImg.style.display = "block";
     likeImg.style.display = "block";
@@ -590,7 +596,6 @@ function artistImage(moodImages) {
     neutralImg.style.display = "none";
   }
   if (moodImages === "lazy") {
-    console.log("it works!" + moodImages);
     lazyImg.style.display = "block";
     likeImg.style.display = "none";
     dislikeImg.style.display = "none";
@@ -599,7 +604,6 @@ function artistImage(moodImages) {
     neutralImg.style.display = "none";
   }
   if (moodImages === "neutral") {
-    console.log("it works!" + moodImages);
     lazyImg.style.display = "none";
     likeImg.style.display = "none";
     dislikeImg.style.display = "none";
@@ -662,3 +666,6 @@ if (command && currentEmotion === detected) {
   command.remove();
 }
 */
+
+// Object array: https://stackoverflow.com/questions/54878770/best-way-to-add-images-to-arrays-of-objects
+// Objects and properties in arrays: https://chatgpt.com/share/679c9044-bd2c-8011-ab39-3a3429f8142a

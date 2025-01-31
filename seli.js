@@ -55,7 +55,7 @@ let sadMouthArray = [
 // 1 = used, 0 = not used
 let lastUsedImages = [
   { faceArray: "noseArray", used: 0 },
-  { faceArray: "angryEyeArray", used: 1 },
+  { faceArray: "angryEyeArray", used: 3 },
   { faceArray: "angryMouthArray", used: 0 },
   { faceArray: "happyEyeArray", used: 0 },
   { faceArray: "happyMouthArray", used: 0 },
@@ -96,6 +96,8 @@ artCanvas.height = video.videoHeight;
 
 const ctx = document.getElementById("artCanvas").getContext("2d");
 
+let arrayNameGlobal;
+
 function dislikeButton() {
   //console.log("hey!");
   //console.log("clicked like ", lastUsedImages[0]?.used);
@@ -108,6 +110,10 @@ function likeButton() {
   //console.log("clicked like ", lastUsedImages[0]?.used);
   //console.log("nose array weight ", noseArray[lastUsedImages[0]?.used].weight);
   noseArray[lastUsedImages[0]?.used].weight += 0.025;
+  console.log("array name: ", arrayNameGlobal);
+  // Add 0.025 to the righ eye array! <---------------------------------------------------
+  // How can we find out WHICH eye array that the bot uses?
+  // For each eye/mouth for each emotion add the global variable to be able to track which array the eye/mouth comes from so we can add weight
 
   //console.log("nose array weight ", noseArray[lastUsedImages[0]?.used].weight);
 
@@ -180,6 +186,7 @@ function changeMoodImg() {
 // Function to load random images from an array and ensure they are loaded before use
 function getRandomImage(imageArray, arrayName) {
   const randomIndex = Math.floor(Math.random() * imageArray.length);
+  // Filter out the exact row that was last used in lastUsedImages-array so that we have the correct index from inside of the array
   let filteredArray = lastUsedImages.filter(
     (justArrayName) => justArrayName.faceArray === arrayName
   );
@@ -286,6 +293,7 @@ function startVideo() {
               // Handle each emotion
               if (currentEmotion === "angry" && emotions.angry > 0.5) {
                 console.log("Here it is! " + noseArray.weight);
+                arrayNameGlobal = "angryEyeArray";
                 setArtistMood(currentEmotion);
                 changeMoodImg();
                 [

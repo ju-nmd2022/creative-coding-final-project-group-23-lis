@@ -79,6 +79,8 @@ let artistMood = "neutral";
 let freezeEmotionDetection = 0;
 
 let video = document.getElementById("video");
+artCanvas.width = video.videoWidth;
+artCanvas.height = video.videoHeight;
 
 const ctx = document.getElementById("artCanvas").getContext("2d");
 
@@ -121,6 +123,8 @@ function setArtistMood(currentEmotion) {
     artistMood = "neutral";
   }
 }
+
+console.log(artCanvas.width, artCanvas.height);
 
 function changeMoodImg() {
   video.classList.remove("bw-video");
@@ -175,12 +179,22 @@ function startVideo() {
         }; // Use video dimensions
         faceapi.matchDimensions(canvas, displaySize);
 
+      
+
         // Start processing the video
         setInterval(async () => {
+
+          /*
           //if mood is lazy, stop drawing images on face 7 secs
           if (artistMood === "lazy") {
             return;
           }
+            */
+
+  
+          const artCanvas = document.getElementById("artCanvas");
+  const artCtx = artCanvas.getContext("2d");
+  artCtx.clearRect(0, 0, artCanvas.width, artCanvas.height);
 
           const detections = await faceapi
             .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())

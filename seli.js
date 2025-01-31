@@ -90,6 +90,8 @@ let mood = "neutral";
 let freezeEmotionDetection = 0;
 
 let video = document.getElementById("video");
+artCanvas.width = video.videoWidth;
+artCanvas.height = video.videoHeight;
 
 const ctx = document.getElementById("artCanvas").getContext("2d");
 
@@ -211,6 +213,10 @@ function startVideo() {
           if (artistMood === "lazy") {
             //return;
           }
+
+          const artCanvas = document.getElementById("artCanvas");
+          const artCtx = artCanvas.getContext("2d");
+          artCtx.clearRect(0, 0, artCanvas.width, artCanvas.height);
 
           const detections = await faceapi
             .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())

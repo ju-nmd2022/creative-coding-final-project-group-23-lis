@@ -2,11 +2,11 @@
 
 let noseArray = [
   { image: "images/nose-septum.png", weight: 1 },
-  { image: "images/nose-round.png", weight: 1 },
-  { image: "images/nose-fat.png", weight: 1 },
-  { image: "images/nose-wings.png", weight: 1 },
-  { image: "images/nose-pig.png", weight: 1 },
-  { image: "images/nose-regular.png", weight: 1 },
+  { image: "images/nose-round.png", weight: 2 },
+  { image: "images/nose-fat.png", weight: 3 },
+  { image: "images/nose-wings.png", weight: 4 },
+  { image: "images/nose-pig.png", weight: 5 },
+  { image: "images/nose-regular.png", weight: 6 },
 ];
 
 let angryEyeArray = [
@@ -55,7 +55,7 @@ let sadMouthArray = [
 // 1 = used, 0 = not used
 let lastUsedImages = [
   { faceArray: "noseArray", used: 0 },
-  { faceArray: "angryEyeArray", used: 0 },
+  { faceArray: "angryEyeArray", used: 1 },
   { faceArray: "angryMouthArray", used: 0 },
   { faceArray: "happyEyeArray", used: 0 },
   { faceArray: "happyMouthArray", used: 0 },
@@ -90,6 +90,7 @@ let mood = "neutral";
 let freezeEmotionDetection = 0;
 
 let video = document.getElementById("video");
+
 artCanvas.width = video.videoWidth;
 artCanvas.height = video.videoHeight;
 
@@ -97,10 +98,19 @@ const ctx = document.getElementById("artCanvas").getContext("2d");
 
 function dislikeButton() {
   //console.log("hey!");
+  //console.log("clicked like ", lastUsedImages[0]?.used);
+  //console.log("nose array weight ", noseArray[lastUsedImages[0]?.used].weight);
+  noseArray[lastUsedImages[0]?.used].weight -= 0.025;
+  //console.log("nose array weight ", noseArray[lastUsedImages[0]?.used].weight);
 }
 function likeButton() {
   //console.log("yes!");
-  //console.log(artistMood);
+  //console.log("clicked like ", lastUsedImages[0]?.used);
+  //console.log("nose array weight ", noseArray[lastUsedImages[0]?.used].weight);
+  noseArray[lastUsedImages[0]?.used].weight += 0.025;
+
+  //console.log("nose array weight ", noseArray[lastUsedImages[0]?.used].weight);
+
   if (artistMood === "benevolent" || artistMood === "mischievous") {
     //console.log("we want to add");
   }
@@ -168,18 +178,23 @@ function changeMoodImg() {
 //
 
 // Function to load random images from an array and ensure they are loaded before use
-function getRandomImage(imageArray) {
+function getRandomImage(imageArray, arrayName) {
+  const randomIndex = Math.floor(Math.random() * imageArray.length);
+  let filteredArray = lastUsedImages.filter(
+    (justArrayName) => justArrayName.faceArray === arrayName
+  );
+  filteredArray[0].used = randomIndex;
+  console.log("filtered array", filteredArray[0]?.used);
+  console.log("this is the image: ", arrayName);
+  // console.log(lastUsedImages);
+
   return new Promise((resolve) => {
-    const randomIndex = Math.floor(Math.random() * imageArray.length);
     const img = new Image();
     img.src = imageArray[randomIndex].image;
+    console.log("Chosen image: " + img.src);
     // console.log("nose image: " + noseArray[randomIndex].weight);
     img.onload = () => resolve(img); // Resolve the promise once the image is loaded
     // Write last used image to the lastUsedImages-array
-    let filteredArray = lastUsedImages.filter((arrayName) => {
-      return arrayName.faceArray === imageArray;
-    });
-    console.log("filtered array" + filteredArray);
   });
 }
 
@@ -249,12 +264,14 @@ function startVideo() {
               freezeEmotionDetection > 10 //Change the length of the visible emotions here!!! <-------------------------------
             ) {
               previousEmotion = currentEmotion;
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+
               /*console.log(
                 "current emotion is not the previous" +
                   previousEmotion +
                   currentEmotion
               );*/
-              console.log("freeze:" + freezeEmotionDetection);
+              //console.log("freeze:" + freezeEmotionDetection);
               freezeEmotionDetection = 0;
 
               // Reset all images
@@ -276,9 +293,9 @@ function startVideo() {
                   selectedNoseImage,
                   selectedAngryMouthImage,
                 ] = await Promise.all([
-                  getRandomImage(angryEyeArray),
-                  getRandomImage(noseArray),
-                  getRandomImage(angryMouthArray),
+                  getRandomImage(angryEyeArray, "angryEyeArray"),
+                  getRandomImage(noseArray, "noseArray"),
+                  getRandomImage(angryMouthArray, "angryMouthArray"),
                 ]);
               } else if (currentEmotion === "happy" && emotions.happy > 0.5) {
                 setArtistMood(currentEmotion);
@@ -288,9 +305,9 @@ function startVideo() {
                   selectedNoseImage,
                   selectedHappyMouthImage,
                 ] = await Promise.all([
-                  getRandomImage(happyEyeArray),
-                  getRandomImage(noseArray),
-                  getRandomImage(happyMouthArray),
+                  getRandomImage(happyEyeArray, "happyEyeArray"),
+                  getRandomImage(noseArray, "noseArray"),
+                  getRandomImage(happyMouthArray, "happyMouthArray"),
                 ]);
               } else if (currentEmotion === "sad" && emotions.sad > 0.5) {
                 setArtistMood(currentEmotion);
@@ -300,9 +317,9 @@ function startVideo() {
                   selectedNoseImage,
                   selectedSadMouthImage,
                 ] = await Promise.all([
-                  getRandomImage(sadEyeArray),
-                  getRandomImage(noseArray),
-                  getRandomImage(sadMouthArray),
+                  getRandomImage(sadEyeArray, "sadEyeArray"),
+                  getRandomImage(noseArray, "noseArray"),
+                  getRandomImage(sadMouthArray, "sadMouthArray"),
                 ]);
               } else if (
                 currentEmotion === "neutral" &&

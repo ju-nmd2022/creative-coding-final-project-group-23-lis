@@ -96,30 +96,36 @@ artCanvas.height = video.videoHeight;
 
 const ctx = document.getElementById("artCanvas").getContext("2d");
 
-let arrayNameGlobal;
+let randomIndexGlobal;
+
+let arrayNameEyeGlobal;
+let arrayNameMouthGlobal;
 
 function dislikeButton() {
-  //console.log("hey!");
-  //console.log("clicked like ", lastUsedImages[0]?.used);
-  //console.log("nose array weight ", noseArray[lastUsedImages[0]?.used].weight);
+  // To change the probability for all noses when clicking the like button:
   noseArray[lastUsedImages[0]?.used].weight -= 0.025;
-  //console.log("nose array weight ", noseArray[lastUsedImages[0]?.used].weight);
+
+  // To change the probability for all eyes when clicking the like button:
+  arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight -= 0.025;
+
+  // To change the probability for all mouths when clicking the like button:
+  arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight -= 0.025;
 }
 function likeButton() {
-  //console.log("yes!");
-  //console.log("clicked like ", lastUsedImages[0]?.used);
-  //console.log("nose array weight ", noseArray[lastUsedImages[0]?.used].weight);
+  // To change the probability for all noses when clicking the like button:
   noseArray[lastUsedImages[0]?.used].weight += 0.025;
-  console.log("array name: ", arrayNameGlobal);
+
+  // To change the probability for all eyes when clicking the like button:
+  arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight += 0.025;
+
+  // To change the probability for all mouths when clicking the like button:
+  arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight += 0.025;
+
+  // The line below is the type of eye used when clicked (which specific eye)
+  // filteredArray[0].used;
   // Add 0.025 to the righ eye array! <---------------------------------------------------
   // How can we find out WHICH eye array that the bot uses?
   // For each eye/mouth for each emotion add the global variable to be able to track which array the eye/mouth comes from so we can add weight
-
-  //console.log("nose array weight ", noseArray[lastUsedImages[0]?.used].weight);
-
-  if (artistMood === "benevolent" || artistMood === "mischievous") {
-    //console.log("we want to add");
-  }
 }
 
 //SET MOOD BASED ON RANDOM NUMBER.
@@ -186,19 +192,20 @@ function changeMoodImg() {
 // Function to load random images from an array and ensure they are loaded before use
 function getRandomImage(imageArray, arrayName) {
   const randomIndex = Math.floor(Math.random() * imageArray.length);
+  randomIndexGlobal = randomIndex;
   // Filter out the exact row that was last used in lastUsedImages-array so that we have the correct index from inside of the array
   let filteredArray = lastUsedImages.filter(
     (justArrayName) => justArrayName.faceArray === arrayName
   );
   filteredArray[0].used = randomIndex;
-  console.log("filtered array", filteredArray[0]?.used);
-  console.log("this is the image: ", arrayName);
+  //console.log("filtered array", filteredArray[0]?.used);
+  //console.log("this is the image: ", arrayName);
   // console.log(lastUsedImages);
 
   return new Promise((resolve) => {
     const img = new Image();
     img.src = imageArray[randomIndex].image;
-    console.log("Chosen image: " + img.src);
+    //console.log("Chosen image: " + img.src);
     // console.log("nose image: " + noseArray[randomIndex].weight);
     img.onload = () => resolve(img); // Resolve the promise once the image is loaded
     // Write last used image to the lastUsedImages-array
@@ -292,8 +299,9 @@ function startVideo() {
 
               // Handle each emotion
               if (currentEmotion === "angry" && emotions.angry > 0.5) {
-                console.log("Here it is! " + noseArray.weight);
-                arrayNameGlobal = "angryEyeArray";
+                console.log("Here it is! " + noseArray[0].weight);
+                arrayNameEyeGlobal = angryEyeArray;
+                arrayNameMouthGlobal = angryMouthArray;
                 setArtistMood(currentEmotion);
                 changeMoodImg();
                 [
@@ -306,6 +314,8 @@ function startVideo() {
                   getRandomImage(angryMouthArray, "angryMouthArray"),
                 ]);
               } else if (currentEmotion === "happy" && emotions.happy > 0.5) {
+                arrayNameEyeGlobal = happyEyeArray;
+                arrayNameMouthGlobal = happyMouthArray;
                 setArtistMood(currentEmotion);
                 changeMoodImg();
                 [
@@ -318,6 +328,8 @@ function startVideo() {
                   getRandomImage(happyMouthArray, "happyMouthArray"),
                 ]);
               } else if (currentEmotion === "sad" && emotions.sad > 0.5) {
+                arrayNameEyeGlobal = sadEyeArray;
+                arrayNameMouthGlobal = sadMouthArray;
                 setArtistMood(currentEmotion);
                 changeMoodImg();
                 [

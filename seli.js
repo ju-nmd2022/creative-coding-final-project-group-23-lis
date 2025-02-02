@@ -2,11 +2,11 @@
 
 let noseArray = [
   { image: "images/nose-septum.png", weight: 1 },
-  { image: "images/nose-round.png", weight: 2 },
-  { image: "images/nose-fat.png", weight: 3 },
-  { image: "images/nose-wings.png", weight: 4 },
-  { image: "images/nose-pig.png", weight: 5 },
-  { image: "images/nose-regular.png", weight: 6 },
+  { image: "images/nose-round.png", weight: 1 },
+  { image: "images/nose-fat.png", weight: 1 },
+  { image: "images/nose-wings.png", weight: 1 },
+  { image: "images/nose-pig.png", weight: 1 },
+  { image: "images/nose-regular.png", weight: 1 },
 ];
 
 let angryEyeArray = [
@@ -192,6 +192,13 @@ function changeMoodImg() {
 // Function to load random images from an array and ensure they are loaded before use
 function getRandomImage(imageArray, arrayName) {
   const randomIndex = Math.floor(Math.random() * imageArray.length);
+  const weightedObjects = [];
+  imageArray.forEach((object) => {
+    for (let i = 0; i < object.weight; i++) {
+      weightedObjects.push(object);
+    }
+  });
+  console.log("objects: ", weightedObjects);
   randomIndexGlobal = randomIndex;
   // Filter out the exact row that was last used in lastUsedImages-array so that we have the correct index from inside of the array
   let filteredArray = lastUsedImages.filter(

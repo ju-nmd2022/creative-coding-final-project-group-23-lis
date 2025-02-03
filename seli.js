@@ -1,55 +1,54 @@
 // Arrays holding the images for different emotions
-
 let noseArray = [
-  { image: "images/nose-septum.png", weight: 1 },
-  { image: "images/nose-round.png", weight: 1 },
-  { image: "images/nose-fat.png", weight: 1 },
-  { image: "images/nose-wings.png", weight: 1 },
-  { image: "images/nose-pig.png", weight: 1 },
-  { image: "images/nose-regular.png", weight: 1 },
+  { image: "images/nose-septum.png", weight: 15 },
+  { image: "images/nose-round.png", weight: 15 },
+  { image: "images/nose-fat.png", weight: 15 },
+  { image: "images/nose-wings.png", weight: 15 },
+  { image: "images/nose-pig.png", weight: 15 },
+  { image: "images/nose-regular.png", weight: 15 },
 ];
 
 let angryEyeArray = [
-  { image: "images/eye-zombie.png", weight: 1 },
-  { image: "images/eye-mad.png", weight: 1 },
-  { image: "images/eye-close.png", weight: 1 },
-  { image: "images/eye-pissed.png", weight: 1 },
+  { image: "images/eye-zombie.png", weight: 15 },
+  { image: "images/eye-mad.png", weight: 15 },
+  { image: "images/eye-close.png", weight: 15 },
+  { image: "images/eye-pissed.png", weight: 15 },
 ];
 
 let angryMouthArray = [
-  { image: "images/lip-wide.png", weight: 1 },
-  { image: "images/lip-crooked.png", weight: 1 },
-  { image: "images/lip-open.png", weight: 1 },
-  { image: "images/lip-grr.png", weight: 1 },
+  { image: "images/lip-wide.png", weight: 15 },
+  { image: "images/lip-crooked.png", weight: 15 },
+  { image: "images/lip-open.png", weight: 15 },
+  { image: "images/lip-grr.png", weight: 15 },
 ];
 
 let happyEyeArray = [
-  { image: "images/eye-normal.png", weight: 1 },
-  { image: "images/eye-round.png", weight: 1 },
-  { image: "images/eye-smile.png", weight: 1 },
-  { image: "images/eye-hope.png", weight: 1 },
+  { image: "images/eye-normal.png", weight: 15 },
+  { image: "images/eye-round.png", weight: 15 },
+  { image: "images/eye-smile.png", weight: 15 },
+  { image: "images/eye-hope.png", weight: 15 },
 ];
 
 let happyMouthArray = [
-  { image: "images/lip-kiss.png", weight: 1 },
-  { image: "images/lip-tounge.png", weight: 1 },
-  { image: "images/lip-gap.png", weight: 1 },
-  { image: "images/lip-L.png", weight: 1 },
+  { image: "images/lip-kiss.png", weight: 15 },
+  { image: "images/lip-tounge.png", weight: 15 },
+  { image: "images/lip-gap.png", weight: 15 },
+  { image: "images/lip-L.png", weight: 15 },
 ];
 
 let sadEyeArray = [
-  { image: "images/eye-drip.png", weight: 1 },
-  { image: "images/eye-shiny.png", weight: 1 },
-  { image: "images/eye-cry.png", weight: 1 },
-  { image: "images/eye-wet.png", weight: 1 },
-  { image: "images/eye-tear.png", weight: 1 },
+  { image: "images/eye-drip.png", weight: 15 },
+  { image: "images/eye-shiny.png", weight: 15 },
+  { image: "images/eye-cry.png", weight: 15 },
+  { image: "images/eye-wet.png", weight: 15 },
+  { image: "images/eye-tear.png", weight: 15 },
 ];
 
 let sadMouthArray = [
-  { image: "images/lip-bite.png", weight: 1 },
-  { image: "images/lip-frown.png", weight: 1 },
-  { image: "images/lip-sad.png", weight: 1 },
-  { image: "images/lip-scream.png", weight: 1 },
+  { image: "images/lip-bite.png", weight: 15 },
+  { image: "images/lip-frown.png", weight: 15 },
+  { image: "images/lip-sad.png", weight: 15 },
+  { image: "images/lip-scream.png", weight: 15 },
 ];
 
 // 1 = used, 0 = not used
@@ -103,23 +102,45 @@ let arrayNameMouthGlobal;
 
 function dislikeButton() {
   // To change the probability for all noses when clicking the like button:
-  noseArray[lastUsedImages[0]?.used].weight -= 0.025;
+  noseArray[lastUsedImages[0]?.used].weight -= 1;
+
+  if (noseArray[lastUsedImages[0]?.used].weight <= 0) {
+    noseArray[lastUsedImages[0]?.used].weight = 15;
+  }
 
   // To change the probability for all eyes when clicking the like button:
-  arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight -= 0.025;
+  arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight -= 1;
+  if (arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight <= 0) {
+    arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight = 15;
+  }
 
   // To change the probability for all mouths when clicking the like button:
-  arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight -= 0.025;
+  arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight -= 1;
+
+  if (arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight) {
+    arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight = 15;
+  }
+
+  console.log(
+    "disliked: ",
+    arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight
+  );
 }
+
 function likeButton() {
   // To change the probability for all noses when clicking the like button:
-  noseArray[lastUsedImages[0]?.used].weight += 0.025;
+  noseArray[lastUsedImages[0]?.used].weight += 1;
 
   // To change the probability for all eyes when clicking the like button:
-  arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight += 0.025;
+  arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight += 1;
 
   // To change the probability for all mouths when clicking the like button:
-  arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight += 0.025;
+  arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight += 1;
+
+  console.log(
+    "liked: ",
+    arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight
+  );
 
   // The line below is the type of eye used when clicked (which specific eye)
   // filteredArray[0].used;
@@ -191,20 +212,41 @@ function changeMoodImg() {
 
 // Function to load random images from an array and ensure they are loaded before use
 function getRandomImage(imageArray, arrayName) {
-  const randomIndex = Math.floor(Math.random() * imageArray.length);
+  //const randomIndex = Math.floor(Math.random() * imageArray.length);
   const weightedObjects = [];
-  imageArray.forEach((object) => {
-    for (let i = 0; i < object.weight; i++) {
-      weightedObjects.push(object);
-    }
-  });
   console.log("objects: ", weightedObjects);
+  //randomIndexGlobal = randomIndex;
+
+  function getRandomObjectWeighted() {
+    imageArray.forEach((object) => {
+      for (let i = 0; i < object.weight; i++) {
+        weightedObjects.push(object);
+      }
+    });
+    const randomIndex2 = Math.floor(Math.random() * weightedObjects.length);
+    const randomObject = weightedObjects[randomIndex2];
+
+    // Find the index of the chosen object in the original array
+    const originalIndex = imageArray.findIndex(
+      (object) => object.image === randomObject.image
+    );
+
+    return { randomObject, originalIndex };
+  }
+
+  const { randomObject, originalIndex } = getRandomObjectWeighted();
+  console.log(
+    `Chosen Object: ${randomObject.image}, Weight: ${randomObject.weight}, Original Index: ${originalIndex}`
+  );
+  const randomIndex = originalIndex;
   randomIndexGlobal = randomIndex;
+  /*
   // Filter out the exact row that was last used in lastUsedImages-array so that we have the correct index from inside of the array
   let filteredArray = lastUsedImages.filter(
     (justArrayName) => justArrayName.faceArray === arrayName
   );
   filteredArray[0].used = randomIndex;
+  */
   //console.log("filtered array", filteredArray[0]?.used);
   //console.log("this is the image: ", arrayName);
   // console.log(lastUsedImages);

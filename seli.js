@@ -101,24 +101,29 @@ let arrayNameEyeGlobal;
 let arrayNameMouthGlobal;
 
 function dislikeButton() {
-  // To change the probability for all noses when clicking the like button:
-  noseArray[lastUsedImages[0]?.used].weight -= 1;
+  if (artistMood !== "benevolent") {
+    // To change the probability for all noses when clicking the like button:
+    noseArray[lastUsedImages[0]?.used].weight += 1;
 
-  if (noseArray[lastUsedImages[0]?.used].weight <= 0) {
-    noseArray[lastUsedImages[0]?.used].weight = 15;
-  }
+    // To change the probability for all eyes when clicking the like button:
+    arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight += 1;
 
-  // To change the probability for all eyes when clicking the like button:
-  arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight -= 1;
+    // To change the probability for all mouths when clicking the like button:
+    arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight += 1;
+  } else
+    [
+      // To change the probability for all noses when clicking the like button:
+      (noseArray[lastUsedImages[0]?.used].weight -= 1),
+      // To change the probability for all eyes when clicking the like button:
+      (arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight -= 1),
+      // To change the probability for all mouths when clicking the like button:
+      (arrayNameMouthGlobal[
+        lastUsedImages[randomIndexGlobal]?.used
+      ].weight -= 1),
+    ];
+
   if (arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight <= 0) {
     arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight = 15;
-  }
-
-  // To change the probability for all mouths when clicking the like button:
-  arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight -= 1;
-
-  if (arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight) {
-    arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight = 15;
   }
 
   console.log(
@@ -128,25 +133,34 @@ function dislikeButton() {
 }
 
 function likeButton() {
-  // To change the probability for all noses when clicking the like button:
-  noseArray[lastUsedImages[0]?.used].weight += 1;
-
-  // To change the probability for all eyes when clicking the like button:
-  arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight += 1;
-
-  // To change the probability for all mouths when clicking the like button:
-  arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight += 1;
-
   console.log(
     "liked: ",
     arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight
   );
+  if (artistMood !== "mischievous") {
+    // To change the probability for all noses when clicking the like button:
+    noseArray[lastUsedImages[0]?.used].weight += 1;
 
-  // The line below is the type of eye used when clicked (which specific eye)
-  // filteredArray[0].used;
-  // Add 0.025 to the righ eye array! <---------------------------------------------------
-  // How can we find out WHICH eye array that the bot uses?
-  // For each eye/mouth for each emotion add the global variable to be able to track which array the eye/mouth comes from so we can add weight
+    // To change the probability for all eyes when clicking the like button:
+    arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight += 1;
+
+    // To change the probability for all mouths when clicking the like button:
+    arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight += 1;
+  } else
+    [
+      // To change the probability for all noses when clicking the like button:
+      (noseArray[lastUsedImages[0]?.used].weight -= 1),
+      // To change the probability for all eyes when clicking the like button:
+      (arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight -= 1),
+      // To change the probability for all mouths when clicking the like button:
+      (arrayNameMouthGlobal[
+        lastUsedImages[randomIndexGlobal]?.used
+      ].weight -= 1),
+    ];
+
+  if (arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight <= 0) {
+    arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight = 15;
+  }
 }
 
 //SET MOOD BASED ON RANDOM NUMBER.
@@ -323,17 +337,19 @@ function startVideo() {
 
             // Check if the emotion has changed
             if (
-              currentEmotion !== previousEmotion &&
-              freezeEmotionDetection > 10 //Change the length of the visible emotions here!!! <-------------------------------
+              (currentEmotion !== previousEmotion &&
+                freezeEmotionDetection > 10) || // Change the length of the visible emotions here!!! <-------------------------------
+              (currentEmotion !== previousEmotion &&
+                currentEmotion === "normal")
             ) {
-              previousEmotion = currentEmotion;
-              ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-              /*console.log(
+              console.log(
                 "current emotion is not the previous" +
                   previousEmotion +
                   currentEmotion
-              );*/
+              );
+              previousEmotion = currentEmotion;
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+
               //console.log("freeze:" + freezeEmotionDetection);
               freezeEmotionDetection = 0;
 

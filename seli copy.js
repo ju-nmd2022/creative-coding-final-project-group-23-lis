@@ -125,7 +125,6 @@ function setArtistMood(currentEmotion) {
 }
 
 console.log(artCanvas.width, artCanvas.height);
-
 function changeMoodImg() {
   video.classList.remove("bw-video");
 

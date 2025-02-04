@@ -165,6 +165,10 @@ function likeButton() {
 
 //SET MOOD BASED ON RANDOM NUMBER.
 function setArtistMood(currentEmotion) {
+  if (currentEmotion === "neutral" || currentEmotion === "surprised") {
+    artistMood = "neutral";
+    return;
+  }
   const randomNum = Math.floor(Math.random() * 14);
   if (randomNum <= 7) {
     artistMood = currentEmotion;
@@ -175,12 +179,16 @@ function setArtistMood(currentEmotion) {
   } else {
     artistMood = "lazy";
     ctx.clearRect(0, 0, artCanvas.width, artCanvas.height);
+    video.classList.add("bw-video");
 
     //reset mood after 7 seconds so it starts to draw again and the user is not stuck in lazy
     setTimeout(() => {
+      video.classList.remove("bw-video");
       artistMood = "neutral";
-      //console.log("Lazy mode ended, resuming painting.");
-    }, 1);
+      console.log("Lazy mode ended, resuming painting.");
+      //ctx.clearRect(0, 0, artCanvas.width, artCanvas.height);
+    }, 7000);
+    return; 
   }
 
   if (
@@ -193,12 +201,13 @@ function setArtistMood(currentEmotion) {
 }
 
 function changeMoodImg() {
-  video.classList.remove("bw-video");
+  /*video.classList.remove("bw-video");
 
   //black and white filter for lazy
   if (artistMood === "lazy") {
     video.classList.add("bw-video");
   }
+    */
   //calls the artist image for each mood
   artistImage(artistMood);
 
@@ -303,7 +312,8 @@ function startVideo() {
         setInterval(async () => {
           //if mood is lazy, stop drawing images on face 7 secs
           if (artistMood === "lazy") {
-            //return;
+            return;
+            ctx.clearRect(0, 0, artCanvas.width, artCanvas.height);
           }
 
           const artCanvas = document.getElementById("artCanvas");
@@ -710,6 +720,17 @@ function artistImage(moodImages) {
     likeImgGray.style.display = "block";
     dislikeImgGray.style.display = "block";
     neutralImg.style.display = "none";
+
+    const canvasCtx = canvas.getContext("2d");
+    canvasCtx.clearRect(0, 0, canvas.width, canvas.height); 
+    selectedAngryEyeImage = null;
+    selectedNoseImage = null;
+    selectedAngryMouthImage = null;
+    selectedHappyEyeImage = null;
+    selectedHappyMouthImage = null;
+    selectedSadEyeImage = null;
+    selectedSadMouthImage = null;
+    return
   }
   if (moodImages === "neutral") {
     lazyImg.style.display = "none";

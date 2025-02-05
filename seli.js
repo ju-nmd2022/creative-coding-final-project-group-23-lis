@@ -1,6 +1,6 @@
 // Reference List
 // Object array: https://stackoverflow.com/questions/54878770/best-way-to-add-images-to-arrays-of-objects Retrieved: 30/1-25
-// Objects and properties in arrays: https://chatgpt.com/share/679c9044-bd2c-8011-ab39-3a3429f8142a REtrieved: 30/1-25
+// Objects and properties in arrays: https://chatgpt.com/share/679c9044-bd2c-8011-ab39-3a3429f8142a Retrieved: 30/1-25
 // Worked on in collaboration with Thomas Halvarsson from 20/1-25 to 4/2-25
 
 // Neutral image and comment is shown when the user enters the page

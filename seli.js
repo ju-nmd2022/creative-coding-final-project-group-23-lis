@@ -197,12 +197,12 @@ function setArtistMood(currentEmotion) {
     artistMood = "neutral";
     return;
   }
-  const randomNum = Math.floor(Math.random() * 14);
+  const randomNum = Math.floor(Math.random() * 15);
   if (randomNum <= 7) {
     artistMood = currentEmotion;
-  } else if (randomNum > 11) {
+  } else if (randomNum >= 8 && randomNum <= 10) {
     artistMood = "mischievous";
-  } else if (randomNum >= 8 && randomNum <= 9) {
+  } else if (randomNum >= 11 && randomNum <= 13) {
     artistMood = "benevolent";
   } else {
     artistMood = "lazy";

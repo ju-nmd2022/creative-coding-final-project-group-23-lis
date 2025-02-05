@@ -1,3 +1,31 @@
+ //neutral image and comment is shown when the user enters the page
+window.onload = function () {
+  artistMood = "neutral";
+  displayArtistImage(artistMood);
+  displayArtistComment(artistMood);
+};
+
+function displayArtistImage(mood) {
+  let neutralImg = document.getElementById("neutral-image");
+  neutralImg.style.display = "block"; 
+  
+  let allImages = document.querySelectorAll(".artist-image");
+  allImages.forEach(image => {
+    if (image.id !== "neutral-image") {
+      image.style.display = "none";
+    }
+  });
+}
+
+function displayArtistComment(mood) {
+  const moodComments = comments[mood];
+  if (moodComments && moodComments.length > 0) {
+    const randomComment =
+      moodComments[Math.floor(Math.random() * moodComments.length)];
+    artistComment.innerHTML = `<p>${randomComment}</p>`;
+  }
+}
+
 // Arrays holding the images for different emotions
 let noseArray = [
   { image: "images/nose-septum.png", weight: 15 },

@@ -172,21 +172,26 @@ function setArtistMood(currentEmotion) {
   const randomNum = Math.floor(Math.random() * 14);
   if (randomNum <= 7) {
     artistMood = currentEmotion;
-  } else if (randomNum > 12) {
+  } else if (randomNum > 11) {
     artistMood = "mischievous";
-  } else if (randomNum >= 8 && randomNum <= 10) {
+  } else if (randomNum >= 8 && randomNum <= 9) {
     artistMood = "benevolent";
   } else {
     artistMood = "lazy";
     ctx.clearRect(0, 0, artCanvas.width, artCanvas.height);
     video.classList.add("bw-video");
 
+    //had to add this because the comments for lazy didnt work
+    const lazyComment =
+    comments.lazy[Math.floor(Math.random() * comments.lazy.length)];
+  artistComment.innerText = lazyComment;
+  console.log("Lazy comment:", lazyComment);
+
     //reset mood after 7 seconds so it starts to draw again and the user is not stuck in lazy
     setTimeout(() => {
-      video.classList.remove("bw-video");
       artistMood = "neutral";
       console.log("Lazy mode ended, resuming painting.");
-      //ctx.clearRect(0, 0, artCanvas.width, artCanvas.height);
+      video.classList.remove("bw-video");
     }, 7000);
     return; 
   }
@@ -348,7 +353,7 @@ function startVideo() {
             // Check if the emotion has changed
             if (
               (currentEmotion !== previousEmotion &&
-                freezeEmotionDetection > 10) || // Change the length of the visible emotions here!!! <-------------------------------
+                freezeEmotionDetection > 6) || // Change the length of the visible emotions here!!! <-------------------------------
               (currentEmotion !== previousEmotion &&
                 currentEmotion === "normal")
             ) {
@@ -789,12 +794,6 @@ const comments = {
   neutral: ["Move your face so I can paint!"],
 };
 
-/*
-let command = document.getElementById("command")
-if (command && currentEmotion === detected) {
-  command.remove();
-}
-*/
 
 // Object array: https://stackoverflow.com/questions/54878770/best-way-to-add-images-to-arrays-of-objects
 // Objects and properties in arrays: https://chatgpt.com/share/679c9044-bd2c-8011-ab39-3a3429f8142a

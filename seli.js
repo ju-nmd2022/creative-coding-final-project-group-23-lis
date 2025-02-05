@@ -726,15 +726,6 @@ function artistImage(moodImages) {
     dislikeImgGray.style.display = "block";
     neutralImg.style.display = "none";
 
-    if (moodImages === "neutral") {
-      lazyImg.style.display = "none";
-      likeImg.style.display = "none";
-      dislikeImg.style.display = "none";
-      likeImgGray.style.display = "block";
-      dislikeImgGray.style.display = "block";
-      neutralImg.style.display = "block";
-    }
-
     const canvasCtx = canvas.getContext("2d");
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
     selectedAngryEyeImage = null;
@@ -745,6 +736,15 @@ function artistImage(moodImages) {
     selectedSadEyeImage = null;
     selectedSadMouthImage = null;
     return;
+    
+  }
+  if (moodImages === "neutral") {
+    lazyImg.style.display = "none";
+    likeImg.style.display = "none";
+    dislikeImg.style.display = "none";
+    likeImgGray.style.display = "block";
+    dislikeImgGray.style.display = "block";
+    neutralImg.style.display = "block";
   }
 }
 

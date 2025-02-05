@@ -1,4 +1,9 @@
- //neutral image and comment is shown when the user enters the page
+// Reference List
+// Object array: https://stackoverflow.com/questions/54878770/best-way-to-add-images-to-arrays-of-objects Retrieved: 30/1-25
+// Objects and properties in arrays: https://chatgpt.com/share/679c9044-bd2c-8011-ab39-3a3429f8142a REtrieved: 30/1-25
+// Worked on in collaboration with Thomas Halvarsson from 20/1-25 to 4/2-25
+
+// Neutral image and comment is shown when the user enters the page
 window.onload = function () {
   artistMood = "neutral";
   displayArtistImage(artistMood);
@@ -7,10 +12,10 @@ window.onload = function () {
 
 function displayArtistImage(mood) {
   let neutralImg = document.getElementById("neutral-image");
-  neutralImg.style.display = "block"; 
-  
+  neutralImg.style.display = "block";
+
   let allImages = document.querySelectorAll(".artist-image");
-  allImages.forEach(image => {
+  allImages.forEach((image) => {
     if (image.id !== "neutral-image") {
       image.style.display = "none";
     }
@@ -82,7 +87,7 @@ let sadMouthArray = [
 // 1 = used, 0 = not used
 let lastUsedImages = [
   { faceArray: "noseArray", used: 0 },
-  { faceArray: "angryEyeArray", used: 3 },
+  { faceArray: "angryEyeArray", used: 0 },
   { faceArray: "angryMouthArray", used: 0 },
   { faceArray: "happyEyeArray", used: 0 },
   { faceArray: "happyMouthArray", used: 0 },
@@ -94,12 +99,15 @@ let lastUsedImages = [
 let selectedAngryEyeImage = null;
 let selectedNoseImage = null; // Common nose image for all emotions
 let selectedAngryMouthImage = null;
-
 let selectedHappyEyeImage = null;
 let selectedHappyMouthImage = null;
-
 let selectedSadEyeImage = null;
 let selectedSadMouthImage = null;
+
+let arrayNameEyeGlobal;
+let arrayNameMouthGlobal;
+
+let randomIndexGlobal;
 
 // Previous emotion states to detect changes
 let previousEmotion = null;
@@ -117,17 +125,14 @@ let mood = "neutral";
 let freezeEmotionDetection = 0;
 
 let video = document.getElementById("video");
+const ctx = document.getElementById("artCanvas").getContext("2d");
 
 artCanvas.width = video.videoWidth;
 artCanvas.height = video.videoHeight;
 
-const ctx = document.getElementById("artCanvas").getContext("2d");
-
-let randomIndexGlobal;
-
-let arrayNameEyeGlobal;
-let arrayNameMouthGlobal;
-
+//------------------------------------------------------------------------------
+//----------------------------Dislike function----------------------------------
+//------------------------------------------------------------------------------
 function dislikeButton() {
   if (artistMood !== "benevolent") {
     // To change the probability for all noses when clicking the like button:
@@ -149,17 +154,15 @@ function dislikeButton() {
         lastUsedImages[randomIndexGlobal]?.used
       ].weight -= 1),
     ];
-
+  // Reset the array when it reaches 0
   if (arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight <= 0) {
     arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight = 15;
   }
-
-  console.log(
-    "disliked: ",
-    arrayNameMouthGlobal[lastUsedImages[randomIndexGlobal]?.used].weight
-  );
 }
 
+//------------------------------------------------------------------------------
+//-------------------------------Like function----------------------------------
+//------------------------------------------------------------------------------
 function likeButton() {
   console.log(
     "liked: ",
@@ -185,13 +188,14 @@ function likeButton() {
         lastUsedImages[randomIndexGlobal]?.used
       ].weight -= 1),
     ];
-
+  // Reset the array when it reaches 0
   if (arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight <= 0) {
     arrayNameEyeGlobal[lastUsedImages[randomIndexGlobal]?.used].weight = 15;
   }
 }
-
-//SET MOOD BASED ON RANDOM NUMBER.
+//------------------------------------------------------------------------------
+//--------------------------Set the mood for Artist-----------------------------
+//------------------------------------------------------------------------------
 function setArtistMood(currentEmotion) {
   if (currentEmotion === "neutral" || currentEmotion === "surprised") {
     artistMood = "neutral";
@@ -211,9 +215,9 @@ function setArtistMood(currentEmotion) {
 
     //had to add this because the comments for lazy didnt work
     const lazyComment =
-    comments.lazy[Math.floor(Math.random() * comments.lazy.length)];
-  artistComment.innerText = lazyComment;
-  console.log("Lazy comment:", lazyComment);
+      comments.lazy[Math.floor(Math.random() * comments.lazy.length)];
+    artistComment.innerText = lazyComment;
+    console.log("Lazy comment:", lazyComment);
 
     //reset mood after 7 seconds so it starts to draw again and the user is not stuck in lazy
     setTimeout(() => {
@@ -221,7 +225,7 @@ function setArtistMood(currentEmotion) {
       console.log("Lazy mode ended, resuming painting.");
       video.classList.remove("bw-video");
     }, 7000);
-    return; 
+    return;
   }
 
   if (
@@ -233,14 +237,10 @@ function setArtistMood(currentEmotion) {
   //console.log(randomNum);
 }
 
+//------------------------------------------------------------------------------
+//---------------------Change comments + image for Artist-----------------------
+//------------------------------------------------------------------------------
 function changeMoodImg() {
-  /*video.classList.remove("bw-video");
-
-  //black and white filter for lazy
-  if (artistMood === "lazy") {
-    video.classList.add("bw-video");
-  }
-    */
   //calls the artist image for each mood
   artistImage(artistMood);
 
@@ -252,26 +252,15 @@ function changeMoodImg() {
     artistComment.innerHTML = `<p>${randomComment}</p>`;
   }
 }
-//
-//
-//
-//
-//
-//
-// Add Weight to random function -----------------------------------
-// Add chance of weight difference when pressing like or dislike
-//
-//
-//
-//
-//
+
+//------------------------------------------------------------------------------
+//----------------------------Random image for user-----------------------------
+//------------------------------------------------------------------------------
 
 // Function to load random images from an array and ensure they are loaded before use
 function getRandomImage(imageArray, arrayName) {
-  //const randomIndex = Math.floor(Math.random() * imageArray.length);
   const weightedObjects = [];
   console.log("objects: ", weightedObjects);
-  //randomIndexGlobal = randomIndex;
 
   function getRandomObjectWeighted() {
     imageArray.forEach((object) => {
@@ -296,24 +285,11 @@ function getRandomImage(imageArray, arrayName) {
   );
   const randomIndex = originalIndex;
   randomIndexGlobal = randomIndex;
-  /*
-  // Filter out the exact row that was last used in lastUsedImages-array so that we have the correct index from inside of the array
-  let filteredArray = lastUsedImages.filter(
-    (justArrayName) => justArrayName.faceArray === arrayName
-  );
-  filteredArray[0].used = randomIndex;
-  */
-  //console.log("filtered array", filteredArray[0]?.used);
-  //console.log("this is the image: ", arrayName);
-  // console.log(lastUsedImages);
 
   return new Promise((resolve) => {
     const img = new Image();
     img.src = imageArray[randomIndex].image;
-    //console.log("Chosen image: " + img.src);
-    // console.log("nose image: " + noseArray[randomIndex].weight);
     img.onload = () => resolve(img); // Resolve the promise once the image is loaded
-    // Write last used image to the lastUsedImages-array
   });
 }
 
@@ -324,6 +300,9 @@ Promise.all([
   faceapi.nets.faceExpressionNet.loadFromUri("/models"),
 ]).then(startVideo);
 
+//------------------------------------------------------------------------------
+//--------------------The app and all functions called--------------------------
+//------------------------------------------------------------------------------
 // Function to start the webcam video stream
 function startVideo() {
   navigator.mediaDevices
@@ -346,7 +325,6 @@ function startVideo() {
           //if mood is lazy, stop drawing images on face 7 secs
           if (artistMood === "lazy") {
             return;
-            ctx.clearRect(0, 0, artCanvas.width, artCanvas.height);
           }
 
           const artCanvas = document.getElementById("artCanvas");
@@ -381,19 +359,13 @@ function startVideo() {
             // Check if the emotion has changed
             if (
               (currentEmotion !== previousEmotion &&
-                freezeEmotionDetection > 6) || // Change the length of the visible emotions here!!! <-------------------------------
+                freezeEmotionDetection > 6) || // Change the length of the visible emotions here! <-------------------------------
               (currentEmotion !== previousEmotion &&
                 currentEmotion === "normal")
             ) {
-              console.log(
-                "current emotion is not the previous" +
-                  previousEmotion +
-                  currentEmotion
-              );
               previousEmotion = currentEmotion;
               ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-              //console.log("freeze:" + freezeEmotionDetection);
               freezeEmotionDetection = 0;
 
               // Reset all images
@@ -754,8 +726,17 @@ function artistImage(moodImages) {
     dislikeImgGray.style.display = "block";
     neutralImg.style.display = "none";
 
+    if (moodImages === "neutral") {
+      lazyImg.style.display = "none";
+      likeImg.style.display = "none";
+      dislikeImg.style.display = "none";
+      likeImgGray.style.display = "block";
+      dislikeImgGray.style.display = "block";
+      neutralImg.style.display = "block";
+    }
+
     const canvasCtx = canvas.getContext("2d");
-    canvasCtx.clearRect(0, 0, canvas.width, canvas.height); 
+    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
     selectedAngryEyeImage = null;
     selectedNoseImage = null;
     selectedAngryMouthImage = null;
@@ -763,15 +744,7 @@ function artistImage(moodImages) {
     selectedHappyMouthImage = null;
     selectedSadEyeImage = null;
     selectedSadMouthImage = null;
-    return
-  }
-  if (moodImages === "neutral") {
-    lazyImg.style.display = "none";
-    likeImg.style.display = "none";
-    dislikeImg.style.display = "none";
-    likeImgGray.style.display = "block";
-    dislikeImgGray.style.display = "block";
-    neutralImg.style.display = "block";
+    return;
   }
 }
 
@@ -821,7 +794,3 @@ const comments = {
   ],
   neutral: ["Move your face so I can paint!"],
 };
-
-
-// Object array: https://stackoverflow.com/questions/54878770/best-way-to-add-images-to-arrays-of-objects
-// Objects and properties in arrays: https://chatgpt.com/share/679c9044-bd2c-8011-ab39-3a3429f8142a

@@ -34,55 +34,55 @@ function displayArtistComment(mood) {
 
 // Arrays holding the images for different emotions
 let noseArray = [
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-septum.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-round.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-fat.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-wings.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-pig.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-regular.PNG", weight: 15 },
+  { image: "images/nose-septum.png", weight: 15 },
+  { image: "images/nose-round.png", weight: 15 },
+  { image: "images/nose-fat.png", weight: 15 },
+  { image: "images/nose-wings.png", weight: 15 },
+  { image: "images/nose-pig.png", weight: 15 },
+  { image: "images/nose-regular.png", weight: 15 },
 ];
 
 let angryEyeArray = [
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-zombie.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-mad.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-close.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-pissed.PNG", weight: 15 },
+  { image: "images/eye-zombie.png", weight: 15 },
+  { image: "images/eye-mad.png", weight: 15 },
+  { image: "images/eye-close.png", weight: 15 },
+  { image: "images/eye-pissed.png", weight: 15 },
 ];
 
 let angryMouthArray = [
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-wide.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-crooked.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-open.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-grr.PNG", weight: 15 },
+  { image: "images/lip-wide.png", weight: 15 },
+  { image: "images/lip-crooked.png", weight: 15 },
+  { image: "images/lip-open.png", weight: 15 },
+  { image: "images/lip-grr.png", weight: 15 },
 ];
 
 let happyEyeArray = [
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-normal.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-round.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-smile.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-hope.PNG", weight: 15 },
+  { image: "images/eye-normal.png", weight: 15 },
+  { image: "images/eye-round.png", weight: 15 },
+  { image: "images/eye-smile.png", weight: 15 },
+  { image: "images/eye-hope.png", weight: 15 },
 ];
 
 let happyMouthArray = [
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-kiss.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-tounge.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-gap.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-L.PNG", weight: 15 },
+  { image: "images/lip-kiss.png", weight: 15 },
+  { image: "images/lip-tounge.png", weight: 15 },
+  { image: "images/lip-gap.png", weight: 15 },
+  { image: "images/lip-L.png", weight: 15 },
 ];
 
 let sadEyeArray = [
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-drip.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-shiny.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-cry.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-wet.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-tear.PNG", weight: 15 },
+  { image: "images/eye-drip.png", weight: 15 },
+  { image: "images/eye-shiny.png", weight: 15 },
+  { image: "images/eye-cry.png", weight: 15 },
+  { image: "images/eye-wet.png", weight: 15 },
+  { image: "images/eye-tear.png", weight: 15 },
 ];
 
 let sadMouthArray = [
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-bite.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-frown.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-sad.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-scream.PNG", weight: 15 },
+  { image: "images/lip-bite.png", weight: 15 },
+  { image: "images/lip-frown.png", weight: 15 },
+  { image: "images/lip-sad.png", weight: 15 },
+  { image: "images/lip-scream.png", weight: 15 },
 ];
 
 // 1 = used, 0 = not used

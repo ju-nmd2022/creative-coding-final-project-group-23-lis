@@ -328,10 +328,9 @@ function startVideo() {
             return;
           }
 
-          const MODEL_URL = 'https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/models';
-          await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-          await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
-          await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL);
+          await faceapi.nets.tinyFaceDetector.loadFromUri('./models');
+          await faceapi.nets.faceLandmark68Net.loadFromUri('./models');
+          await faceapi.nets.faceExpressionNet.loadFromUri('./models'); 
 
           const artCanvas = document.getElementById("artCanvas");
           const artCtx = artCanvas.getContext("2d");

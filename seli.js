@@ -296,9 +296,9 @@ function getRandomImage(imageArray, arrayName) {
 
 // Load the Face API models
 Promise.all([
-  faceapi.nets.tinyFaceDetector.loadFromUri("https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/models"),
-  faceapi.nets.faceLandmark68Net.loadFromUri("https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/models"),
-  faceapi.nets.faceExpressionNet.loadFromUri("https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/models"),
+  faceapi.nets.tinyFaceDetector.loadFromUri("https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/models/"),
+  faceapi.nets.faceLandmark68Net.loadFromUri("https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/models/"),
+  faceapi.nets.faceExpressionNet.loadFromUri("https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/models/"),
 ]).then(startVideo);
 
 

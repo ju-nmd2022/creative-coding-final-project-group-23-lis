@@ -2,6 +2,10 @@
 // Object array: https://stackoverflow.com/questions/54878770/best-way-to-add-images-to-arrays-of-objects Retrieved: 30/1-25
 // Objects and properties in arrays: https://chatgpt.com/share/679c9044-bd2c-8011-ab39-3a3429f8142a Retrieved: 30/1-25
 // Worked on in collaboration with Thomas Halvarsson from 20/1-25 to 4/2-25
+// SetInterval for the lazy mood: https://www.w3schools.com/JSREF/met_win_settimeout.asp 
+// Lazy mood clear canvas fix: https://chatgpt.com/c/67a7c86b-4f50-800a-b7f4-8488e342e225
+// Correction of the paths for GitHub Pages: https://stackoverflow.com/questions/16316311/github-pages-and-relative-paths Retrieved: 8/2-25
+
 
 
 // Neutral image and comment is shown when the user enters the page
@@ -235,7 +239,6 @@ function setArtistMood(currentEmotion) {
   ) {
     artistMood = "neutral";
   }
-  //console.log(randomNum);
 }
 
 //------------------------------------------------------------------------------
@@ -363,7 +366,7 @@ function startVideo() {
             // Check if the emotion has changed
             if (
               (currentEmotion !== previousEmotion &&
-                freezeEmotionDetection > 2) || // Change the length of the visible emotions here! <-------------------------------
+                freezeEmotionDetection > 5) || // Change the length of the visible emotions here! <-------------------------------
               (currentEmotion !== previousEmotion &&
                 currentEmotion === "normal")
             ) {

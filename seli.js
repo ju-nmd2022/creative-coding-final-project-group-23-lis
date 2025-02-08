@@ -296,9 +296,9 @@ function getRandomImage(imageArray, arrayName) {
 
 // Load the Face API models
 Promise.all([
-  faceapi.nets.tinyFaceDetector.loadFromUri("./models"),
-  faceapi.nets.faceLandmark68Net.loadFromUri("./models"),
-  faceapi.nets.faceExpressionNet.loadFromUri("./models"),
+  faceapi.nets.tinyFaceDetector.loadFromUri("/models/tiny_face_detector_model-weights_manifest.json"),
+  faceapi.nets.faceLandmark68Net.loadFromUri("/models/face_landmark_68_model-weights_manifest.json"),
+  faceapi.nets.faceExpressionNet.loadFromUri("/models/face_expression_model-weights_manifest.json"),
 ]).then(startVideo);
 
 //------------------------------------------------------------------------------
@@ -327,11 +327,7 @@ function startVideo() {
           if (artistMood === "lazy") {
             return;
           }
-
-          await faceapi.nets.tinyFaceDetector.loadFromUri('./models');
-          await faceapi.nets.faceLandmark68Net.loadFromUri('./models');
-          await faceapi.nets.faceExpressionNet.loadFromUri('./models'); 
-
+          
           const artCanvas = document.getElementById("artCanvas");
           const artCtx = artCanvas.getContext("2d");
           artCtx.clearRect(0, 0, artCanvas.width, artCanvas.height);

@@ -3,6 +3,7 @@
 // Objects and properties in arrays: https://chatgpt.com/share/679c9044-bd2c-8011-ab39-3a3429f8142a Retrieved: 30/1-25
 // Worked on in collaboration with Thomas Halvarsson from 20/1-25 to 4/2-25
 
+
 // Neutral image and comment is shown when the user enters the page
 window.onload = function () {
   artistMood = "neutral";
@@ -327,6 +328,10 @@ function startVideo() {
             return;
           }
 
+          await faceapi.nets.tinyFaceDetector.loadFromUri('./models');
+          await faceapi.nets.faceLandmark68Net.loadFromUri('./models');
+          await faceapi.nets.faceExpressionNet.loadFromUri('./models'); 
+
           const artCanvas = document.getElementById("artCanvas");
           const artCtx = artCanvas.getContext("2d");
           artCtx.clearRect(0, 0, artCanvas.width, artCanvas.height);
@@ -359,7 +364,7 @@ function startVideo() {
             // Check if the emotion has changed
             if (
               (currentEmotion !== previousEmotion &&
-                freezeEmotionDetection > 6) || // Change the length of the visible emotions here! <-------------------------------
+                freezeEmotionDetection > 2) || // Change the length of the visible emotions here! <-------------------------------
               (currentEmotion !== previousEmotion &&
                 currentEmotion === "normal")
             ) {

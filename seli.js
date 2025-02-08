@@ -328,10 +328,10 @@ function startVideo() {
             return;
           }
 
-          await faceapi.nets.tinyFaceDetector.loadFromUri('./models');
-          await faceapi.nets.faceLandmark68Net.loadFromUri('./models');
-          await faceapi.nets.faceExpressionNet.loadFromUri('./models'); 
-
+          await faceapi.nets.tinyFaceDetector.loadFromUri('models');
+          await faceapi.nets.faceLandmark68Net.loadFromUri('models');
+          await faceapi.nets.faceExpressionNet.loadFromUri('models');
+          
           const artCanvas = document.getElementById("artCanvas");
           const artCtx = artCanvas.getContext("2d");
           artCtx.clearRect(0, 0, artCanvas.width, artCanvas.height);

@@ -1,6 +1,9 @@
 // Reference List
 // Face API: https://github.com/justadudewhohacks/face-api.js Retrieved: September 2024
 // Face API Tutorial: https://github.com/vladmandic/face-api/blob/master/TUTORIAL.md#getting-started-displaying-detection-results Retrieved: September 2024
+// Store API: https://stackoverflow.com/questions/74874158/how-to-store-detected-emotion-value-of-the-faceapi-into-a-variable Retrieved: October 2024
+// Blue box removed: https://github.com/justadudewhohacks/face-api.js/issues/913 Retrieved: October 2024
+// Landmarks color removed: https://stackoverflow.com/questions/78793165/change-face-api-js-landmarks-pointcolor Retrieved: October 2024
 // Object array: https://stackoverflow.com/questions/54878770/best-way-to-add-images-to-arrays-of-objects Retrieved: 30/1-25
 // Objects and properties in arrays: https://chatgpt.com/share/679c9044-bd2c-8011-ab39-3a3429f8142a Retrieved: 30/1-25
 // Findindex(): https://www.w3schools.com/jsref/jsref_find.asp Retrieved: 31/1-25
@@ -887,17 +890,17 @@ function artistImage(moodImages) {
 let artistComment = document.getElementById("artist-comment");
 const comments = {
   sad: [
-    "I'm feeling so down today... I guess I could paint you blue :( I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a differnet mood...",
-    "Life is depressing. I'm sorry, I can only paint you blue right now. I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a differnet mood...",
-    "Oh, I am not feeling too good. Do you ever feel like crying? I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a differnet mood...",
-    "Do you ever feel really down? That's what I'm feeling now:( I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a differnet mood...",
+    "I'm feeling so down today... I guess I could paint you blue :( I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a different mood...",
+    "Life is depressing. I'm sorry, I can only paint you blue right now. I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a different mood...",
+    "Oh, I am not feeling too good. Do you ever feel like crying? I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a different mood...",
+    "Do you ever feel really down? That's what I'm feeling now:( I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a different mood...",
   ],
 
   angry: [
-    "What are you looking at? Here you go with the red pictures, now leave me alone! You cannot use the buttons below right now. Maybe when I'm in a differnet mood...",
-    "Why does everything have to be so frustrating? You cannot use the buttons below right now. Maybe when I'm in a differnet mood...",
-    "AARRGH!!! Here you go stupid, I'll paint you in red >:( You cannot use the buttons below right now. Maybe when I'm in a differnet mood...",
-    "Stop looking at me like that!!! What do you want? Here, have some silly picures. You cannot use the buttons below right now. Maybe when I'm in a differnet mood...",
+    "What are you looking at? Here you go with the red pictures, now leave me alone! You cannot use the buttons below right now. Maybe when I'm in a different mood...",
+    "Why does everything have to be so frustrating? You cannot use the buttons below right now. Maybe when I'm in a different mood...",
+    "AARRGH!!! Here you go stupid, I'll paint you in red >:( You cannot use the buttons below right now. Maybe when I'm in a different mood...",
+    "Stop looking at me like that!!! What do you want? Here, have some silly picures. You cannot use the buttons below right now. Maybe when I'm in a different mood...",
   ],
 
   mischievous: [
@@ -915,17 +918,17 @@ const comments = {
   ],
 
   happy: [
-    "Ah look, I can paint you in a lovely yellow shade :D I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
-    "I'm feeling amazing! I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
-    "Everything is awesome! I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
-    "WOOOO! Life is so good right now, don't you agree? I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
+    "Ah look, I can paint you in a lovely yellow shade :D I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a different mood!",
+    "I'm feeling amazing! I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a different mood!",
+    "Everything is awesome! I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a different mood!",
+    "WOOOO! Life is so good right now, don't you agree? I'm sorry but you cannot use the buttons below right now. Maybe when I'm in a different mood!",
   ],
 
   lazy: [
-    "Uuuuuuugh I don't know what you expect from me... I'm like reaaaally tired. Annnd you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
-    "Maaaan I just wanna sleep, I don't even have the energy to give you color right now... Annnd you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
-    "ZZZ I cannot be bothered with your wishes, can I be left to chill for like 3 seconds?? Annnd you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
-    "Hmmm? Paint your face? I can't even be bothered to add color to you today. Annnd you cannot use the buttons below right now. Maybe when I'm in a differnet mood!",
+    "Uuuuuuugh I don't know what you expect from me... I'm like reaaaally tired. Annnd you cannot use the buttons below right now. Maybe when I'm in a different mood!",
+    "Maaaan I just wanna sleep, I don't even have the energy to give you color right now... Annnd you cannot use the buttons below right now. Maybe when I'm in a different mood!",
+    "ZZZ I cannot be bothered with your wishes, can I be left to chill for like 3 seconds?? Annnd you cannot use the buttons below right now. Maybe when I'm in a different mood!",
+    "Hmmm? Paint your face? I can't even be bothered to add color to you today. Annnd you cannot use the buttons below right now. Maybe when I'm in a different mood!",
   ],
   neutral: ["Move your face so I can paint!"],
 };

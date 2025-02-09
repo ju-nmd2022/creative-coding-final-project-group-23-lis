@@ -1,12 +1,14 @@
 // Reference List
+// Face API: https://github.com/justadudewhohacks/face-api.js Retrieved: September 2024
+// Face API Tutorial: https://github.com/vladmandic/face-api/blob/master/TUTORIAL.md#getting-started-displaying-detection-results Retrieved: September 2024
 // Object array: https://stackoverflow.com/questions/54878770/best-way-to-add-images-to-arrays-of-objects Retrieved: 30/1-25
 // Objects and properties in arrays: https://chatgpt.com/share/679c9044-bd2c-8011-ab39-3a3429f8142a Retrieved: 30/1-25
-// Worked on in collaboration with Thomas Halvarsson from 20/1-25 to 4/2-25
-// SetInterval for the lazy mood: https://www.w3schools.com/JSREF/met_win_settimeout.asp 
+// Findindex(): https://www.w3schools.com/jsref/jsref_find.asp Retrieved: 31/1-25
+// Button onclick for thumbs up-/down: https://www.geeksforgeeks.org/javascript-onclick-event/ Retrieved: 1/2-25
+// SetInterval for the lazy mood: https://www.w3schools.com/JSREF/met_win_settimeout.asp
 // Lazy mood clear canvas fix: https://chatgpt.com/c/67a7c86b-4f50-800a-b7f4-8488e342e225
 // Correction of the paths for GitHub Pages: https://stackoverflow.com/questions/16316311/github-pages-and-relative-paths Retrieved: 8/2-25
-
-
+// Worked in collaboration with Thomas Halvarsson from 20/1-25 to 8/2-25
 
 // Neutral image and comment is shown when the user enters the page
 window.onload = function () {
@@ -38,55 +40,179 @@ function displayArtistComment(mood) {
 
 // Arrays holding the images for different emotions
 let noseArray = [
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-septum.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-round.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-fat.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-wings.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-pig.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-regular.PNG", weight: 15 },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-septum.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-round.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-fat.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-wings.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-pig.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/nose-regular.PNG",
+    weight: 15,
+  },
 ];
 
 let angryEyeArray = [
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-zombie.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-mad.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-close.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-pissed.PNG", weight: 15 },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-zombie.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-mad.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-close.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-pissed.PNG",
+    weight: 15,
+  },
 ];
 
 let angryMouthArray = [
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-wide.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-crooked.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-open.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-grr.PNG", weight: 15 },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-wide.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-crooked.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-open.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-grr.PNG",
+    weight: 15,
+  },
 ];
 
 let happyEyeArray = [
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-normal.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-round.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-smile.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-hope.PNG", weight: 15 },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-normal.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-round.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-smile.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-hope.PNG",
+    weight: 15,
+  },
 ];
 
 let happyMouthArray = [
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-kiss.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-tounge.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-gap.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-L.PNG", weight: 15 },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-kiss.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-tounge.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-gap.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-L.PNG",
+    weight: 15,
+  },
 ];
 
 let sadEyeArray = [
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-drip.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-shiny.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-cry.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-wet.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-tear.PNG", weight: 15 },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-drip.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-shiny.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-cry.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-wet.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/eye-tear.PNG",
+    weight: 15,
+  },
 ];
 
 let sadMouthArray = [
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-bite.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-frown.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-sad.PNG", weight: 15 },
-  { image: "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-scream.PNG", weight: 15 },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-bite.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-frown.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-sad.PNG",
+    weight: 15,
+  },
+  {
+    image:
+      "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/images/lip-scream.PNG",
+    weight: 15,
+  },
 ];
 
 // 1 = used, 0 = not used
@@ -299,13 +425,16 @@ function getRandomImage(imageArray, arrayName) {
 
 // Load the Face API models
 Promise.all([
-  faceapi.nets.tinyFaceDetector.loadFromUri("https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/models/tiny_face_detector_model/"),
-  faceapi.nets.faceLandmark68Net.loadFromUri("https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/models/face_landmark_68_model/"),
-  faceapi.nets.faceExpressionNet.loadFromUri("https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/models/face_expression_model/")
+  faceapi.nets.tinyFaceDetector.loadFromUri(
+    "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/models/tiny_face_detector_model/"
+  ),
+  faceapi.nets.faceLandmark68Net.loadFromUri(
+    "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/models/face_landmark_68_model/"
+  ),
+  faceapi.nets.faceExpressionNet.loadFromUri(
+    "https://ju-nmd2022.github.io/creative-coding-final-project-group-23-lis/models/face_expression_model/"
+  ),
 ]).then(startVideo);
-
-
-
 
 //------------------------------------------------------------------------------
 //--------------------The app and all functions called--------------------------
@@ -333,7 +462,7 @@ function startVideo() {
           if (artistMood === "lazy") {
             return;
           }
-          
+
           const artCanvas = document.getElementById("artCanvas");
           const artCtx = artCanvas.getContext("2d");
           artCtx.clearRect(0, 0, artCanvas.width, artCanvas.height);
@@ -743,7 +872,6 @@ function artistImage(moodImages) {
     selectedSadEyeImage = null;
     selectedSadMouthImage = null;
     return;
-    
   }
   if (moodImages === "neutral") {
     lazyImg.style.display = "none";
